@@ -15,6 +15,7 @@ import java.util.Date;
 public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "artist_id")
     private Long artistId;
 
     @Column(nullable = false)

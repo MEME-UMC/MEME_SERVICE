@@ -14,6 +14,7 @@ import umc.meme.shop.domain.portfolio.entity.enums.Category;
 public class Portfolio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "portfolio_id")
     private Long portfolioId;
 
     @Column(nullable = false)
