@@ -13,7 +13,7 @@ import umc.meme.shop.domain.portfolio.entity.Portfolio;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Favorite_Portfolio {
+public class FavoritePortfolio {
 
     @ManyToOne
     @JoinColumn(name="model_id", nullable = false)
