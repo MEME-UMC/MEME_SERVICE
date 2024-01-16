@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 
 
@@ -16,6 +17,10 @@ public class Portfolio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "portfolio_id")
     private Long portfolioId;
+
+    @ManyToOne
+    @JoinColumn(name="artist_id", nullable = false)
+    private Artist artist;
 
     @Column(nullable = false)
     private Category category;

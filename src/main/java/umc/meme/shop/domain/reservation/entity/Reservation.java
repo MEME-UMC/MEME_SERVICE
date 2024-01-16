@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.model.entity.Model;
+import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.reservation.entity.enums.ReservationTime;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
 
@@ -18,6 +20,15 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
+
+    @OneToOne
+    @JoinColumn(name="model_id", nullable = false)
+    private Model model;
+
+    @OneToOne
+    @JoinColumn(name="portfolio_id", nullable = false)
+    private Portfolio portfolio;
+
     @Column(nullable = false)
     private Status status;
 

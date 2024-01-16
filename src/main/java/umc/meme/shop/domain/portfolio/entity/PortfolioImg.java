@@ -1,4 +1,4 @@
-package umc.meme.shop.domain.review.entity;
+package umc.meme.shop.domain.portfolio.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ReviewImg {
+public class PortfolioImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewImgId;
+    private Long portfolioImgId;
 
     @ManyToOne
-    @JoinColumn(name="review_id", nullable = false)
-    private Review review;
+    @JoinColumn(name="portfolio_id", nullable = false)
+    private Portfolio portfolio;
 
     @Column(nullable = false)
     private String src;
