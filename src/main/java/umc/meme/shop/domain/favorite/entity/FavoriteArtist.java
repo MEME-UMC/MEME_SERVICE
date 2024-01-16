@@ -1,8 +1,6 @@
 package umc.meme.shop.domain.favorite.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +12,10 @@ import umc.meme.shop.domain.model.entity.Model;
 @NoArgsConstructor
 @Entity
 public class FavoriteArtist {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long favoriteArtistId;
 
     @ManyToOne
     @JoinColumn(name="model_id", nullable = false)

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.review.entity.enums.Star;
 
 @Getter
 @AllArgsConstructor
@@ -21,11 +20,11 @@ public class Review {
     private Portfolio portfolio;
 
     @Column(nullable = false)
-    private Star star;
+    private int star;
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 200)
     private String comment;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
     private boolean isBlock;
 }

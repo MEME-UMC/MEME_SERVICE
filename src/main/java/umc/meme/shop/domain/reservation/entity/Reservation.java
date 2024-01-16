@@ -29,12 +29,14 @@ public class Reservation {
     @JoinColumn(name="portfolio_id", nullable = false)
     private Portfolio portfolio;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
 
     @Column(nullable = false)
-    private boolean isReview;
+    private boolean isReview = false;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ReservationTime reservationTime;
 

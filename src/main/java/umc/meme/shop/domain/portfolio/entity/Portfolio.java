@@ -22,6 +22,7 @@ public class Portfolio {
     @JoinColumn(name="artist_id", nullable = false)
     private Artist artist;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Category category;
 
@@ -34,6 +35,6 @@ public class Portfolio {
     @Column(nullable = false)
     private String info;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
     private boolean isBlock;
 }
