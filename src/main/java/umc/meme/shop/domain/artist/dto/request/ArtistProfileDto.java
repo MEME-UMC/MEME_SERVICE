@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfileDto {
+public class ArtistProfileDto {
     private String profileImg;
     private String nickname;
     private Gender gender;

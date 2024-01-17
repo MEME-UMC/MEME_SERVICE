@@ -1,4 +1,4 @@
-package umc.meme.shop.domain.artist.dto.request;
+package umc.meme.shop.domain.portfolio.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import umc.meme.shop.domain.portfolio.entity.enums.Category;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PortfolioDto {
+public class UpdatePortfolioDto {
     private Category category;
     private String makeupName;
     private int price;
