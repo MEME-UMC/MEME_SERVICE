@@ -2,7 +2,9 @@ package umc.meme.shop.domain.model.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import umc.meme.shop.domain.model.dto.request.ModelTypeDto;
 import umc.meme.shop.domain.model.service.ModelService;
+import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
 
@@ -14,7 +16,7 @@ public class ModelController {
 
     //    @Operation(summary = "상세 정보 수정")
     @PatchMapping("/mypage/{userId}/type")
-    public ApiResponse type(){
+    public ApiResponse type(@PathVariable Long userId, @RequestBody ModelTypeDto modelTypeDto){
         return ApiResponse.SuccessResponse(SuccessStatus.TYPE_UPDATE);
     }
 
@@ -22,13 +24,13 @@ public class ModelController {
 
     //    @Operation(summary = "관심 아티스트 조회")
     @GetMapping("/mypage/{userId}/favorite/artist")
-    public ApiResponse favoriteArtist(){
+    public ApiResponse favoriteArtist(@PathVariable Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, "");
     }
 
     //    @Operation(summary = "관심 메이크업 조회")
     @GetMapping("/mypage/{userId}/favorite/portfolio")
-    public ApiResponse favoritePortfolio(){
+    public ApiResponse favoritePortfolio(@PathVariable Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, "");
     }
 
@@ -36,13 +38,14 @@ public class ModelController {
 
     //    @Operation(summary = "내가 쓴 리뷰 조회")
     @GetMapping("/mypage/{userId}/review")
-    public ApiResponse getReview(){
+    public ApiResponse getReview(@PathVariable Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, "");
     }
 
     //    @Operation(summary = "리뷰 작성")
     @PostMapping("/model/review")
-    public ApiResponse postReview(){
+    public ApiResponse postReview(@RequestBody ReviewDto reviewDto){
+        //TODO: ReviewImg 추가
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
     }
 
