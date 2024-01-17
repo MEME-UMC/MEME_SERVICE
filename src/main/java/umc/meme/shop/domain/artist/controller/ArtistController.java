@@ -34,37 +34,37 @@ public class ArtistController {
     //    @Operation(summary = "프로필 관리")
     @PatchMapping("/mypage/{userId}/profile")
     public ApiResponse profile(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
+        return ApiResponse.SuccessResponse(SuccessStatus.PROFILE_UPDATE);
     }
 
     //    @Operation(summary = "포트폴리오 조회")
     @GetMapping("/mypage/{userId}/portfolio")
     public ApiResponse getPortfolio(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP, "");
+        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, "");
     }
 
     //    @Operation(summary = "포트폴리오 생성")
     @PostMapping("/mypage/{userId}/portfolio")
     public ApiResponse postPortfolio(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
+        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_CREATE);
     }
 
     //    @Operation(summary = "포트폴리오 수정")
     @PatchMapping("/mypage/{userId}/portfolio")
     public ApiResponse patchPortfolio(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
+        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_UPDATE);
     }
 
     //    @Operation(summary = "예약 조회")
     @GetMapping("/mypage/{userId}/reservation")
     public ApiResponse reservation(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP, "");
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, "");
     }
 
     //    @Operation(summary = "리뷰 관리")
     @PatchMapping("/artist/review")
     public ApiResponse review(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
+        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_UPDATE);
     }
 
 }

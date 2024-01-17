@@ -16,12 +16,12 @@ public class ReservationController {
     //    @Operation(summary = "예약 상태 변경")
     @PatchMapping("/alteration")
     public ApiResponse alteration(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_UPDATE);
     }
 
     //    @Operation(summary = "예약하기")
     @PostMapping("/")
     public ApiResponse reservation(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_CREATE);
     }
 }
