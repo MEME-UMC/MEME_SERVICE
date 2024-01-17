@@ -37,7 +37,7 @@ public enum SuccessStatus {
 
     /**mypage**/
     MYPAGE_GET(200, "마이페이지 조회가 완료되었습니다"),
-    DETAILS_UPDATE(200, "내 정보 수정이 완료되었습니다"),
+    DETAILS_GET(200, "내 정보 조회가 완료되었습니다"),
     TOS_GET(200, "약관 및 정책 조회가 완료되었습니다"),
     CONTACT_CREATE(200, "문의 작성이 완료되었습니다");
 
