@@ -7,7 +7,7 @@ import umc.meme.shop.global.response.ApiResponse;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/mypage")
+@RequestMapping("/api/v1/mypage")
 public class MyPageController {
 
 //    @Operation(summary = "마이페이지")
