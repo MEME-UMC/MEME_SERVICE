@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.enums.Gender;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
+import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.enums.PersonalColor;
 import umc.meme.shop.domain.model.entity.enums.SkinType;
-import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 
 import java.util.Date;
@@ -62,4 +62,22 @@ public class Model {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "model")
     private List<Reservation> reservationList;
+
+    public void updateModel(ModelProfileDto request) {
+        if(request.getProfileImg() != null){
+            this.profileImg = request.getProfileImg();
+        }
+        if(request.getNickname() != null){
+            this.nickname = request.getNickname();
+        }
+        if(request.getGender() != null){
+            this.gender = request.getGender();
+        }
+        if(request.getSkinType() != null){
+            this.skinType = request.getSkinType();
+        }
+        if(request.getPersonalColor() != null){
+            this.personalColor = request.getPersonalColor();
+        }
+    }
 }

@@ -2,7 +2,8 @@ package umc.meme.shop.domain.model.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import umc.meme.shop.domain.model.dto.request.ModelTypeDto;
+import org.springframework.web.multipart.MultipartFile;
+import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.service.ModelService;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.global.SuccessStatus;
@@ -14,9 +15,11 @@ import umc.meme.shop.global.response.ApiResponse;
 public class ModelController {
     private final ModelService modelService;
 
-    //    @Operation(summary = "상세 정보 수정")
-    @PatchMapping("/mypage/{userId}/type")
-    public ApiResponse type(@PathVariable Long userId, @RequestBody ModelTypeDto modelTypeDto){
+    //    @Operation(summary = "모델 프로필 관리")
+    @PatchMapping("/mypage/{userId}/profile/model")
+    public ApiResponse profile (@PathVariable Long userId,
+                                @RequestBody ModelProfileDto modelProfileDto){
+        modelService.updateModel(userId, modelProfileDto);
         return ApiResponse.SuccessResponse(SuccessStatus.TYPE_UPDATE);
     }
 

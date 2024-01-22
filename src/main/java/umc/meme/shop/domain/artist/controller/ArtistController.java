@@ -34,8 +34,8 @@ public class ArtistController {
 //        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
     }
 
-    //    @Operation(summary = "프로필 관리")
-    @PatchMapping("/mypage/{userId}/profile")
+    //    @Operation(summary = "아티스트 프로필 관리")
+    @PatchMapping("/mypage/{userId}/profile/artist")
     public ApiResponse updateProfile(@PathVariable Long userId, @RequestBody ArtistProfileDto profileDto){
         return ApiResponse.SuccessResponse(SuccessStatus.PROFILE_UPDATE);
     }
