@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.reservation.dto.request.AlterReservationDto;
 import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
 import umc.meme.shop.domain.reservation.service.ReservationService;
@@ -35,4 +34,13 @@ public class ReservationController {
         reservationService.createReservation(reservationDto);
         return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_CREATE);
     }
+
+    //아티스트 얘약 조회
+    @Operation(summary = "예약 조회", description = "예약 정보를 조회하는 API입니다.")
+    @GetMapping("/{userId}/artist")
+    public ApiResponse getReservation(@PathVariable Long userId){
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, reservationService.getReservation(userId));
+    }
+
+    //모델 예약 조회
 }
