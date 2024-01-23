@@ -3,17 +3,12 @@ package umc.meme.shop.domain.artist.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import umc.meme.shop.domain.artist.entity.Artist;
-import umc.meme.shop.domain.artist.entity.enums.WorkExperience;
-import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.review.dto.request.UpdateReviewDto;
 import umc.meme.shop.domain.artist.service.ArtistService;
-import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.SuccessStatus;
-import umc.meme.shop.global.exception.GlobalException;
 import umc.meme.shop.global.response.ApiResponse;
 
 @RestController
@@ -22,21 +17,6 @@ import umc.meme.shop.global.response.ApiResponse;
 public class ArtistController {
     private final ArtistService artistService;
 
-    //ApiResponse TEST
-    @GetMapping("/temp/success")
-    public ApiResponse tempSuccess(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
-    }
-    @GetMapping("/temp/failure")
-    public ApiResponse tempFailure(){
-        return ApiResponse.FailureResponse(ErrorStatus.TEMP);
-    }
-
-    @GetMapping("/temp/exception")
-    public ApiResponse tempException(){
-        throw new GlobalException(ErrorStatus.TEMP);
-//        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
-    }
     @Operation(summary = "아티스트 프로필 관리")
     @PatchMapping("/mypage/{userId}/profile/artist")
     public ApiResponse updateProfile(@PathVariable Long userId, @RequestBody ArtistProfileDto profileDto){
@@ -56,31 +36,6 @@ public class ArtistController {
         artistService.createPortfolio(userId, portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_CREATE);
     }
-
-    final ArtistRepository artistRepository;
-    @PostMapping("/artist/make")
-    public ApiResponse createArtist(@RequestBody ArtistProfileDto profileDto){
-        Artist artist = Artist.builder()
-                .region(profileDto.getRegion())
-                .email("")
-                .name("ArtistTestName")
-                .gender(profileDto.getGender())
-                .nickname(profileDto.getNickname())
-                .introduction(profileDto.getIntroduction())
-                .profileImg(profileDto.getProfileImg())
-                .workExperience(WorkExperience.EIGHT)
-                .specialization(profileDto.getSpecialization())
-                .makeupLocation(profileDto.getMakeupLocation())
-                .availableTime(profileDto.getAvailableTime())
-
-                .build();
-        artistRepository.save(artist);
-        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_UPDATE);
-
-    }
-
-
-
 
     @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 조회하는 API입니다.")
     @PatchMapping("/mypage/{userId}/portfolio")
