@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
-import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.favorite.repository.FavoriteArtistRepository;
@@ -80,7 +79,6 @@ public class ModelService {
         FavoriteArtist favoriteArtist = FavoriteArtist.builder()
                         .artist(artist)
                         .model(model)
-                        .favoriteArtistId(artistId)
                         .build();
 
         favoriteArtistRepository.save(favoriteArtist);
@@ -98,6 +96,7 @@ public class ModelService {
             throw new GlobalException(ErrorStatus.ALREADY_EXIST_FAVORITE_PORTFOLIO);
         }
 
+        //이미 관심 포트폴리오가 존재하는 경우
         FavoritePortfolio favoritePortfolio = FavoritePortfolio.builder()
                 .model(model)
                 .portfolio(portfolio)

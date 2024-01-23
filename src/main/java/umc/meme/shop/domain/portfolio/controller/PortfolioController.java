@@ -26,13 +26,14 @@ public class PortfolioController {
     @Operation(summary = "포트폴리오 조회", description = "포트폴리오를 조회하는 API입니다.")
     @GetMapping("/{userId}")
     public ApiResponse getPortfolio(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, "");
+        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolio(userId));
     }
 
-    @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 조회하는 API입니다.")
-    @PatchMapping("/{userId}")
-    public ApiResponse updatePortfolio(@PathVariable Long userId, @RequestBody UpdatePortfolioDto portfolioDto){
+    @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 수정/삭제하는 API입니다.")
+    @PatchMapping("/{userId}/{portfolioId}")
+    public ApiResponse updatePortfolio(@PathVariable Long portfolioId, @RequestBody UpdatePortfolioDto portfolioDto){
         // TODO: PortfolioImg 추가
+        portfolioService.updatePortfolio(portfolioId, portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_UPDATE);
     }
 }

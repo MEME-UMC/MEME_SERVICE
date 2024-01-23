@@ -63,11 +63,22 @@ public class ReservationService {
     }
 
     //아티스트 예약 조회
-    public List<ReservationResponseDto> getReservation(Long artistId){
+    public List<ReservationResponseDto> getArtistReservation(Long artistId){
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
 
         List<Reservation> reservationList = reservationRepository.findByArtist(artist);
+        return reservationList.stream()
+                .map(ReservationResponseDto::from)
+                .collect(Collectors.toList());
+    }
+
+    //모델 예약 조회
+    public List<ReservationResponseDto> getModelReservation(Long modelId) {
+        Model model = modelRepository.findById(modelId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+
+        List<Reservation> reservationList = reservationRepository.findByModel(model);
         return reservationList.stream()
                 .map(ReservationResponseDto::from)
                 .collect(Collectors.toList());
