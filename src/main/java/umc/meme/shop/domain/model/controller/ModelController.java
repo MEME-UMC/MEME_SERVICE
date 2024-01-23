@@ -34,7 +34,7 @@ public class ModelController {
     //    @Operation(summary = "관심 메이크업 조회")
     @GetMapping("/mypage/{userId}/favorite/portfolio")
     public ApiResponse favoritePortfolio(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, "");
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(userId));
     }
 
     /**review**/
