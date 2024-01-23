@@ -3,13 +3,11 @@ package umc.meme.shop.domain.reservation.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.reservation.dto.request.AlterReservationDto;
-import umc.meme.shop.domain.reservation.dto.request.ReservationDto;
+import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
+import umc.meme.shop.domain.reservation.service.ReservationService;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
 
@@ -17,6 +15,7 @@ import umc.meme.shop.global.response.ApiResponse;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reservation")
 public class ReservationController {
+    private final ReservationService reservationService;
 
 
     @Operation(summary = "예약 상태 변경", description = "예약 상태를 변경하는 API입니다.")
@@ -30,7 +29,8 @@ public class ReservationController {
 
     @Operation(summary = "예약하기", description = "예약하기 기능을 수행하는 API입니다.")
     @PostMapping("/")
-    public ApiResponse reservation(@RequestBody ReservationDto reservationDto){
+    public ApiResponse reservation(@RequestBody ReservationRequestDto reservationDto){
+        reservationService.setReservation(reservationDto);
         return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_CREATE);
     }
 }

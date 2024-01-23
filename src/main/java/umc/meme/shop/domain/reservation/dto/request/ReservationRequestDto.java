@@ -7,7 +7,7 @@ import umc.meme.shop.domain.reservation.entity.enums.ReservationTime;
 import java.util.Date;
 
 @Data
-public class ReservationDto {
+public class ReservationRequestDto {
     @NotBlank(message = "modelId를 입력해주세요")
     private Long modelId;
     @NotBlank(message = "portfolioId를 입력해주세요")

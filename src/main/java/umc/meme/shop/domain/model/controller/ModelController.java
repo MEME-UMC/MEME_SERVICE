@@ -16,7 +16,7 @@ import umc.meme.shop.global.response.ApiResponse;
 public class ModelController {
     private final ModelService modelService;
 
-    //    @Operation(summary = "모델 프로필 관리")
+    @Operation(summary = "모델 프로필 관리")
     @PatchMapping("/mypage/{userId}/profile/model")
     public ApiResponse profile (@PathVariable Long userId,
                                 @RequestBody ModelProfileDto modelProfileDto){
