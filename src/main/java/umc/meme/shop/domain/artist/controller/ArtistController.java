@@ -34,9 +34,8 @@ public class ArtistController {
         throw new GlobalException(ErrorStatus.TEMP);
 //        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
     }
-
-    @Operation(summary = "프로필 관리", description = "프로필 정보를 업데이트하는 API입니다.")
-    @PatchMapping("/mypage/{userId}/profile")
+    //    @Operation(summary = "아티스트 프로필 관리")
+    @PatchMapping("/mypage/{userId}/profile/artist")
     public ApiResponse updateProfile(@PathVariable Long userId, @RequestBody ArtistProfileDto profileDto){
         return ApiResponse.SuccessResponse(SuccessStatus.PROFILE_UPDATE);
     }

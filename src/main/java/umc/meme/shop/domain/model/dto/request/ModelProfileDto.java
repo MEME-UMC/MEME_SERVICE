@@ -6,7 +6,7 @@ import umc.meme.shop.domain.model.entity.enums.PersonalColor;
 import umc.meme.shop.domain.model.entity.enums.SkinType;
 
 @Data
-public class ModelTypeDto {
+public class ModelProfileDto {
     private String profileImg;
     private String nickname;
     private Gender gender;

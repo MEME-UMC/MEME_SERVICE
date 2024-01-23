@@ -3,7 +3,8 @@ package umc.meme.shop.domain.model.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import umc.meme.shop.domain.model.dto.request.ModelTypeDto;
+import org.springframework.web.multipart.MultipartFile;
+import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.service.ModelService;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.global.SuccessStatus;
@@ -15,9 +16,11 @@ import umc.meme.shop.global.response.ApiResponse;
 public class ModelController {
     private final ModelService modelService;
 
-    @Operation(summary = "상세 정보 수정", description = "모델의 피부 type을 수정하는 API입니다.")
-    @PatchMapping("/mypage/{userId}/type")
-    public ApiResponse type(@PathVariable Long userId, @RequestBody ModelTypeDto modelTypeDto){
+    //    @Operation(summary = "모델 프로필 관리")
+    @PatchMapping("/mypage/{userId}/profile/model")
+    public ApiResponse profile (@PathVariable Long userId,
+                                @RequestBody ModelProfileDto modelProfileDto){
+        modelService.updateModel(userId, modelProfileDto);
         return ApiResponse.SuccessResponse(SuccessStatus.TYPE_UPDATE);
     }
 
@@ -26,13 +29,13 @@ public class ModelController {
     @Operation(summary = "관심 아티스트 조회", description = "관심 아티스트를 조회하는 API입니다.")
     @GetMapping("/mypage/{userId}/favorite/artist")
     public ApiResponse favoriteArtist(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, "");
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, modelService.getFavoriteArtist(userId));
     }
 
     @Operation(summary = "관심 메이크업 조회", description = "관심 메이크업을 조회하는 API입니다.")
     @GetMapping("/mypage/{userId}/favorite/portfolio")
     public ApiResponse favoritePortfolio(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, "");
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(userId));
     }
 
     /**review**/
