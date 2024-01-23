@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.entity.enums.*;
+import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 
@@ -56,6 +57,28 @@ public class ArtistDto {
                 .portfolioDtoList(portfolioDtoList)
                 .build();
     }
+
+    //관심 아티스트
+    public static ArtistDto from(FavoriteArtist favoriteArtist){
+        Artist artist = favoriteArtist.getArtist();
+        List<PortfolioDto> portfolioDtoList = artist.getPortfolioList()
+                .stream()
+                .map(PortfolioDto::from)
+                .toList();
+
+        return ArtistDto.builder()
+                .gender(artist.getGender())
+                .nickname(artist.getNickname())
+                .profileImg(artist.getProfileImg())
+                .introduction(artist.getIntroduction())
+                .workExperience(artist.getWorkExperience())
+                .region(artist.getRegion())
+                .specialization(artist.getSpecialization())
+                .makeupLocation(artist.getMakeupLocation())
+                .portfolioDtoList(portfolioDtoList)
+                .build();
+    }
+
 }
 
 

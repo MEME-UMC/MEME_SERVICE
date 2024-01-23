@@ -28,7 +28,7 @@ public class ModelController {
     //    @Operation(summary = "관심 아티스트 조회")
     @GetMapping("/mypage/{userId}/favorite/artist")
     public ApiResponse favoriteArtist(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, "");
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, modelService.getFavoriteArtist(userId));
     }
 
     //    @Operation(summary = "관심 메이크업 조회")
