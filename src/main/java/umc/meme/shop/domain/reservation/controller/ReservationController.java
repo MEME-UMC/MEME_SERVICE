@@ -20,19 +20,15 @@ public class ReservationController {
 
 
     @Operation(summary = "예약 상태 변경", description = "예약 상태를 변경하는 API입니다.")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "예약 상태 변경 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-    })
     @Parameters({
-            @Parameter(name = "status", description = "Status enum 에 있는 값")
+            @Parameter(name = "status", description = "Status enum 에 있는 값 (EXPECTED, COMPLETE, CANCEL)")
     })
     @PatchMapping("/alteration")
     public ApiResponse alteration(@RequestBody AlterReservationDto alterReservationDto){
         return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_UPDATE);
     }
 
-    @Operation(summary = "예약하기")
+    @Operation(summary = "예약하기", description = "예약하기 기능을 수행하는 API입니다.")
     @PostMapping("/")
     public ApiResponse reservation(@RequestBody ReservationDto reservationDto){
         return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_CREATE);
