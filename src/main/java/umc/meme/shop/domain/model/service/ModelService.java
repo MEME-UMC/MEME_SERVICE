@@ -4,6 +4,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
+import umc.meme.shop.domain.artist.entity.Artist;
+import umc.meme.shop.domain.artist.repository.ArtistRepository;
+import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.favorite.repository.FavoriteArtistRepository;
@@ -12,6 +15,8 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
+import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
@@ -22,8 +27,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ModelService {
     private final ModelRepository modelRepository;
+    private final ArtistRepository artistRepository;
     private final FavoriteArtistRepository favoriteArtistRepository;
     private final FavoritePortfolioRepository favoritePortfolioRepository;
+    private final PortfolioRepository portfolioRepository;
+
 
     //모델 프로필 관리
     @Transactional
@@ -54,5 +62,50 @@ public class ModelService {
                 .map(PortfolioDto::from)
                 .collect(Collectors.toList());
     }
+
+    //관심 아티스트 추가
+    @Transactional
+    public void addFavoriteArtist(Long modelId, Long artistId) {
+        Model model = modelRepository.findById(modelId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+
+        //이미 관심 아티스트가 존재하는 경우
+        if (favoriteArtistRepository.existsByModelAndArtist(model, artist)) {
+            throw new GlobalException(ErrorStatus.ALREADY_EXIST_FAVORITE_ARTIST);
+        }
+
+        FavoriteArtist favoriteArtist = FavoriteArtist.builder()
+                        .artist(artist)
+                        .model(model)
+                        .favoriteArtistId(artistId)
+                        .build();
+
+        favoriteArtistRepository.save(favoriteArtist);
+    }
+
+    //관심 메이크업 추가
+    public void addFavoritePortfolio(Long modelId, Long portfolioId) {
+        Model model = modelRepository.findById(modelId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+
+        if (favoritePortfolioRepository.existsByModelAndPortfolio(model,portfolio)) {
+            throw new GlobalException(ErrorStatus.ALREADY_EXIST_FAVORITE_PORTFOLIO);
+        }
+
+        FavoritePortfolio favoritePortfolio = FavoritePortfolio.builder()
+                .model(model)
+                .portfolio(portfolio)
+                .build();
+
+        favoritePortfolioRepository.save(favoritePortfolio);
+    }
+
+
 
 }

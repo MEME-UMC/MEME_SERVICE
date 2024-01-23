@@ -25,6 +25,8 @@ public enum ErrorStatus {
      * Bad Request
      */
     INVALID_REQUEST(400,  "유효하지 않은 요청입니다."),
+    ALREADY_EXIST_FAVORITE_ARTIST(400, "이미 관심 아티스트로 등록하셨습니다."),
+    ALREADY_EXIST_FAVORITE_PORTFOLIO(400, "이미 관심 포트폴리오로 등록하셨습니다."),
 
     /**
      * Code : 404
@@ -34,6 +36,7 @@ public enum ErrorStatus {
     NOT_EXIST_PORTFOLIO(404, "존재하지 않는 포트폴리오입니다."),
     NOT_EXIST_RESERVATION(404, "존재하지 않는 예약입니다."),
     PAGE_NOT_FOUND(404,"페이지를 찾을 수 없습니다");
+
 
     private final int code;
     private final String message;

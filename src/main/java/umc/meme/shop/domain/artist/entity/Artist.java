@@ -58,6 +58,7 @@ public class Artist {
     @Column(nullable = false)
     private MakeupLocation makeupLocation;
 
+    @Column(nullable = true)
     private String shopLocation; //샵의 위치
 
     @Column(nullable = true)

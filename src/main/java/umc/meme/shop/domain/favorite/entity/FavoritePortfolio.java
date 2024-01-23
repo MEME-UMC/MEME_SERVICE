@@ -2,11 +2,13 @@ package umc.meme.shop.domain.favorite.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 
+@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
