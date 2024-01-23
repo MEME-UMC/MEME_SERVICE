@@ -1,5 +1,6 @@
 package umc.meme.shop.domain.reservation.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.model.entity.Model;
@@ -24,7 +25,8 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
 
     //예약하기
-    public void setReservation(ReservationRequestDto reservationDto){
+    @Transactional
+    public void createReservation(ReservationRequestDto reservationDto){
         Optional<Model> model = modelRepository.findById(reservationDto.getModelId());
         if(model.isEmpty()){
             throw new GlobalException(ErrorStatus.NOT_EXIST_USER);
@@ -46,6 +48,7 @@ public class ReservationService {
     }
 
     //예약하기 상태 변경
+    @Transactional
     public void updateReservationStatus(Long reservationId, AlterReservationDto reservationDto){
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));

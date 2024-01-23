@@ -1,5 +1,6 @@
 package umc.meme.shop.domain.artist.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.entity.Artist;
@@ -19,6 +20,7 @@ public class ArtistService {
     private final PortfolioRepository portfolioRepository;
 
     //포트폴리오 생성
+    @Transactional
     public void createPortfolio(Long artistId, CreatePortfolioDto portfolioDto){
         Optional<Artist> artist = artistRepository.findById(artistId);
         if(artist.isEmpty())
