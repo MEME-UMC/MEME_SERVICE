@@ -47,7 +47,7 @@ public class ArtistController {
     @Operation(summary = "예약 조회", description = "예약 정보를 조회하는 API입니다.")
     @GetMapping("/mypage/{userId}/reservation")
     public ApiResponse getReservation(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, "");
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, artistService.getReservation(userId));
     }
 
     @Operation(summary = "리뷰 관리", description = "block 상태를 통해 리뷰 공개 유무를 결정할 수 있는 API입니다.")

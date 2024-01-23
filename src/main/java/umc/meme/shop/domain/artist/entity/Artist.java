@@ -58,6 +58,8 @@ public class Artist {
     @Column(nullable = false)
     private MakeupLocation makeupLocation;
 
+    private String shopLocation; //샵의 위치
+
     @Column(nullable = true)
     private Date inactiveDate;
 
