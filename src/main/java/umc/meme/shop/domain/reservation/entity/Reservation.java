@@ -2,6 +2,7 @@ package umc.meme.shop.domain.reservation.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.model.entity.Model;
@@ -11,6 +12,7 @@ import umc.meme.shop.domain.reservation.entity.enums.Status;
 
 import java.util.Date;
 
+@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -42,4 +44,9 @@ public class Reservation {
 
     @Column(nullable = false)
     private Date reservationDate;
+
+    public void updateReservation(Status status){
+        if(status != null)
+            this.status = status;
+    }
 }

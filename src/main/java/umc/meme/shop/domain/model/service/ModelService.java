@@ -12,7 +12,6 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
-import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
@@ -30,7 +29,7 @@ public class ModelService {
     @Transactional
     public void updateModel(Long userId, ModelProfileDto request){
         Model model = modelRepository.findById(userId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.MODEL_NOT_FOUND));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
         model.updateModel(request);
     }
 
@@ -38,7 +37,7 @@ public class ModelService {
     @Transactional
     public List<ArtistDto> getFavoriteArtist(Long userId){
         Model model = modelRepository.findById(userId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.MODEL_NOT_FOUND));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
         List<FavoriteArtist> favoriteArtistList = favoriteArtistRepository.findByModel(model);
         return favoriteArtistList.stream()
                 .map(ArtistDto::from)
@@ -49,7 +48,7 @@ public class ModelService {
     @Transactional
     public List<PortfolioDto> getFavoritePortfolio(Long userId){
         Model model = modelRepository.findById(userId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.MODEL_NOT_FOUND));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
         List<FavoritePortfolio> favoritePortfolioList = favoritePortfolioRepository.findByModel(model);
         return favoritePortfolioList.stream()
                 .map(PortfolioDto::from)

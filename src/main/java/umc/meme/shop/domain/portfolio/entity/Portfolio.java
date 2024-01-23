@@ -2,12 +2,14 @@ package umc.meme.shop.domain.portfolio.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 
 
+@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

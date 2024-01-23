@@ -2,6 +2,7 @@ package umc.meme.shop.domain.artist.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.enums.*;
@@ -11,6 +12,7 @@ import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import java.util.Date;
 import java.util.List;
 
+@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,11 +46,11 @@ public class Artist {
     @Column(nullable = false)
     private WorkExperience workExperience;
 
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
 //    @Column(nullable = false)
     private List<Region> region;
 
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
 //    @Column(nullable = false)
     private List<Category> specialization;
 

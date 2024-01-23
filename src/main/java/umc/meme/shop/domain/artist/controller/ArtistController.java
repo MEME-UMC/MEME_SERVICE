@@ -8,9 +8,7 @@ import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.review.dto.request.UpdateReviewDto;
 import umc.meme.shop.domain.artist.service.ArtistService;
-import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.SuccessStatus;
-import umc.meme.shop.global.exception.GlobalException;
 import umc.meme.shop.global.response.ApiResponse;
 
 @RestController
@@ -19,22 +17,7 @@ import umc.meme.shop.global.response.ApiResponse;
 public class ArtistController {
     private final ArtistService artistService;
 
-    //ApiResponse TEST
-    @GetMapping("/temp/success")
-    public ApiResponse tempSuccess(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
-    }
-    @GetMapping("/temp/failure")
-    public ApiResponse tempFailure(){
-        return ApiResponse.FailureResponse(ErrorStatus.TEMP);
-    }
-
-    @GetMapping("/temp/exception")
-    public ApiResponse tempException(){
-        throw new GlobalException(ErrorStatus.TEMP);
-//        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
-    }
-    //    @Operation(summary = "아티스트 프로필 관리")
+    @Operation(summary = "아티스트 프로필 관리")
     @PatchMapping("/mypage/{userId}/profile/artist")
     public ApiResponse updateProfile(@PathVariable Long userId, @RequestBody ArtistProfileDto profileDto){
         return ApiResponse.SuccessResponse(SuccessStatus.PROFILE_UPDATE);
@@ -50,6 +33,7 @@ public class ArtistController {
     @PostMapping("/mypage/{userId}/portfolio")
     public ApiResponse createPortfolio(@PathVariable Long userId, @RequestBody CreatePortfolioDto portfolioDto){
         // TODO: PortfolioImg 추가
+        artistService.createPortfolio(userId, portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_CREATE);
     }
 
