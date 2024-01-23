@@ -39,13 +39,13 @@ public class ReservationController {
     @Operation(summary = "예약 조회", description = "예약 정보를 조회하는 API입니다.")
     @GetMapping("/{userId}/artist")
     public ApiResponse getArtistReservation(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, reservationService.getReservation(userId));
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, reservationService.getArtistReservation(userId));
     }
 
     //모델 예약 조회
     @Operation(summary = "예약 조회", description = "예약 정보를 조회하는 API입니다.")
     @GetMapping("/{userId}/model")
     public ApiResponse getModelReservation(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, reservationService.getReservation(userId));
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, reservationService.getModelReservation(userId));
     }
 }

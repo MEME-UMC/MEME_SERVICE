@@ -23,7 +23,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="model_id", nullable = false)
     private Model model;
 
