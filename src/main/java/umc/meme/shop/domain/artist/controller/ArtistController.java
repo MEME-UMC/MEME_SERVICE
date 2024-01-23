@@ -3,6 +3,9 @@ package umc.meme.shop.domain.artist.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import umc.meme.shop.domain.artist.entity.Artist;
+import umc.meme.shop.domain.artist.entity.enums.WorkExperience;
+import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
@@ -34,7 +37,7 @@ public class ArtistController {
         throw new GlobalException(ErrorStatus.TEMP);
 //        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
     }
-    //    @Operation(summary = "아티스트 프로필 관리")
+    @Operation(summary = "아티스트 프로필 관리")
     @PatchMapping("/mypage/{userId}/profile/artist")
     public ApiResponse updateProfile(@PathVariable Long userId, @RequestBody ArtistProfileDto profileDto){
         return ApiResponse.SuccessResponse(SuccessStatus.PROFILE_UPDATE);
@@ -50,8 +53,34 @@ public class ArtistController {
     @PostMapping("/mypage/{userId}/portfolio")
     public ApiResponse createPortfolio(@PathVariable Long userId, @RequestBody CreatePortfolioDto portfolioDto){
         // TODO: PortfolioImg 추가
+        artistService.createPortfolio(userId, portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_CREATE);
     }
+
+    final ArtistRepository artistRepository;
+    @PostMapping("/artist/make")
+    public ApiResponse createArtist(@RequestBody ArtistProfileDto profileDto){
+        Artist artist = Artist.builder()
+                .region(profileDto.getRegion())
+                .email("")
+                .name("ArtistTestName")
+                .gender(profileDto.getGender())
+                .nickname(profileDto.getNickname())
+                .introduction(profileDto.getIntroduction())
+                .profileImg(profileDto.getProfileImg())
+                .workExperience(WorkExperience.EIGHT)
+                .specialization(profileDto.getSpecialization())
+                .makeupLocation(profileDto.getMakeupLocation())
+                .availableTime(profileDto.getAvailableTime())
+
+                .build();
+        artistRepository.save(artist);
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_UPDATE);
+
+    }
+
+
+
 
     @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 조회하는 API입니다.")
     @PatchMapping("/mypage/{userId}/portfolio")
