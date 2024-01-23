@@ -22,6 +22,8 @@ public enum SuccessStatus {
 
     FAVORITE_ARTIST_GET(200, "관심 아티스트 조회가 완료되었습니다"),
     FAVORITE_PORTFOLIO_GET(200, "관심 메이크업 조회가 완료되었습니다"),
+    FAVORITE_ARTIST_POST(200, "관심 아티스트 추가가 완료되었습니다."),
+    FAVORITE_PORTFOLIO_POST(200, "관심 메이크업 추가가 완료되었습니다."),
 
     SEARCH_GET(200, "조회가 완료되었습니다"),
 

@@ -3,7 +3,6 @@ package umc.meme.shop.domain.model.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.service.ModelService;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
@@ -28,15 +27,31 @@ public class ModelController {
 
     @Operation(summary = "관심 아티스트 조회", description = "관심 아티스트를 조회하는 API입니다.")
     @GetMapping("/mypage/{userId}/favorite/artist")
-    public ApiResponse favoriteArtist(@PathVariable Long userId){
+    public ApiResponse getFavoriteArtist(@PathVariable Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, modelService.getFavoriteArtist(userId));
     }
 
     @Operation(summary = "관심 메이크업 조회", description = "관심 메이크업을 조회하는 API입니다.")
     @GetMapping("/mypage/{userId}/favorite/portfolio")
-    public ApiResponse favoritePortfolio(@PathVariable Long userId){
+    public ApiResponse getFavoritePortfolio(@PathVariable Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(userId));
     }
+
+    @Operation(summary = "관심 아티스트 추가", description = "관심 아티스트를 추가하는 API입니다.")
+    @PostMapping("/mypage/{userId}/favorite/artist")
+    public ApiResponse postFavoriteArtist(@PathVariable Long userId, @RequestParam Long artistId) {
+        modelService.addFavoriteArtist(userId, artistId);
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_POST);
+    }
+
+    @Operation(summary = "관심 메이크업 추가", description = "관심 메이크업을 추가하는 API입니다.")
+    @PostMapping("/mypage/{userId}/favorite/portfolio")
+    public ApiResponse postFavoritePortfolio(@PathVariable Long userId, @RequestParam Long portfolioId) {
+        modelService.addFavoritePortfolio(userId, portfolioId);
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_POST);
+    }
+
+
 
     /**review**/
 
