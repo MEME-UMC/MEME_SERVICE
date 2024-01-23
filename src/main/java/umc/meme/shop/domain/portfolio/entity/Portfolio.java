@@ -59,9 +59,11 @@ public class Portfolio {
             this.makeupName = request.getMakeupName();
         }
 
-        if(request.isBlock() != this.isBlock) {
-            this.isBlock = request.isBlock();
-        }
+        this.isBlock = request.isBlock();
 
+        System.out.println(this.isBlock);
+        System.out.println(request.isBlock());
     }
+
+
 }

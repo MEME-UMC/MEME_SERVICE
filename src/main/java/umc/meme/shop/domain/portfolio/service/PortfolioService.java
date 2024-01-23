@@ -13,6 +13,9 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PortfolioService {
@@ -31,17 +34,22 @@ public class PortfolioService {
                 .makeupName(portfolioDto.getMakeupName())
                 .info(portfolioDto.getInfo())
                 .price(portfolioDto.getPrice())
+                .isBlock(false)
                 .build();
+
         portfolioRepository.save(portfolio);
     }
 
     // 포트폴리오 조회
     @Transactional
-    public PortfolioDto getPortfolio(Long portfolioId) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+    public List<PortfolioDto> getPortfolio(Long artistId) {
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
 
-        return PortfolioDto.from(portfolio);
+        List<Portfolio> portfolioList = portfolioRepository.findByArtist(artist);
+        return portfolioList.stream()
+                .map(PortfolioDto::from)
+                .collect(Collectors.toList());
     }
 
     // 포트폴리오 수정/삭제

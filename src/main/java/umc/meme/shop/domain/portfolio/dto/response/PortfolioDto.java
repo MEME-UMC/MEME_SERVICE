@@ -24,12 +24,16 @@ public class PortfolioDto {
 
     private String info;
 
+    private Boolean isBlock;
+
     public static PortfolioDto from(Portfolio portfolio){
         return PortfolioDto.builder()
+                .portfolioId(portfolio.getPortfolioId())
                 .category(portfolio.getCategory())
                 .makeupName(portfolio.getMakeupName())
                 .price(portfolio.getPrice())
                 .info(portfolio.getInfo())
+                .isBlock(portfolio.isBlock())
                 .build();
     }
 
@@ -37,10 +41,12 @@ public class PortfolioDto {
     public static PortfolioDto from(FavoritePortfolio favoritePortfolio){
         Portfolio portfolio = favoritePortfolio.getPortfolio();
         return PortfolioDto.builder()
+                .portfolioId(portfolio.getPortfolioId())
                 .category(portfolio.getCategory())
                 .makeupName(portfolio.getMakeupName())
                 .price(portfolio.getPrice())
                 .info(portfolio.getInfo())
+                .isBlock(portfolio.isBlock())
                 .build();
     }
 }
