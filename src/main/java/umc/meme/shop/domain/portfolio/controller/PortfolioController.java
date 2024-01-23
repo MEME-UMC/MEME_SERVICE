@@ -33,6 +33,7 @@ public class PortfolioController {
     @PatchMapping("/{userId}")
     public ApiResponse updatePortfolio(@PathVariable Long userId, @RequestBody UpdatePortfolioDto portfolioDto){
         // TODO: PortfolioImg 추가
+        portfolioService.updatePortfolio(userId, portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_UPDATE);
     }
 }

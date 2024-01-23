@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
+import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
@@ -34,13 +35,22 @@ public class PortfolioService {
         portfolioRepository.save(portfolio);
     }
 
-    //포트폴리오 조회
+    // 포트폴리오 조회
     @Transactional
     public PortfolioDto getPortfolio(Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
         return PortfolioDto.from(portfolio);
+    }
+
+    // 포트폴리오 수정/삭제
+    @Transactional
+    public void updatePortfolio(Long portfolioId, UpdatePortfolioDto request) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+
+        portfolio.updatePortfolio(request);
     }
 
 }
