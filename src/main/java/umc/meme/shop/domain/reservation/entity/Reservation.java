@@ -44,4 +44,9 @@ public class Reservation {
 
     @Column(nullable = false)
     private Date reservationDate;
+
+    public void updateReservation(Status status){
+        if(status != null)
+            this.status = status;
+    }
 }

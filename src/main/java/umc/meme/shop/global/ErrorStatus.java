@@ -32,6 +32,7 @@ public enum ErrorStatus {
      */
     NOT_EXIST_USER(404, "존재하지 않는 유저입니다."),
     NOT_EXIST_PORTFOLIO(404, "존재하지 않는 포트폴리오입니다."),
+    NOT_EXIST_RESERVATION(404, "존재하지 않는 예약입니다."),
     PAGE_NOT_FOUND(404,"페이지를 찾을 수 없습니다");
 
     private final int code;

@@ -6,6 +6,7 @@ import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
+import umc.meme.shop.domain.reservation.dto.request.AlterReservationDto;
 import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
@@ -42,5 +43,13 @@ public class ReservationService {
                 .build();
 
         reservationRepository.save(reservation);
+    }
+
+    //예약하기 상태 변경
+    public void updateReservationStatus(Long reservationId, AlterReservationDto reservationDto){
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
+        Status status = reservationDto.getStatus();
+        reservation.updateReservation(status);
     }
 }
