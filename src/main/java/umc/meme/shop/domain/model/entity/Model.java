@@ -2,6 +2,7 @@ package umc.meme.shop.domain.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.enums.Gender;
@@ -15,6 +16,7 @@ import umc.meme.shop.domain.reservation.entity.Reservation;
 import java.util.Date;
 import java.util.List;
 
+@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,7 +43,7 @@ public class Model {
     @Column(nullable = false)
     private String profileImg;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = true, length = 500)
     private String introduction;
 
     @Enumerated(EnumType.STRING)
@@ -79,5 +81,9 @@ public class Model {
         if(request.getPersonalColor() != null){
             this.personalColor = request.getPersonalColor();
         }
+    }
+
+    public void updateReservationList(Reservation reservation){
+        this.reservationList.add(reservation);
     }
 }
