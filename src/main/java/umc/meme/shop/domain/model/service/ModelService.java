@@ -92,11 +92,11 @@ public class ModelService {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
+        //이미 관심 포트폴리오가 존재하는 경우
         if (favoritePortfolioRepository.existsByModelAndPortfolio(model,portfolio)) {
             throw new GlobalException(ErrorStatus.ALREADY_EXIST_FAVORITE_PORTFOLIO);
         }
 
-        //이미 관심 포트폴리오가 존재하는 경우
         FavoritePortfolio favoritePortfolio = FavoritePortfolio.builder()
                 .model(model)
                 .portfolio(portfolio)

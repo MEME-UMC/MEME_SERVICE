@@ -50,6 +50,7 @@ public class ReservationService {
                 .reservationDate(reservationDto.getReservationDate())
                 .build();
 
+        model.get().updateReservationList(reservation);
         reservationRepository.save(reservation);
     }
 
@@ -78,7 +79,7 @@ public class ReservationService {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
 
-        List<Reservation> reservationList = reservationRepository.findByModel(model);
+        List<Reservation> reservationList = model.getReservationList();
         return reservationList.stream()
                 .map(ReservationResponseDto::from)
                 .collect(Collectors.toList());

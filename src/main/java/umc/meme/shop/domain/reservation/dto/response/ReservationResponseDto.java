@@ -19,6 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ReservationResponseDto {
     private String modelName;
+    private String artistName;
     private String makeupName;
     private int price;
 
@@ -35,6 +36,7 @@ public class ReservationResponseDto {
 
         return ReservationResponseDto.builder()
                 .modelName(reservation.getModel().getName())
+                .artistName(artist.getName())
                 .makeupName(portfolio.getMakeupName())
                 .price(portfolio.getPrice())
                 .reservationTime(reservation.getReservationTime())
