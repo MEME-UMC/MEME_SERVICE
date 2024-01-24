@@ -18,6 +18,7 @@ public class ArtistController {
     @Operation(summary = "아티스트 프로필 관리")
     @PatchMapping("/mypage/{userId}/profile/artist")
     public ApiResponse updateProfile(@PathVariable Long userId, @RequestBody ArtistProfileDto profileDto){
+        artistService.updateArtistProfile(userId, profileDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PROFILE_UPDATE);
     }
 
