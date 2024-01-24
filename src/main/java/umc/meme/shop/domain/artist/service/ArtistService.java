@@ -15,6 +15,7 @@ import umc.meme.shop.global.exception.GlobalException;
 public class ArtistService {
     private final ArtistRepository artistRepository;
 
+    //아티스트 프로필 관리/수정
     @Transactional
     public void updateArtistProfile(Long artistId, ArtistProfileDto profileDto){
         Artist artist = artistRepository.findById(artistId)

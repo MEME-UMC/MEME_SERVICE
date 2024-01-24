@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
@@ -70,4 +71,28 @@ public class Artist {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artist")
     private List<Portfolio> portfolioList;
+
+
+    public void updateArtist(ArtistProfileDto request) {
+        if (request.getProfileImg() != null)
+            this.profileImg = request.getProfileImg();
+        if (request.getNickname() != null)
+            this.nickname = request.getNickname();
+        if (request.getGender() != null)
+            this.gender = request.getGender();
+        if (request.getIntroduction() != null)
+            this.introduction = request.getIntroduction();
+        if (request.getWorkExperience() != null)
+            this.workExperience = request.getWorkExperience();
+        if (request.getRegion() != null)
+            this.region = request.getRegion();
+        if (request.getSpecialization() != null)
+            this.specialization = request.getSpecialization();
+        if (request.getMakeupLocation() != null)
+            this.makeupLocation = request.getMakeupLocation();
+        if (request.getShopLocation() != null)
+            this.shopLocation = request.getShopLocation();
+        if (request.getAvailableTime() != null)
+            this.availableTime = request.getAvailableTime();
+    }
 }
