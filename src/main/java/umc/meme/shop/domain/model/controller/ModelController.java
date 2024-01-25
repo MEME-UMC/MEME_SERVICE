@@ -16,71 +16,55 @@ public class ModelController {
     private final ModelService modelService;
 
     @Operation(summary = "모델 프로필 관리")
-    @PatchMapping("/mypage/{userId}/profile/model")
-    public ApiResponse profile (@PathVariable Long userId,
+    @PatchMapping("/mypage/{modelId}/profile/model")
+    public ApiResponse updateModelProfile (@PathVariable Long modelId,
                                 @RequestBody ModelProfileDto modelProfileDto){
-        modelService.updateModel(userId, modelProfileDto);
+        modelService.updateModelProfile(modelId, modelProfileDto);
         return ApiResponse.SuccessResponse(SuccessStatus.MODEL_PROFILE_UPDATE);
     }
 
     /**favorite**/
 
     @Operation(summary = "관심 아티스트 조회", description = "관심 아티스트를 조회하는 API입니다.")
-    @GetMapping("/mypage/{userId}/favorite/artist")
-    public ApiResponse getFavoriteArtist(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, modelService.getFavoriteArtist(userId));
+    @GetMapping("/mypage/{modelId}/favorite/artist")
+    public ApiResponse getFavoriteArtist(@PathVariable Long modelId){
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, modelService.getFavoriteArtist(modelId));
     }
 
     @Operation(summary = "관심 메이크업 조회", description = "관심 메이크업을 조회하는 API입니다.")
-    @GetMapping("/mypage/{userId}/favorite/portfolio")
-    public ApiResponse getFavoritePortfolio(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(userId));
+    @GetMapping("/mypage/{modelId}/favorite/portfolio")
+    public ApiResponse getFavoritePortfolio(@PathVariable Long modelId){
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(modelId));
     }
 
     @Operation(summary = "관심 아티스트 추가", description = "관심 아티스트를 추가하는 API입니다.")
-    @PostMapping("/mypage/{userId}/favorite/artist")
-    public ApiResponse postFavoriteArtist(@PathVariable Long userId, @RequestParam Long artistId) {
-        modelService.addFavoriteArtist(userId, artistId);
+    @PostMapping("/mypage/{modelId}/favorite/artist")
+    public ApiResponse postFavoriteArtist(@PathVariable Long modelId, @RequestParam Long artistId) {
+        modelService.addFavoriteArtist(modelId, artistId);
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_POST);
     }
 
     @Operation(summary = "관심 메이크업 추가", description = "관심 메이크업을 추가하는 API입니다.")
-    @PostMapping("/mypage/{userId}/favorite/portfolio")
-    public ApiResponse postFavoritePortfolio(@PathVariable Long userId, @RequestParam Long portfolioId) {
-        modelService.addFavoritePortfolio(userId, portfolioId);
+    @PostMapping("/mypage/{modelId}/favorite/portfolio")
+    public ApiResponse postFavoritePortfolio(@PathVariable Long modelId, @RequestParam Long portfolioId) {
+        modelService.addFavoritePortfolio(modelId, portfolioId);
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_POST);
     }
 
     @Operation(summary = "관심 아티스트 삭제", description = "관심 아티스트를 삭제하는 API입니다.")
-    @DeleteMapping("/mypage/{userId}/favorite/artist")
-    public ApiResponse deleteFavoriteArtist(@PathVariable Long userId, @RequestParam Long artistId) {
-        modelService.deleteFavoriteArtist(userId, artistId);
+    @DeleteMapping("/mypage/{modelId}/favorite/artist")
+    public ApiResponse deleteFavoriteArtist(@PathVariable Long modelId, @RequestParam Long artistId) {
+        modelService.deleteFavoriteArtist(modelId, artistId);
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_DELETE);
     }
 
     @Operation(summary = "관심 메이크업 삭제", description = "관심 메이크업을 삭제하는 API입니다.")
-    @DeleteMapping("/mypage/{userId}/favorite/portfolio")
-    public ApiResponse deleteFavoritePortfolio(@PathVariable Long userId, @RequestParam Long portfolioId) {
-        modelService.deleteFavoritePortfolio(userId, portfolioId);
+    @DeleteMapping("/mypage/{modelId}/favorite/portfolio")
+    public ApiResponse deleteFavoritePortfolio(@PathVariable Long modelId, @RequestParam Long portfolioId) {
+        modelService.deleteFavoritePortfolio(modelId, portfolioId);
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_DELETE);
     }
 
-
-
-    /**review**/
-
-    @Operation(summary = "내가 쓴 리뷰 조회", description = "본인이 쓴 리뷰를 조회하는 API입니다.")
-    @GetMapping("/mypage/{userId}/review")
-    public ApiResponse getReview(@PathVariable Long userId){
-        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, "");
-    }
-
-    @Operation(summary = "리뷰 작성", description = "리뷰를 작성하는 API입니다.")
-    @PostMapping("/model/review")
-    public ApiResponse postReview(@RequestBody ReviewDto reviewDto){
-        //TODO: ReviewImg 추가
-        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
-    }
 
     /**search**/
 

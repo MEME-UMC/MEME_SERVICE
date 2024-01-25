@@ -9,6 +9,9 @@ import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
+import umc.meme.shop.domain.review.entity.Review;
+
+import java.util.List;
 
 
 @Builder
@@ -42,6 +45,9 @@ public class Portfolio {
     @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
     private boolean isBlock;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
+    private List<Review> reviewList;
+
     public void updatePortfolio(UpdatePortfolioDto request) {
         if(request.getCategory() != null){
             this.category = request.getCategory();
@@ -63,6 +69,10 @@ public class Portfolio {
 
         System.out.println(this.isBlock);
         System.out.println(request.isBlock());
+    }
+
+    public void updateReviewList(Review review){
+        this.reviewList.add(review);
     }
 
 

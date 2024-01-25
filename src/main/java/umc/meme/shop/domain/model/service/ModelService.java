@@ -34,16 +34,16 @@ public class ModelService {
 
     //모델 프로필 관리
     @Transactional
-    public void updateModel(Long userId, ModelProfileDto request){
-        Model model = modelRepository.findById(userId)
+    public void updateModelProfile(Long modelId, ModelProfileDto request){
+        Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         model.updateModel(request);
     }
 
     //관심 아티스트 조회
     @Transactional
-    public List<ArtistDto> getFavoriteArtist(Long userId){
-        Model model = modelRepository.findById(userId)
+    public List<ArtistDto> getFavoriteArtist(Long modelId){
+        Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         List<FavoriteArtist> favoriteArtistList = model.getFavoriteArtistList();
         return favoriteArtistList.stream()
@@ -53,8 +53,8 @@ public class ModelService {
 
     //관심 메이크업 조회
     @Transactional
-    public List<PortfolioDto> getFavoritePortfolio(Long userId){
-        Model model = modelRepository.findById(userId)
+    public List<PortfolioDto> getFavoritePortfolio(Long modelId){
+        Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
         return favoritePortfolioList.stream()
