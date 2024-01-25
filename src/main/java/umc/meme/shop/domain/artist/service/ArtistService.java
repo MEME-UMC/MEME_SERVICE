@@ -31,14 +31,12 @@ public class ArtistService {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        MypageDetailDto mypageDetailDto = MypageDetailDto.builder()
+        return MypageDetailDto.builder()
                 .profileImg(artist.getProfileImg())
                 .nickname(artist.getNickname())
                 .name(artist.getName())
                 .gender(artist.getGender())
                 .email(artist.getEmail())
                 .build();
-
-        return mypageDetailDto;
     }
 }
