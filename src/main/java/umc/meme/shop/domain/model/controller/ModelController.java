@@ -51,6 +51,14 @@ public class ModelController {
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_POST);
     }
 
+    @Operation(summary = "관심 아티스트 삭제", description = "관심 아티스트를 삭제하는 API입니다.")
+    @DeleteMapping("/mypage/{userId}/favorite/artist")
+    public ApiResponse deleteFavoriteArtist(@PathVariable Long userId, @RequestParam Long artistId) {
+        modelService.deleteFavoriteArtist(userId, artistId);
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_DELETE);
+    }
+
+
 
 
     /**review**/
