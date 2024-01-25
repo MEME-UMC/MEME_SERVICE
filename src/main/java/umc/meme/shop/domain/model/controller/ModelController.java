@@ -20,7 +20,7 @@ public class ModelController {
     public ApiResponse profile (@PathVariable Long userId,
                                 @RequestBody ModelProfileDto modelProfileDto){
         modelService.updateModel(userId, modelProfileDto);
-        return ApiResponse.SuccessResponse(SuccessStatus.TYPE_UPDATE);
+        return ApiResponse.SuccessResponse(SuccessStatus.MODEL_PROFILE_UPDATE);
     }
 
     /**favorite**/

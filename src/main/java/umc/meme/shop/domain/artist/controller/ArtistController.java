@@ -19,7 +19,7 @@ public class ArtistController {
     @PatchMapping("/mypage/{userId}/profile/artist")
     public ApiResponse updateProfile(@PathVariable Long userId, @RequestBody ArtistProfileDto profileDto){
         artistService.updateArtistProfile(userId, profileDto);
-        return ApiResponse.SuccessResponse(SuccessStatus.PROFILE_UPDATE);
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_UPDATE);
     }
 
     @Operation(summary = "리뷰 관리", description = "block 상태를 통해 리뷰 공개 유무를 결정할 수 있는 API입니다.")
