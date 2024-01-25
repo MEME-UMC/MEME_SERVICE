@@ -13,6 +13,7 @@ import umc.meme.shop.domain.favorite.repository.FavoritePortfolioRepository;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
+import umc.meme.shop.domain.mypage.dto.response.MypageDetailDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
@@ -39,6 +40,8 @@ public class ModelService {
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         model.updateModel(request);
     }
+
+
 
     //관심 아티스트 조회
     @Transactional
@@ -134,7 +137,6 @@ public class ModelService {
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_FAVORITE_PORTFOLIO));
         favoritePortfolioRepository.delete(favoritePortfolio);
     }
-
 
 
 }

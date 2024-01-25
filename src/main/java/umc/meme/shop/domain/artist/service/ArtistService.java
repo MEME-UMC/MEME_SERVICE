@@ -22,4 +22,5 @@ public class ArtistService {
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
         artist.updateArtist(profileDto);
     }
+
 }
