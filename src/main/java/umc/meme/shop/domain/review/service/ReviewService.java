@@ -27,7 +27,7 @@ public class ReviewService {
     public void createReview(Long modelId, ReviewDto reviewDto){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
-        Reservation reservation = reservationRepository.findById(reviewDto.getReservationId())
+        Reservation reservation = reservationRepository.findByReservationIdAndModelId(reviewDto.getReservationId(), modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
 
         if(reservation.isReview())

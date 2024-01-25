@@ -57,6 +57,12 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
         Status status = reservationDto.getStatus();
+
+        if(reservation.getStatus() == status)
+            throw new GlobalException(ErrorStatus.ALREADY_CHANGE_STATUS);
+        if(reservation.getStatus() == Status.COMPLETE && status == Status.CANCEL)
+            throw new GlobalException(ErrorStatus.INVALID_CHANGE_STATUS);
+
         reservation.updateReservation(status);
     }
 
