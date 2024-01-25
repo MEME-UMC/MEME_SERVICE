@@ -45,7 +45,7 @@ public class ModelService {
     public List<ArtistDto> getFavoriteArtist(Long userId){
         Model model = modelRepository.findById(userId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
-        List<FavoriteArtist> favoriteArtistList = favoriteArtistRepository.findByModel(model);
+        List<FavoriteArtist> favoriteArtistList = model.getFavoriteArtistList();
         return favoriteArtistList.stream()
                 .map(ArtistDto::from)
                 .collect(Collectors.toList());
@@ -80,7 +80,7 @@ public class ModelService {
                         .artist(artist)
                         .model(model)
                         .build();
-
+        model.updateFavoriteArtistList(favoriteArtist);
         favoriteArtistRepository.save(favoriteArtist);
     }
 

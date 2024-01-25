@@ -25,8 +25,8 @@ public enum ErrorStatus {
      * Bad Request
      */
     INVALID_REQUEST(400,  "유효하지 않은 요청입니다."),
-    ALREADY_EXIST_FAVORITE_ARTIST(400, "이미 관심 아티스트로 등록하셨습니다."),
-    ALREADY_EXIST_FAVORITE_PORTFOLIO(400, "이미 관심 포트폴리오로 등록하셨습니다."),
+    ALREADY_EXIST_FAVORITE_ARTIST(400, "해당 아티스트는 이미 관심 아티스트로 등록되어있습니다."),
+    ALREADY_EXIST_FAVORITE_PORTFOLIO(400, "해당 포트폴리오는 이미 관심 포트폴리오로 등록되어있습니다."),
 
     /**
      * Code : 404
