@@ -46,6 +46,7 @@ public class ArtistDto {
                 .toList();
 
         return ArtistDto.builder()
+                .artistId(artist.getArtistId())
                 .gender(artist.getGender())
                 .nickname(artist.getNickname())
                 .profileImg(artist.getProfileImg())
@@ -67,6 +68,7 @@ public class ArtistDto {
                 .toList();
 
         return ArtistDto.builder()
+                .artistId(artist.getArtistId())
                 .gender(artist.getGender())
                 .nickname(artist.getNickname())
                 .profileImg(artist.getProfileImg())
