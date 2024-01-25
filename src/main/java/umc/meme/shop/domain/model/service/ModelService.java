@@ -121,6 +121,20 @@ public class ModelService {
         favoriteArtistRepository.delete(favoriteArtist);
     }
 
+    //관심 메이크업 삭제
+    @Transactional
+    public void deleteFavoritePortfolio(Long modelId, Long portfolioId){
+        Model model = modelRepository.findById(modelId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+
+        FavoritePortfolio favoritePortfolio = favoritePortfolioRepository.findByModelAndPortfolio(model, portfolio)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_FAVORITE_PORTFOLIO));
+        favoritePortfolioRepository.delete(favoritePortfolio);
+    }
+
 
 
 }
