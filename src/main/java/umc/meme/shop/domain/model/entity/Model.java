@@ -12,6 +12,7 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.enums.PersonalColor;
 import umc.meme.shop.domain.model.entity.enums.SkinType;
 import umc.meme.shop.domain.reservation.entity.Reservation;
+import umc.meme.shop.domain.review.entity.Review;
 
 import java.util.Date;
 import java.util.List;
@@ -65,6 +66,9 @@ public class Model {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "model")
     private List<Reservation> reservationList;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "model")
+    private List<Review> reviewList;
+
     public void updateModel(ModelProfileDto request) {
         if(request.getProfileImg() != null){
             this.profileImg = request.getProfileImg();
@@ -92,5 +96,9 @@ public class Model {
     }
     public void updateReservationList(Reservation reservation){
         this.reservationList.add(reservation);
+    }
+
+    public void updateReviewList(Review review){
+        this.reviewList.add(review);
     }
 }

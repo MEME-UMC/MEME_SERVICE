@@ -34,7 +34,7 @@ public class ModelService {
 
     //모델 프로필 관리
     @Transactional
-    public void updateModel(Long modelId, ModelProfileDto request){
+    public void updateModelProfile(Long modelId, ModelProfileDto request){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         model.updateModel(request);

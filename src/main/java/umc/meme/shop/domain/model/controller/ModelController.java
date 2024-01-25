@@ -17,9 +17,9 @@ public class ModelController {
 
     @Operation(summary = "모델 프로필 관리")
     @PatchMapping("/mypage/{modelId}/profile/model")
-    public ApiResponse profile (@PathVariable Long modelId,
+    public ApiResponse updateModelProfile (@PathVariable Long modelId,
                                 @RequestBody ModelProfileDto modelProfileDto){
-        modelService.updateModel(modelId, modelProfileDto);
+        modelService.updateModelProfile(modelId, modelProfileDto);
         return ApiResponse.SuccessResponse(SuccessStatus.MODEL_PROFILE_UPDATE);
     }
 
