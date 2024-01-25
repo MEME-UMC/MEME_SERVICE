@@ -24,7 +24,7 @@ public class PortfolioService {
 
     //포트폴리오 생성
     @Transactional
-    public void createPortfolio(Long artistId, CreatePortfolioDto portfolioDto){
+    public void createPortfolio(Long artistId, CreatePortfolioDto portfolioDto) {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
 
@@ -36,7 +36,7 @@ public class PortfolioService {
                 .price(portfolioDto.getPrice())
                 .isBlock(false)
                 .build();
-
+        artist.updatePortfolioList(portfolio);
         portfolioRepository.save(portfolio);
     }
 
@@ -46,7 +46,7 @@ public class PortfolioService {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
 
-        List<Portfolio> portfolioList = portfolioRepository.findByArtist(artist);
+        List<Portfolio> portfolioList = artist.getPortfolioList();
         return portfolioList.stream()
                 .map(PortfolioDto::from)
                 .collect(Collectors.toList());
