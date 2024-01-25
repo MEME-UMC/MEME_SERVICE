@@ -27,7 +27,7 @@ public class Reservation {
     @JoinColumn(name="model_id", nullable = false)
     private Model model;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="portfolio_id", nullable = false)
     private Portfolio portfolio;
 
