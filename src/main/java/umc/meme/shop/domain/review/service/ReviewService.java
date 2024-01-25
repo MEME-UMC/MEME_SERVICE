@@ -10,10 +10,13 @@ import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
+import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 import umc.meme.shop.domain.review.entity.Review;
 import umc.meme.shop.domain.review.repository.ReviewRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,5 +53,15 @@ public class ReviewService {
 
         reviewRepository.save(review);
         reservation.updateIsReview(true);
+    }
+
+    //내가 쓴 리뷰 조회
+    public List<ReviewResponseDto> getMyReview(Long modelId){
+        Model model = modelRepository.findById(modelId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+        List<Review> reviewList = reviewRepository.findByModel(model);
+        return reviewList.stream()
+                .map(ReviewResponseDto::from)
+                .toList();
     }
 }
