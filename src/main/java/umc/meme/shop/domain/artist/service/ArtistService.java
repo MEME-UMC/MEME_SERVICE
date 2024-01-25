@@ -25,18 +25,4 @@ public class ArtistService {
         artist.updateArtist(profileDto);
     }
 
-    //아티스트 마이페이지 조회
-    @Transactional
-    public MypageDetailDto getArtistProfile(Long artistId) {
-        Artist artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
-
-        return MypageDetailDto.builder()
-                .profileImg(artist.getProfileImg())
-                .nickname(artist.getNickname())
-                .name(artist.getName())
-                .gender(artist.getGender())
-                .email(artist.getEmail())
-                .build();
-    }
 }

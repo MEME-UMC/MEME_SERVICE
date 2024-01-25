@@ -21,10 +21,4 @@ public class ArtistController {
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_UPDATE);
     }
 
-    @Operation(summary = "아티스트 마이페이지 조회")
-    @GetMapping("/mypage/{artistId}/profile/artist")
-    public ApiResponse getProfile(@PathVariable Long artistId){
-        return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, artistService.getArtistProfile(artistId));
-    }
-
 }

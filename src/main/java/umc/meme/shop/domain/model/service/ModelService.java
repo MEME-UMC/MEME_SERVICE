@@ -41,19 +41,7 @@ public class ModelService {
         model.updateModel(request);
     }
 
-    @Transactional
-    public MypageDetailDto getModelProfile(Long modelId) {
-        Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
-        return MypageDetailDto.builder()
-                .profileImg(model.getProfileImg())
-                .nickname(model.getNickname())
-                .name(model.getName())
-                .gender(model.getGender())
-                .email(model.getEmail())
-                .build();
-    }
 
     //관심 아티스트 조회
     @Transactional

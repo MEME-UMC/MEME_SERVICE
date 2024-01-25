@@ -23,12 +23,6 @@ public class ModelController {
         return ApiResponse.SuccessResponse(SuccessStatus.MODEL_PROFILE_UPDATE);
     }
 
-    @Operation(summary = "모델 마이페이지 조회")
-    @GetMapping("/mypage/{modelId}/profile/model")
-    public ApiResponse updateModelProfile (@PathVariable Long modelId){
-        return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, modelService.getModelProfile(modelId));
-    }
-
     /**favorite**/
 
     @Operation(summary = "관심 아티스트 조회", description = "관심 아티스트를 조회하는 API입니다.")
