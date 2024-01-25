@@ -27,6 +27,9 @@ public enum ErrorStatus {
     INVALID_REQUEST(400,  "유효하지 않은 요청입니다."),
     ALREADY_EXIST_FAVORITE_ARTIST(400, "해당 아티스트는 이미 관심 아티스트로 등록되어있습니다."),
     ALREADY_EXIST_FAVORITE_PORTFOLIO(400, "해당 포트폴리오는 이미 관심 포트폴리오로 등록되어있습니다."),
+    ALREADY_REVIEWED(400, "이미 리뷰 작성이 완료된 예약입니다."),
+    INVALID_REVIEW_REQUEST(400, "예약이 완료되지 않아 리뷰를 작성할 수 없습니다."),
+
 
     /**
      * Code : 404

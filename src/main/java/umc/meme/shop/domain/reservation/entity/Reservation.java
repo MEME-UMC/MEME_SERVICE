@@ -49,4 +49,8 @@ public class Reservation {
         if(status != null)
             this.status = status;
     }
+
+    public void updateIsReview(boolean bool){
+        this.isReview = bool;
+    }
 }

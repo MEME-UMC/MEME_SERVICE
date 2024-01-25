@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.review.dto.request.UpdateReviewDto;
+import umc.meme.shop.domain.review.service.ReviewService;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
 
@@ -12,11 +13,13 @@ import umc.meme.shop.global.response.ApiResponse;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/review")
 public class ReviewController {
+    private final ReviewService reviewService;
 
     @Operation(summary = "리뷰 작성", description = "리뷰를 작성하는 API입니다.")
     @PostMapping("/{modelId}")
-    public ApiResponse postReview(@PathVariable Long modelId, @RequestBody ReviewDto reviewDto){
+    public ApiResponse createReview(@PathVariable Long modelId, @RequestBody ReviewDto reviewDto){
         //TODO: ReviewImg 추가
+        reviewService.createReview(modelId, reviewDto);
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
     }
 
