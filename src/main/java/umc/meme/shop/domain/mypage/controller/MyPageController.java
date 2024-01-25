@@ -13,7 +13,7 @@ public class MyPageController {
 
     @Operation(summary = "마이페이지", description = "마이페이지를 조회하는 API입니다.")
     @GetMapping("/{userId}")
-    public ApiResponse mypage(@PathVariable Long userId){
+    public ApiResponse getMypage(@PathVariable Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, "");
     }
 
