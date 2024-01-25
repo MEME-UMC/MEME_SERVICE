@@ -14,26 +14,15 @@ public class MyPageController {
 
     private final MypageService mypageService;
 
-    /**
-     * 마이페이지 조회는
-     * 모델/아티스트 에서 처리
-     */
-
-//    @Operation(summary = "마이페이지", description = "마이페이지를 조회하는 API입니다.")
-//    @GetMapping("/{userId}")
-//    public ApiResponse getMypage(@PathVariable Long userId){
-//        return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, "");
-//    }
-
     @Operation(summary = "모델 마이페이지 조회")
     @GetMapping("/{modelId}/profile/model")
-    public ApiResponse updateModelProfile (@PathVariable Long modelId){
+    public ApiResponse getModelProfile (@PathVariable Long modelId){
         return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, mypageService.getModelProfile(modelId));
     }
 
     @Operation(summary = "아티스트 마이페이지 조회")
     @GetMapping("/{artistId}/profile/artist")
-    public ApiResponse getProfile(@PathVariable Long artistId){
+    public ApiResponse getArtistProfile(@PathVariable Long artistId){
         return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, mypageService.getArtistProfile(artistId));
     }
 

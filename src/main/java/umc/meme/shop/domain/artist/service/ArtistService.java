@@ -4,10 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
-import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
-import umc.meme.shop.domain.mypage.dto.response.MypageDetailDto;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
