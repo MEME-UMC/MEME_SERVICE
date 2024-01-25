@@ -66,22 +66,6 @@ public class ModelController {
     }
 
 
-
-    /**review**/
-
-    @Operation(summary = "내가 쓴 리뷰 조회", description = "본인이 쓴 리뷰를 조회하는 API입니다.")
-    @GetMapping("/review/{modelId}")
-    public ApiResponse getReview(@PathVariable Long modelId){
-        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, "");
-    }
-
-    @Operation(summary = "리뷰 작성", description = "리뷰를 작성하는 API입니다.")
-    @PostMapping("/review/{modelId}")
-    public ApiResponse postReview(@PathVariable Long modelId, @RequestBody ReviewDto reviewDto){
-        //TODO: ReviewImg 추가
-        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
-    }
-
     /**search**/
 
     @Operation(summary = "메이크업 검색", description = "메이크업을 검색하는 API입니다.")
