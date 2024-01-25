@@ -86,6 +86,10 @@ public class Model {
     public void updateFavoriteArtistList(FavoriteArtist artist){
         this.favoriteArtistList.add(artist);
     }
+
+    public void updateFavoritePortfolioList(FavoritePortfolio portfolio){
+        this.favoritePortfolioList.add(portfolio);
+    }
     public void updateReservationList(Reservation reservation){
         this.reservationList.add(reservation);
     }

@@ -56,7 +56,7 @@ public class ModelService {
     public List<PortfolioDto> getFavoritePortfolio(Long userId){
         Model model = modelRepository.findById(userId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
-        List<FavoritePortfolio> favoritePortfolioList = favoritePortfolioRepository.findByModel(model);
+        List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
         return favoritePortfolioList.stream()
                 .map(PortfolioDto::from)
                 .collect(Collectors.toList());
@@ -101,7 +101,7 @@ public class ModelService {
                 .model(model)
                 .portfolio(portfolio)
                 .build();
-
+        model.updateFavoritePortfolioList(favoritePortfolio);
         favoritePortfolioRepository.save(favoritePortfolio);
     }
 
