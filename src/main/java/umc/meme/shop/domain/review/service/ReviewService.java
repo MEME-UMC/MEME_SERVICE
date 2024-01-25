@@ -33,9 +33,11 @@ public class ReviewService {
         Reservation reservation = reservationRepository.findByReservationIdAndModelId(reviewDto.getReservationId(), modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
 
+        //이미 리뷰 작성 완료
         if(reservation.isReview())
             throw new GlobalException(ErrorStatus.ALREADY_REVIEWED);
 
+        //예약 미완료
         if(reservation.getStatus() != Status.COMPLETE)
             throw new GlobalException(ErrorStatus.INVALID_REVIEW_REQUEST);
 
