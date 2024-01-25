@@ -16,15 +16,15 @@ public class ArtistController {
     private final ArtistService artistService;
 
     @Operation(summary = "아티스트 프로필 관리")
-    @PatchMapping("/mypage/{userId}/profile/artist")
-    public ApiResponse updateProfile(@PathVariable Long userId, @RequestBody ArtistProfileDto profileDto){
-        artistService.updateArtistProfile(userId, profileDto);
+    @PatchMapping("/mypage/{artistId}/profile/artist")
+    public ApiResponse updateProfile(@PathVariable Long artistId, @RequestBody ArtistProfileDto profileDto){
+        artistService.updateArtistProfile(artistId, profileDto);
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_UPDATE);
     }
 
     @Operation(summary = "리뷰 관리", description = "block 상태를 통해 리뷰 공개 유무를 결정할 수 있는 API입니다.")
-    @PatchMapping("/artist/review")
-    public ApiResponse updateReview(@RequestBody UpdateReviewDto reviewDto){
+    @PatchMapping("/review/{artistId}/{portfolioId}")
+    public ApiResponse updateReview(@PathVariable Long artistId, @PathVariable Long portfolioId, @RequestBody UpdateReviewDto reviewDto){
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_UPDATE);
     }
 
