@@ -29,6 +29,8 @@ public class PortfolioDto {
 
     private Boolean isBlock;
 
+    private String averageStars;
+
     private List<ReviewResponseDto> reviewResponseDtoList;
 
     public static PortfolioDto from(Portfolio portfolio){
@@ -36,6 +38,9 @@ public class PortfolioDto {
                 .stream()
                 .map(ReviewResponseDto::from)
                 .toList();
+        //별점 평균
+        String averageStars = calculateAverageStars(reviewResponseDtoList);
+
         return PortfolioDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
                 .category(portfolio.getCategory())
@@ -43,6 +48,7 @@ public class PortfolioDto {
                 .price(portfolio.getPrice())
                 .info(portfolio.getInfo())
                 .isBlock(portfolio.isBlock())
+                .averageStars(averageStars)
                 .reviewResponseDtoList(reviewResponseDtoList)
                 .build();
     }
@@ -56,6 +62,9 @@ public class PortfolioDto {
                 .map(ReviewResponseDto::from)
                 .toList();
 
+        //별점 평균
+        String averageStars = calculateAverageStars(reviewResponseDtoList);
+
         return PortfolioDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
                 .category(portfolio.getCategory())
@@ -63,7 +72,20 @@ public class PortfolioDto {
                 .price(portfolio.getPrice())
                 .info(portfolio.getInfo())
                 .isBlock(portfolio.isBlock())
+                .averageStars(averageStars)
                 .reviewResponseDtoList(reviewResponseDtoList)
                 .build();
+    }
+
+    private static String calculateAverageStars(List<ReviewResponseDto> reviewResponseDtoList){
+        int count = reviewResponseDtoList.size();
+        if(count == 0)
+            return "0.00";
+
+        double stars = 0;
+        for(ReviewResponseDto review : reviewResponseDtoList){
+            stars += review.getStar();
+        }
+        return String.format("%.2f", stars/count);
     }
 }

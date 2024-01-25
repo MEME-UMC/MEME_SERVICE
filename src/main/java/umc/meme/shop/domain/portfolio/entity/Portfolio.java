@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
-import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.domain.review.entity.Review;
