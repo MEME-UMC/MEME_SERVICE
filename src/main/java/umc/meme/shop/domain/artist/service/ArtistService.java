@@ -19,7 +19,7 @@ public class ArtistService {
     @Transactional
     public void updateArtistProfile(Long artistId, ArtistProfileDto profileDto){
         Artist artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
         artist.updateArtist(profileDto);
     }
 }

@@ -36,7 +36,7 @@ public class ModelService {
     @Transactional
     public void updateModel(Long userId, ModelProfileDto request){
         Model model = modelRepository.findById(userId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         model.updateModel(request);
     }
 
@@ -44,8 +44,8 @@ public class ModelService {
     @Transactional
     public List<ArtistDto> getFavoriteArtist(Long userId){
         Model model = modelRepository.findById(userId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
-        List<FavoriteArtist> favoriteArtistList = favoriteArtistRepository.findByModel(model);
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+        List<FavoriteArtist> favoriteArtistList = model.getFavoriteArtistList();
         return favoriteArtistList.stream()
                 .map(ArtistDto::from)
                 .collect(Collectors.toList());
@@ -55,8 +55,8 @@ public class ModelService {
     @Transactional
     public List<PortfolioDto> getFavoritePortfolio(Long userId){
         Model model = modelRepository.findById(userId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
-        List<FavoritePortfolio> favoritePortfolioList = favoritePortfolioRepository.findByModel(model);
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+        List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
         return favoritePortfolioList.stream()
                 .map(PortfolioDto::from)
                 .collect(Collectors.toList());
@@ -66,10 +66,10 @@ public class ModelService {
     @Transactional
     public void addFavoriteArtist(Long modelId, Long artistId) {
         Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         Artist artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         //이미 관심 아티스트가 존재하는 경우
         if (favoriteArtistRepository.existsByModelAndArtist(model, artist)) {
@@ -80,14 +80,14 @@ public class ModelService {
                         .artist(artist)
                         .model(model)
                         .build();
-
+        model.updateFavoriteArtistList(favoriteArtist);
         favoriteArtistRepository.save(favoriteArtist);
     }
 
     //관심 메이크업 추가
     public void addFavoritePortfolio(Long modelId, Long portfolioId) {
         Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
@@ -101,7 +101,7 @@ public class ModelService {
                 .model(model)
                 .portfolio(portfolio)
                 .build();
-
+        model.updateFavoritePortfolioList(favoritePortfolio);
         favoritePortfolioRepository.save(favoritePortfolio);
     }
 

@@ -11,14 +11,14 @@ public enum SuccessStatus {
     TEMP(200, "TEMP"),
 
     /**artist**/
-    PROFILE_UPDATE(200, "프로필 수정이 완료되었습니다"),
+    ARTIST_PROFILE_UPDATE(200, "아티스트 프로필 수정이 완료되었습니다"),
 
     PORTFOLIO_CREATE(200, "포트폴리오 생성이 완료되었습니다"),
     PORTFOLIO_GET(200, "포트폴리오 조회가 완료되었습니다"),
     PORTFOLIO_UPDATE(200, "포트폴리오 수정이 완료되었습니다"),
 
     /**model**/
-    TYPE_UPDATE(200, "상세 정보 수정이 완료되었습니다"),
+    MODEL_PROFILE_UPDATE(200, "모델 프로필 수정이 완료되었습니다"),
 
     FAVORITE_ARTIST_GET(200, "관심 아티스트 조회가 완료되었습니다"),
     FAVORITE_PORTFOLIO_GET(200, "관심 메이크업 조회가 완료되었습니다"),

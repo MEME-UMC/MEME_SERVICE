@@ -33,24 +33,21 @@ public class ReservationService {
     //예약하기
     @Transactional
     public void createReservation(ReservationRequestDto reservationDto){
-        Optional<Model> model = modelRepository.findById(reservationDto.getModelId());
-        if(model.isEmpty()){
-            throw new GlobalException(ErrorStatus.NOT_EXIST_USER);
-        }
+        Model model = modelRepository.findById(reservationDto.getModelId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
-        Optional<Portfolio> portfolio = portfolioRepository.findById(reservationDto.getPortfolioId());
-        if(portfolio.isEmpty()){
-            throw new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO);
-        }
+        Portfolio portfolio = portfolioRepository.findById(reservationDto.getPortfolioId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+
         Reservation reservation = Reservation.builder()
-                .model(model.get())
-                .portfolio(portfolio.get())
+                .model(model)
+                .portfolio(portfolio)
                 .status(Status.EXPECTED)
                 .reservationTime(reservationDto.getReservationTime())
                 .reservationDate(reservationDto.getReservationDate())
                 .build();
 
-        model.get().updateReservationList(reservation);
+        model.updateReservationList(reservation);
         reservationRepository.save(reservation);
     }
 
@@ -66,7 +63,7 @@ public class ReservationService {
     //아티스트 예약 조회
     public List<ReservationResponseDto> getArtistReservation(Long artistId){
         Artist artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         List<Reservation> reservationList = reservationRepository.findByArtist(artist);
         return reservationList.stream()
@@ -77,7 +74,7 @@ public class ReservationService {
     //모델 예약 조회
     public List<ReservationResponseDto> getModelReservation(Long modelId) {
         Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         List<Reservation> reservationList = model.getReservationList();
         return reservationList.stream()

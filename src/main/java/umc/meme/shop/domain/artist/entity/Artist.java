@@ -95,4 +95,8 @@ public class Artist {
         if (request.getAvailableTime() != null)
             this.availableTime = request.getAvailableTime();
     }
+
+    public void updatePortfolioList(Portfolio portfolio){
+        this.portfolioList.add(portfolio);
+    }
 }
