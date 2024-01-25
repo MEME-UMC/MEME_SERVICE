@@ -28,6 +28,10 @@ public class PortfolioService {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
+        //포트폴리오 이름이 이미 존재할 시
+        if(portfolioRepository.existsByMakeupName(portfolioDto.getMakeupName()))
+            throw new GlobalException(ErrorStatus.ALREADY_EXIST_PORTFOLIO);
+
         Portfolio portfolio = Portfolio.builder()
                 .artist(artist)
                 .category(portfolioDto.getCategory())
@@ -36,6 +40,7 @@ public class PortfolioService {
                 .price(portfolioDto.getPrice())
                 .isBlock(false)
                 .build();
+
         artist.updatePortfolioList(portfolio);
         portfolioRepository.save(portfolio);
     }

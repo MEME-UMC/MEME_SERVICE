@@ -26,7 +26,7 @@ public class ReviewController {
     @Operation(summary = "내가 쓴 리뷰 조회", description = "본인이 쓴 리뷰를 조회하는 API입니다.")
     @GetMapping("/{modelId}")
     public ApiResponse getReview(@PathVariable Long modelId){
-        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, "");
+        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, reviewService.getMyReview(modelId));
     }
 
     @Operation(summary = "리뷰 관리", description = "block 상태를 통해 리뷰 공개 유무를 결정할 수 있는 API입니다.")

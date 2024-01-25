@@ -13,7 +13,6 @@ import umc.meme.shop.domain.favorite.repository.FavoritePortfolioRepository;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
-import umc.meme.shop.domain.mypage.dto.response.MypageDetailDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
@@ -38,9 +37,9 @@ public class ModelService {
     public void updateModelProfile(Long modelId, ModelProfileDto request){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+
         model.updateModel(request);
     }
-
 
 
     //관심 아티스트 조회
@@ -48,6 +47,7 @@ public class ModelService {
     public List<ArtistDto> getFavoriteArtist(Long modelId){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+
         List<FavoriteArtist> favoriteArtistList = model.getFavoriteArtistList();
         return favoriteArtistList.stream()
                 .map(ArtistDto::from)
@@ -59,6 +59,7 @@ public class ModelService {
     public List<PortfolioDto> getFavoritePortfolio(Long modelId){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+
         List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
         return favoritePortfolioList.stream()
                 .map(PortfolioDto::from)
