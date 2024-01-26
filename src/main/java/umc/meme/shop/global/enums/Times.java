@@ -1,6 +1,6 @@
-package umc.meme.shop.domain.reservation.entity.enums;
+package umc.meme.shop.global.enums;
 
-public enum ReservationTime {
+public enum Times {
     _00_00, _00_30,
     _01_00, _01_30,
     _02_00, _02_30,

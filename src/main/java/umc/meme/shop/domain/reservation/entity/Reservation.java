@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.reservation.entity.enums.ReservationTime;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.global.enums.DayOfWeek;
+import umc.meme.shop.global.enums.Times;
 
 import java.util.Date;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class Reservation {
             joinColumns = {@JoinColumn(name = "reservation_id", referencedColumnName = "reservationId")})
     @MapKeyColumn(name = "day_of_week")
     @Enumerated(EnumType.STRING)
-    private Map<DayOfWeek, ReservationTime> reservationDayOfWeekAndTime;
+    private Map<DayOfWeek, Times> reservationDayOfWeekAndTime;
 
     @Column(nullable = false)
     private Date reservationDate;

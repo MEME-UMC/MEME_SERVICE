@@ -6,8 +6,10 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.global.enums.DayOfWeek;
+import umc.meme.shop.global.enums.Times;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -22,5 +24,5 @@ public class ArtistProfileDto {
     private List<Category> specialization;
     private MakeupLocation makeupLocation;
     private String shopLocation;
-    private DayOfWeek availableDayOfWeek;
+    private Map<DayOfWeek, Times> availableDayOfWeek;
 }

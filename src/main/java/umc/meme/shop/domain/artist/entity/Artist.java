@@ -10,10 +10,12 @@ import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.global.enums.DayOfWeek;
+import umc.meme.shop.global.enums.Times;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Builder
 @Getter
@@ -65,9 +67,13 @@ public class Artist {
     @Column(nullable = true)
     private Date inactiveDate;
 
+    @ElementCollection
+    @CollectionTable(name = "available_time_mapping",
+            joinColumns = {@JoinColumn(name = "artist_id", referencedColumnName = "artist_id")})
+    @MapKeyColumn(name = "day_of_week")
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
-    private DayOfWeek availableDayOfWeek;
+    private Map<DayOfWeek, Times> availableDayOfWeekAndTime;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artist")
     private List<Portfolio> portfolioList;
@@ -93,7 +99,7 @@ public class Artist {
             this.region = regionList;
         }
 
-        //sepecialization mapping
+        //specialization mapping
         if (request.getSpecialization() != null){
             List<String> specialization = new ArrayList<>();
             for(Category category : request.getSpecialization())
@@ -105,7 +111,7 @@ public class Artist {
         if (request.getShopLocation() != null)
             this.shopLocation = request.getShopLocation();
         if (request.getAvailableDayOfWeek() != null)
-            this.availableDayOfWeek = request.getAvailableDayOfWeek();
+            this.availableDayOfWeekAndTime = request.getAvailableDayOfWeek();
     }
 
     public void updatePortfolioList(Portfolio portfolio){

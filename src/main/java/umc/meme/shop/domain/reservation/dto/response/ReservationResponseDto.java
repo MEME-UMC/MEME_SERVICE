@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.reservation.entity.Reservation;
-import umc.meme.shop.domain.reservation.entity.enums.ReservationTime;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.enums.DayOfWeek;
+import umc.meme.shop.global.enums.Times;
 import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.Date;
@@ -26,7 +26,7 @@ public class ReservationResponseDto {
     private int price;
 
     private Date reservationDate;
-    private Map<DayOfWeek, ReservationTime> reservationDayOfWeekAndTime;
+    private Map<DayOfWeek, Times> reservationDayOfWeekAndTime;
     private String shopLocation; //샵 위치
 
     public static ReservationResponseDto from(Reservation reservation){
