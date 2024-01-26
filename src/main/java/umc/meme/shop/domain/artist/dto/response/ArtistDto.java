@@ -9,7 +9,6 @@ import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
-import umc.meme.shop.domain.portfolio.entity.enums.Category;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,9 +30,9 @@ public class ArtistDto {
 
     private WorkExperience workExperience;
 
-    private List<Region> region;
+    private List<String> region;
 
-    private List<Category> specialization;
+    private List<String> specialization;
 
     private MakeupLocation makeupLocation;
 
