@@ -62,6 +62,8 @@ public class ReservationService {
             throw new GlobalException(ErrorStatus.ALREADY_CHANGE_STATUS);
         if(reservation.getStatus() == Status.COMPLETE && status == Status.CANCEL)
             throw new GlobalException(ErrorStatus.INVALID_CHANGE_STATUS);
+        if(reservation.getStatus() == Status.CANCEL && status == Status.COMPLETE)
+            throw new GlobalException(ErrorStatus.INVALID_CHANGE_COMPLETE);
 
         reservation.updateReservation(status);
     }
