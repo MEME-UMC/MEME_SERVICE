@@ -28,6 +28,13 @@ public class ArtistService {
         artist.updateArtist(profileDto);
     }
 
+    //아티스트 프로필 조회
+    public ArtistDto getArtistProfile(Long artistId){
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+        return ArtistDto.from(artist);
+    }
+
     //temp method for create Artist
     @Transactional
     public void createArtist(ArtistProfileDto dto){
