@@ -65,9 +65,6 @@ public class Portfolio {
         }
 
         this.isBlock = request.isBlock();
-
-        System.out.println(this.isBlock);
-        System.out.println(request.isBlock());
     }
 
     public void updateReviewList(Review review){

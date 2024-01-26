@@ -45,7 +45,7 @@ public class PortfolioService {
         portfolioRepository.save(portfolio);
     }
 
-    // 포트폴리오 조회
+    // 포트폴리오 전체 조회
     @Transactional
     public List<PortfolioDto> getPortfolio(Long artistId) {
         Artist artist = artistRepository.findById(artistId)
@@ -57,13 +57,34 @@ public class PortfolioService {
                 .collect(Collectors.toList());
     }
 
-    // 포트폴리오 수정/삭제
-    @Transactional
-    public void updatePortfolio(Long portfolioId, UpdatePortfolioDto request) {
+    // 포트폴리오 하나만 조회
+    public PortfolioDto getPortfolioDetails(Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
+        return PortfolioDto.from(portfolio);
+    }
+
+
+    // 포트폴리오 수정/삭제
+    @Transactional
+    public void updatePortfolio(Long artistId, UpdatePortfolioDto request) {
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+
+        // Portfolio를 getPortfolioDetails 메서드를 이용해 조회
+        PortfolioDto portfolioDto = getPortfolioDetails(request.getPortfolioId());
+        Portfolio portfolio = portfolioRepository.findById(portfolioDto.getPortfolioId())
+                    .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+
+        // 아티스트가 해당 portfolio에 권한이 없을때 (포트폴리오에 있는 artist가 본인이 아닐때)
+        if (!portfolio.getArtist().equals(artist)) {
+            throw new GlobalException(ErrorStatus.NOT_AUTHORIZED_PORTFOLIO);
+        }
+
+        // Portfolio 업데이트
         portfolio.updatePortfolio(request);
     }
+
 
 }

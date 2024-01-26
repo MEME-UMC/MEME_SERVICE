@@ -21,6 +21,15 @@ public enum ErrorStatus {
     TEMP(400, "TEMP"),
 
     /**
+     * Code : 403
+     * Not Authorized
+     */
+
+    //portfoilo
+    NOT_AUTHORIZED_PORTFOLIO(403, "아티스트가 해당 포트폴리오에 수정 권한이 없습니다."),
+
+
+    /**
      * Code : 400
      * Bad Request
      */
