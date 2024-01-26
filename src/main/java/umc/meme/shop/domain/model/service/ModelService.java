@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
+import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
+import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.favorite.repository.FavoriteArtistRepository;
@@ -68,11 +70,11 @@ public class ModelService {
 
     //관심 아티스트 추가
     @Transactional
-    public void addFavoriteArtist(Long modelId, Long artistId) {
+    public void addFavoriteArtist(Long modelId, FavoriteArtistDto favoriteArtistDto) {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
-        Artist artist = artistRepository.findById(artistId)
+        Artist artist = artistRepository.findById(favoriteArtistDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         //이미 관심 아티스트가 존재하는 경우
@@ -90,11 +92,11 @@ public class ModelService {
 
     //관심 메이크업 추가
     @Transactional
-    public void addFavoritePortfolio(Long modelId, Long portfolioId) {
+    public void addFavoritePortfolio(Long modelId, FavoritePortfolioDto favoritePortfolioDto) {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
-        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+        Portfolio portfolio = portfolioRepository.findById(favoritePortfolioDto.getPortfolioId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
         //이미 관심 포트폴리오가 존재하는 경우
@@ -112,11 +114,11 @@ public class ModelService {
 
     //관심 아티스트 삭제
     @Transactional
-    public void deleteFavoriteArtist(Long modelId, Long artistId){
+    public void deleteFavoriteArtist(Long modelId, FavoriteArtistDto favoriteArtistDto){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
-        Artist artist = artistRepository.findById(artistId)
+        Artist artist = artistRepository.findById(favoriteArtistDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         //        FavoriteArtist favoriteArtist = favoriteArtistRepository.findById(favoriteArtistId)
@@ -127,11 +129,11 @@ public class ModelService {
 
     //관심 메이크업 삭제
     @Transactional
-    public void deleteFavoritePortfolio(Long modelId, Long portfolioId){
+    public void deleteFavoritePortfolio(Long modelId, FavoritePortfolioDto favoritePortfolioDto) {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
-        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+        Portfolio portfolio = portfolioRepository.findById(favoritePortfolioDto.getPortfolioId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
         FavoritePortfolio favoritePortfolio = favoritePortfolioRepository.findByModelAndPortfolio(model, portfolio)

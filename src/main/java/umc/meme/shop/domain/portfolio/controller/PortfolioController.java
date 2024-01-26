@@ -23,17 +23,23 @@ public class PortfolioController {
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_CREATE);
     }
 
-    @Operation(summary = "포트폴리오 조회", description = "포트폴리오를 조회하는 API입니다.")
+    @Operation(summary = "포트폴리오 전체 조회", description = "포트폴리오 전체를 조회하는 API입니다.")
     @GetMapping("/{artistId}")
     public ApiResponse getPortfolio(@PathVariable Long artistId){
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolio(artistId));
     }
 
+    @Operation(summary = "포트폴리오 조회", description = "특정 포트폴리오를 조회하는 API입니다.")
+    @GetMapping("/{portfolioId}/details")
+    public ApiResponse getPortfolioDetails(@PathVariable Long portfolioId) {
+        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolioDetails(portfolioId));
+    }
+
     @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 수정/삭제하는 API입니다.")
-    @PatchMapping("/{artistId}/{portfolioId}")
-    public ApiResponse updatePortfolio(@PathVariable Long portfolioId, @RequestBody UpdatePortfolioDto portfolioDto){
+    @PatchMapping("/{artistId}")
+    public ApiResponse updatePortfolio(@PathVariable Long artistId, @RequestBody UpdatePortfolioDto portfolioDto){
         // TODO: PortfolioImg 추가
-        portfolioService.updatePortfolio(portfolioId, portfolioDto);
+        portfolioService.updatePortfolio(artistId, portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_UPDATE);
     }
 }

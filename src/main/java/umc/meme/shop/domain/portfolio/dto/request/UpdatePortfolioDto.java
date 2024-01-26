@@ -9,6 +9,7 @@ import umc.meme.shop.domain.portfolio.entity.enums.Category;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdatePortfolioDto {
+    private Long portfolioId;
     private Category category;
     private String makeupName;
     private int price;

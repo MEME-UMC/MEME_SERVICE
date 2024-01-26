@@ -13,5 +13,6 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
     @Query("SELECT r FROM Portfolio r WHERE r.artist = :artist")
     List<Portfolio> findByArtist(@Param("artist") Artist artist);
 
+
     boolean existsByMakeupName(String makeupName);
 }
