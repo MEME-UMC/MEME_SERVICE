@@ -3,6 +3,8 @@ package umc.meme.shop.domain.model.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
+import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.service.ModelService;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
@@ -39,29 +41,29 @@ public class ModelController {
 
     @Operation(summary = "관심 아티스트 추가", description = "관심 아티스트를 추가하는 API입니다.")
     @PostMapping("/mypage/{modelId}/favorite/artist")
-    public ApiResponse postFavoriteArtist(@PathVariable Long modelId, @RequestParam Long artistId) {
-        modelService.addFavoriteArtist(modelId, artistId);
+    public ApiResponse postFavoriteArtist(@PathVariable Long modelId, @RequestBody FavoriteArtistDto favoriteArtistDto) {
+        modelService.addFavoriteArtist(modelId, favoriteArtistDto);
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_POST);
     }
 
     @Operation(summary = "관심 메이크업 추가", description = "관심 메이크업을 추가하는 API입니다.")
     @PostMapping("/mypage/{modelId}/favorite/portfolio")
-    public ApiResponse postFavoritePortfolio(@PathVariable Long modelId, @RequestParam Long portfolioId) {
-        modelService.addFavoritePortfolio(modelId, portfolioId);
+    public ApiResponse postFavoritePortfolio(@PathVariable Long modelId, @RequestBody FavoritePortfolioDto favoritePortfolioDto) {
+        modelService.addFavoritePortfolio(modelId, favoritePortfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_POST);
     }
 
     @Operation(summary = "관심 아티스트 삭제", description = "관심 아티스트를 삭제하는 API입니다.")
     @DeleteMapping("/mypage/{modelId}/favorite/artist")
-    public ApiResponse deleteFavoriteArtist(@PathVariable Long modelId, @RequestParam Long artistId) {
-        modelService.deleteFavoriteArtist(modelId, artistId);
+    public ApiResponse deleteFavoriteArtist(@PathVariable Long modelId, @RequestBody FavoriteArtistDto favoriteArtistDto) {
+        modelService.deleteFavoriteArtist(modelId, favoriteArtistDto);
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_DELETE);
     }
 
     @Operation(summary = "관심 메이크업 삭제", description = "관심 메이크업을 삭제하는 API입니다.")
     @DeleteMapping("/mypage/{modelId}/favorite/portfolio")
-    public ApiResponse deleteFavoritePortfolio(@PathVariable Long modelId, @RequestParam Long portfolioId) {
-        modelService.deleteFavoritePortfolio(modelId, portfolioId);
+    public ApiResponse deleteFavoritePortfolio(@PathVariable Long modelId, @RequestBody FavoritePortfolioDto favoritePortfolioDto) {
+        modelService.deleteFavoritePortfolio(modelId, favoritePortfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_DELETE);
     }
 
