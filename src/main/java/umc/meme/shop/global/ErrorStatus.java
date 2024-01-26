@@ -47,6 +47,7 @@ public enum ErrorStatus {
     //reservation
     ALREADY_CHANGE_STATUS(400, "이미 예약 상태가 변경되었습니다."),
     INVALID_CHANGE_STATUS(400, "이미 완료된 예약은 취소할 수 없습니다."),
+    NOT_ALLOW_OVER_ONE_RESERVATION(400,"한 번에 하나의 예약만 가능합니다." ),
 
 
     /**

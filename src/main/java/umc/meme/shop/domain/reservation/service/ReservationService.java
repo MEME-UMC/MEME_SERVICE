@@ -39,11 +39,16 @@ public class ReservationService {
         Portfolio portfolio = portfolioRepository.findById(reservationDto.getPortfolioId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
+        // 두 개 이상의 예약을 한번에 요청한 경우
+        if (reservationDto.getReservationDayOfWeekAndTime().size() != 1) {
+            throw new GlobalException(ErrorStatus.NOT_ALLOW_OVER_ONE_RESERVATION);
+        }
+
         Reservation reservation = Reservation.builder()
                 .model(model)
                 .portfolio(portfolio)
                 .status(Status.EXPECTED)
-                .reservationTime(reservationDto.getReservationTime())
+                .reservationDayOfWeekAndTime(reservationDto.getReservationDayOfWeekAndTime())
                 .reservationDate(reservationDto.getReservationDate())
                 .build();
 
