@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.reservation.entity.enums.ReservationTime;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
+import umc.meme.shop.global.enums.DayOfWeek;
+import umc.meme.shop.global.enums.Times;
 
 import java.util.Date;
+import java.util.Map;
 
 @Builder
 @Getter
@@ -38,9 +40,12 @@ public class Reservation {
     @Column(nullable = false)
     private boolean isReview = false;
 
+    @ElementCollection
+    @CollectionTable(name = "reservation_time_mapping",
+            joinColumns = {@JoinColumn(name = "reservation_id", referencedColumnName = "reservationId")})
+    @MapKeyColumn(name = "day_of_week")
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ReservationTime reservationTime;
+    private Map<DayOfWeek, Times> reservationDayOfWeekAndTime;
 
     @Column(nullable = false)
     private Date reservationDate;

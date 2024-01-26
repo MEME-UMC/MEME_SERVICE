@@ -6,6 +6,7 @@ import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
+import umc.meme.shop.global.enums.DayOfWeek;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ArtistTest {
         List<String> categories = List.of(new String[]{Category.DAILY.getValue(), Category.PARTY.getValue()});
         List<String> regions = List.of(new String[]{Region.DONGJAK.getValue(), Region.GANGNAM.getValue()});
         Artist artist1 = Artist.builder()
-                .availableTime(AvailableTime.FRI)
+                .availableDayOfWeek(DayOfWeek.FRI)
                 .gender(Gender.FEMALE)
                 .specialization(categories)
                 .email("")
@@ -37,7 +38,7 @@ public class ArtistTest {
         List<Category> categories2 = List.of(new Category[]{Category.STUDIO, Category.ACTOR});
         List<Region> regions2 = List.of(new Region[]{Region.GURO, Region.GANGNAM});
         Artist artist2 = Artist.builder()
-                .availableTime(AvailableTime.THU)
+                .availableDayOfWeek(DayOfWeek.THU)
                 .gender(Gender.FEMALE)
                 .profileImg("")
                 .specialization(categories)
@@ -55,7 +56,7 @@ public class ArtistTest {
         List<Region> regions3 = List.of(new Region[]{Region.DONGDAEMUN, Region.SONGPA});
         Artist artist3 = Artist.builder()
                 .profileImg("")
-                .availableTime(AvailableTime.MON)
+                .availableDayOfWeek(DayOfWeek.MON)
                 .gender(Gender.FEMALE)
                 .specialization(categories)
                 .email("")
