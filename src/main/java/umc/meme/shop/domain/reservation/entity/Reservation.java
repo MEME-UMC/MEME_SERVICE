@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.reservation.entity.enums.ReservationTime;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
+import umc.meme.shop.global.enums.DayOfWeek;
 
 import java.util.Date;
 
@@ -40,7 +40,7 @@ public class Reservation {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ReservationTime reservationTime;
+    private DayOfWeek reservationDayOfWeek;
 
     @Column(nullable = false)
     private Date reservationDate;

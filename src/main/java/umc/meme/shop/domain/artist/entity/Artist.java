@@ -9,6 +9,7 @@ import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
+import umc.meme.shop.global.enums.DayOfWeek;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +67,7 @@ public class Artist {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
-    private AvailableTime availableTime;
+    private DayOfWeek availableDayOfWeek;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artist")
     private List<Portfolio> portfolioList;
@@ -103,8 +104,8 @@ public class Artist {
             this.makeupLocation = request.getMakeupLocation();
         if (request.getShopLocation() != null)
             this.shopLocation = request.getShopLocation();
-        if (request.getAvailableTime() != null)
-            this.availableTime = request.getAvailableTime();
+        if (request.getAvailableDayOfWeek() != null)
+            this.availableDayOfWeek = request.getAvailableDayOfWeek();
     }
 
     public void updatePortfolioList(Portfolio portfolio){
