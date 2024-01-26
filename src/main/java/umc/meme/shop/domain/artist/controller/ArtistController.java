@@ -21,6 +21,12 @@ public class ArtistController {
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_UPDATE);
     }
 
+    @Operation(summary = "아티스트 프로필 조회")
+    @GetMapping("/profile/{artistId}")
+    public ApiResponse getArtistProfile(@PathVariable Long artistId){
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfile(artistId));
+    }
+
     //temp method for Artist create
     @PostMapping("/artist")
     public ApiResponse createArtist(@RequestBody ArtistProfileDto profileDto){

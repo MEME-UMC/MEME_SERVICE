@@ -11,6 +11,7 @@ public enum SuccessStatus {
 
     /**artist**/
     ARTIST_PROFILE_UPDATE(200, "아티스트 프로필 수정이 완료되었습니다"),
+    ARTIST_PROFILE_GET(200, "아티스트 프로필 조회가 완료되었습니다"),
 
     PORTFOLIO_CREATE(200, "포트폴리오 생성이 완료되었습니다"),
     PORTFOLIO_GET(200, "포트폴리오 조회가 완료되었습니다"),
