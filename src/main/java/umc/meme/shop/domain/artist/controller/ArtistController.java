@@ -21,4 +21,11 @@ public class ArtistController {
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_UPDATE);
     }
 
+    //temp method for Artist create
+    @PostMapping("/artist")
+    public ApiResponse createArtist(@RequestBody ArtistProfileDto profileDto){
+        artistService.createArtist(profileDto);
+        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
+    }
+
 }

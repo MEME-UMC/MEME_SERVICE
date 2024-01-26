@@ -17,8 +17,8 @@ public class ArtistTest {
     @Test
     void createArtist(){
 
-        List<Category> categories = List.of(new Category[]{Category.DAILY, Category.PARTY});
-        List<Region> regions = List.of(new Region[]{Region.DONGJAK, Region.GANGNAM});
+        List<String> categories = List.of(new String[]{Category.DAILY.getValue(), Category.PARTY.getValue()});
+        List<String> regions = List.of(new String[]{Region.DONGJAK.getValue(), Region.GANGNAM.getValue()});
         Artist artist1 = Artist.builder()
                 .availableTime(AvailableTime.FRI)
                 .gender(Gender.FEMALE)

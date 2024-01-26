@@ -10,6 +10,7 @@ import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,13 +48,11 @@ public class Artist {
     @Column(nullable = false)
     private WorkExperience workExperience;
 
-    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-    private List<Region> region;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> region;
 
-    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-    private List<Category> specialization;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> specialization;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -84,10 +83,22 @@ public class Artist {
             this.introduction = request.getIntroduction();
         if (request.getWorkExperience() != null)
             this.workExperience = request.getWorkExperience();
-        if (request.getRegion() != null)
-            this.region = request.getRegion();
-        if (request.getSpecialization() != null)
-            this.specialization = request.getSpecialization();
+
+        //region mapping
+        if (request.getRegion() != null){
+            List<String> regionList = new ArrayList<>();
+            for(Region region : request.getRegion())
+                regionList.add(region.getValue());
+            this.region = regionList;
+        }
+
+        //sepecialization mapping
+        if (request.getSpecialization() != null){
+            List<String> specialization = new ArrayList<>();
+            for(Category category : request.getSpecialization())
+                specialization.add(category.getValue());
+            this.specialization = specialization;
+        }
         if (request.getMakeupLocation() != null)
             this.makeupLocation = request.getMakeupLocation();
         if (request.getShopLocation() != null)
@@ -98,5 +109,10 @@ public class Artist {
 
     public void updatePortfolioList(Portfolio portfolio){
         this.portfolioList.add(portfolio);
+    }
+
+    public void tempMethod(String email, String name){
+        this.email = email;
+        this.name = name;
     }
 }
