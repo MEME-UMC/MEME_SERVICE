@@ -110,4 +110,9 @@ public class Artist {
     public void updatePortfolioList(Portfolio portfolio){
         this.portfolioList.add(portfolio);
     }
+
+    public void tempMethod(String email, String name){
+        this.email = email;
+        this.name = name;
+    }
 }
