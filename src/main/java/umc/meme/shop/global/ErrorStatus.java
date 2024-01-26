@@ -48,6 +48,7 @@ public enum ErrorStatus {
     ALREADY_CHANGE_STATUS(400, "이미 예약 상태가 변경되었습니다."),
     INVALID_CHANGE_STATUS(400, "이미 완료된 예약은 취소할 수 없습니다."),
     NOT_ALLOW_OVER_ONE_RESERVATION(400,"한 번에 하나의 예약만 가능합니다." ),
+    INVALID_CHANGE_COMPLETE(400,"취소된 예약을 완료 상태로 변경할 수 없습니다." ),
 
 
     /**
@@ -60,7 +61,7 @@ public enum ErrorStatus {
     NOT_EXIST_RESERVATION(404, "존재하지 않는 예약입니다."),
     NOT_EXIST_FAVORITE_ARTIST(404, "존재하지 않는 관심 아티스트입니다."),
     NOT_EXIST_FAVORITE_PORTFOLIO(404, "존재하지 않는 관심 메이크업입니다."),
-    PAGE_NOT_FOUND(404,"페이지를 찾을 수 없습니다");
+    PAGE_NOT_FOUND(404,"페이지를 찾을 수 없습니다"), ;
 
 
     private final int code;
