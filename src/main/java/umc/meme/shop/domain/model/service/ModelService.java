@@ -3,6 +3,7 @@ package umc.meme.shop.domain.model.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -63,14 +64,30 @@ public class ModelService {
 
     //관심 메이크업 조회
     @Transactional
-    public List<PortfolioDto> getFavoritePortfolio(Long modelId){
+    public PortfolioPageDto getFavoritePortfolio(Long modelId, int page){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
+        //page
         List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
-        return favoritePortfolioList.stream()
+        Pageable pageable = PageRequest.of(page, 10);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), favoritePortfolioList.size());
+
+        //list를 page로 변환
+        Page<FavoritePortfolio> favoritePortfolioPage = new PageImpl<>(favoritePortfolioList.subList(start, end), pageable, favoritePortfolioList.size());
+
+        //page를 dto list로 변환
+        List<PortfolioDto> portfolioDtoList = favoritePortfolioPage.stream()
                 .map(PortfolioDto::from)
-                .collect(Collectors.toList());
+                .toList();
+        return PortfolioPageDto.builder()
+                .content(portfolioDtoList)
+                .pageSize(pageable.getPageSize())
+                .currentPage(pageable.getPageNumber())
+                .totalNumber(favoritePortfolioPage.getNumberOfElements())
+                .totalPage(favoritePortfolioPage.getTotalPages())
+                .build();
     }
 
     //관심 아티스트 추가
@@ -160,6 +177,7 @@ public class ModelService {
                 .currentPage(pageable.getPageNumber())
                 .pageSize(pageable.getPageSize())
                 .totalNumber(portfolioPage.getNumberOfElements())
+                .totalPage(portfolioPage.getTotalPages())
                 .build();
     }
 

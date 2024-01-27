@@ -35,8 +35,10 @@ public class ModelController {
 
     @Operation(summary = "관심 메이크업 조회", description = "관심 메이크업을 조회하는 API입니다.")
     @GetMapping("/mypage/{modelId}/favorite/portfolio")
-    public ApiResponse getFavoritePortfolio(@PathVariable Long modelId){
-        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(modelId));
+    public ApiResponse getFavoritePortfolio(@PathVariable Long modelId,
+                                            @RequestParam(value = "page", defaultValue = "0", required = false) int page
+                                            ){
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(modelId, page));
     }
 
     @Operation(summary = "관심 아티스트 추가", description = "관심 아티스트를 추가하는 API입니다.")
