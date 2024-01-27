@@ -24,8 +24,8 @@ public class PortfolioService {
 
     //포트폴리오 생성
     @Transactional
-    public void createPortfolio(Long artistId, CreatePortfolioDto portfolioDto) {
-        Artist artist = artistRepository.findById(artistId)
+    public void createPortfolio(CreatePortfolioDto portfolioDto) {
+        Artist artist = artistRepository.findById(portfolioDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         //포트폴리오 이름이 이미 존재할 시
@@ -68,8 +68,8 @@ public class PortfolioService {
 
     // 포트폴리오 수정/삭제
     @Transactional
-    public void updatePortfolio(Long artistId, UpdatePortfolioDto request) {
-        Artist artist = artistRepository.findById(artistId)
+    public void updatePortfolio(UpdatePortfolioDto request) {
+        Artist artist = artistRepository.findById(request.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         // Portfolio를 getPortfolioDetails 메서드를 이용해 조회

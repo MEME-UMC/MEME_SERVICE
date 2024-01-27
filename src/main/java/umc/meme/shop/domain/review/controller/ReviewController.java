@@ -16,10 +16,10 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @Operation(summary = "리뷰 작성", description = "리뷰를 작성하는 API입니다.")
-    @PostMapping("/{modelId}")
-    public ApiResponse createReview(@PathVariable Long modelId, @RequestBody ReviewDto reviewDto){
+    @PostMapping("/")
+    public ApiResponse createReview(@RequestBody ReviewDto reviewDto){
         //TODO: ReviewImg 추가
-        reviewService.createReview(modelId, reviewDto);
+        reviewService.createReview(reviewDto);
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
     }
 
@@ -30,8 +30,8 @@ public class ReviewController {
     }
 
     @Operation(summary = "리뷰 관리", description = "block 상태를 통해 리뷰 공개 유무를 결정할 수 있는 API입니다.")
-    @PatchMapping("/{artistId}/{portfolioId}")
-    public ApiResponse updateReview(@PathVariable Long artistId, @PathVariable Long portfolioId, @RequestBody UpdateReviewDto reviewDto){
+    @PatchMapping("/")
+    public ApiResponse updateReview(@RequestBody UpdateReviewDto reviewDto){
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_UPDATE);
     }
 }
