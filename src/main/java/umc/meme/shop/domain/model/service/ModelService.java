@@ -19,6 +19,7 @@ import umc.meme.shop.domain.favorite.repository.FavoritePortfolioRepository;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
+import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
@@ -77,17 +78,7 @@ public class ModelService {
         //list를 page로 변환
         Page<FavoritePortfolio> favoritePortfolioPage = new PageImpl<>(favoritePortfolioList.subList(start, end), pageable, favoritePortfolioList.size());
 
-        //page를 dto list로 변환
-        List<PortfolioDto> portfolioDtoList = favoritePortfolioPage.stream()
-                .map(PortfolioDto::from)
-                .toList();
-        return PortfolioPageDto.builder()
-                .content(portfolioDtoList)
-                .pageSize(pageable.getPageSize())
-                .currentPage(pageable.getPageNumber())
-                .totalNumber(favoritePortfolioPage.getNumberOfElements())
-                .totalPage(favoritePortfolioPage.getTotalPages())
-                .build();
+        return PortfolioConverter.portfolioConverter(favoritePortfolioPage);
     }
 
     //관심 아티스트 추가

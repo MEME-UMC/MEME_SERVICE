@@ -47,7 +47,7 @@ public class PortfolioService {
 
     // 포트폴리오 전체 조회
     @Transactional
-    public List<PortfolioDto> getPortfolio(Long artistId) {
+    public List<PortfolioDto> getPortfolio(Long artistId, int page) {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
