@@ -2,6 +2,9 @@ package umc.meme.shop.domain.model.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
@@ -17,6 +20,7 @@ import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
@@ -138,6 +142,19 @@ public class ModelService {
         FavoritePortfolio favoritePortfolio = favoritePortfolioRepository.findByModelAndPortfolio(model, portfolio)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_FAVORITE_PORTFOLIO));
         favoritePortfolioRepository.delete(favoritePortfolio);
+    }
+
+
+    /**search**/
+    //카테고리 검색
+    public List<PortfolioDto> searchCateroty(Category category, int page, int size){
+        //TODO: 정렬 기준 추가
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Portfolio> portfolioPage = portfolioRepository.findByCategory(category, pageable);
+
+        return portfolioPage.getContent().stream()
+                .map(PortfolioDto::from)
+                .toList();
     }
 
 
