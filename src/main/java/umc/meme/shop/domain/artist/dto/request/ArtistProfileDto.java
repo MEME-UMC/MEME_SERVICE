@@ -15,6 +15,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArtistProfileDto {
+    private Long artistId;
     private String profileImg;
     private String nickname;
     private Gender gender;
