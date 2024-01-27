@@ -93,9 +93,8 @@ public class ModelController {
     @Operation(summary = "메이크업 검색 - 카테고리", description = "메이크업 카테고리로 검색하는 API입니다.")
     @GetMapping("/search/category")
     public ApiResponse searchCategory(@Parameter Category category,
-                                      @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                      @RequestParam(value = "size", defaultValue = "10", required = false) int size
+                                      @RequestParam(value = "page", defaultValue = "0", required = false) int page
                                       ){
-        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchCategory(category, page, size));
+        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchCategory(category, page));
     }
 }

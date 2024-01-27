@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PortfolioConverter {
 
-    public static PortfolioPageDto favoritePortfolioConverter(Page<FavoritePortfolio> page){
+    public static PortfolioPageDto favoritePortfolioPageConverter(Page<FavoritePortfolio> page){
 
         List<PortfolioDto> content = page.stream()
                 .map(PortfolioDto::from)
@@ -25,7 +25,7 @@ public class PortfolioConverter {
                 .build();
     }
 
-    public static PortfolioPageDto portfolioConverter(Page<Portfolio> page){
+    public static PortfolioPageDto portfolioPageConverter(Page<Portfolio> page){
 
         List<PortfolioDto> content = page.stream()
                 .map(PortfolioDto::from)

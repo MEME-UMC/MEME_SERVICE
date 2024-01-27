@@ -79,7 +79,7 @@ public class ModelService {
         Page<FavoritePortfolio> favoritePortfolioPage = new PageImpl<>(favoritePortfolioList.subList(start, end),
                 pageable, favoritePortfolioList.size());
 
-        return PortfolioConverter.favoritePortfolioConverter(favoritePortfolioPage);
+        return PortfolioConverter.favoritePortfolioPageConverter(favoritePortfolioPage);
     }
 
     //관심 아티스트 추가
@@ -157,20 +157,11 @@ public class ModelService {
 
     /**search**/
     //카테고리 검색
-    public PortfolioPageDto searchCategory(Category category, int page, int size){
+    public PortfolioPageDto searchCategory(Category category, int page){
         //TODO: 정렬 기준 추가
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, 30);
         Page<Portfolio> portfolioPage = portfolioRepository.findByCategory(category, pageable);
-        List<PortfolioDto> portfolioDtoList = portfolioPage.getContent().stream()
-                .map(PortfolioDto::from)
-                .toList();
-        return PortfolioPageDto.builder()
-                .content(portfolioDtoList)
-                .currentPage(pageable.getPageNumber())
-                .pageSize(pageable.getPageSize())
-                .totalNumber(portfolioPage.getNumberOfElements())
-                .totalPage(portfolioPage.getTotalPages())
-                .build();
+        return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
 

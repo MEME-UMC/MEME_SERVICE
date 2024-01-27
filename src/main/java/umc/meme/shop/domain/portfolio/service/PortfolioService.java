@@ -67,7 +67,7 @@ public class PortfolioService {
         //list를 page로 변환
         Page<Portfolio> portfolioPage = new PageImpl<>(portfolioList.subList(start, end),
                 pageable, portfolioList.size());
-        return PortfolioConverter.portfolioConverter(portfolioPage);
+        return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
     // 포트폴리오 하나만 조회
