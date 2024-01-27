@@ -27,10 +27,10 @@ public class ReviewService {
 
     //리뷰 작성
     @Transactional
-    public void createReview(Long modelId, ReviewDto reviewDto){
-        Model model = modelRepository.findById(modelId)
+    public void createReview(ReviewDto reviewDto){
+        Model model = modelRepository.findById(reviewDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
-        Reservation reservation = reservationRepository.findByReservationIdAndModelId(reviewDto.getReservationId(), modelId)
+        Reservation reservation = reservationRepository.findByReservationIdAndModelId(reviewDto.getReservationId(), reviewDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
 
         //이미 리뷰 작성 완료

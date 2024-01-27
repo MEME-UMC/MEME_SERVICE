@@ -36,8 +36,8 @@ public class ModelService {
 
     //모델 프로필 관리
     @Transactional
-    public void updateModelProfile(Long modelId, ModelProfileDto request){
-        Model model = modelRepository.findById(modelId)
+    public void updateModelProfile(ModelProfileDto request){
+        Model model = modelRepository.findById(request.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         model.updateModel(request);
@@ -70,8 +70,8 @@ public class ModelService {
 
     //관심 아티스트 추가
     @Transactional
-    public void addFavoriteArtist(Long modelId, FavoriteArtistDto favoriteArtistDto) {
-        Model model = modelRepository.findById(modelId)
+    public void addFavoriteArtist(FavoriteArtistDto favoriteArtistDto) {
+        Model model = modelRepository.findById(favoriteArtistDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         Artist artist = artistRepository.findById(favoriteArtistDto.getArtistId())
@@ -92,8 +92,8 @@ public class ModelService {
 
     //관심 메이크업 추가
     @Transactional
-    public void addFavoritePortfolio(Long modelId, FavoritePortfolioDto favoritePortfolioDto) {
-        Model model = modelRepository.findById(modelId)
+    public void addFavoritePortfolio(FavoritePortfolioDto favoritePortfolioDto) {
+        Model model = modelRepository.findById(favoritePortfolioDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         Portfolio portfolio = portfolioRepository.findById(favoritePortfolioDto.getPortfolioId())
@@ -114,14 +114,13 @@ public class ModelService {
 
     //관심 아티스트 삭제
     @Transactional
-    public void deleteFavoriteArtist(Long modelId, FavoriteArtistDto favoriteArtistDto){
-        Model model = modelRepository.findById(modelId)
+    public void deleteFavoriteArtist(FavoriteArtistDto favoriteArtistDto){
+        Model model = modelRepository.findById(favoriteArtistDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         Artist artist = artistRepository.findById(favoriteArtistDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        //        FavoriteArtist favoriteArtist = favoriteArtistRepository.findById(favoriteArtistId)
         FavoriteArtist favoriteArtist = favoriteArtistRepository.findByModelAndArtist(model, artist)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_FAVORITE_ARTIST));
         favoriteArtistRepository.delete(favoriteArtist);
@@ -129,8 +128,8 @@ public class ModelService {
 
     //관심 메이크업 삭제
     @Transactional
-    public void deleteFavoritePortfolio(Long modelId, FavoritePortfolioDto favoritePortfolioDto) {
-        Model model = modelRepository.findById(modelId)
+    public void deleteFavoritePortfolio(FavoritePortfolioDto favoritePortfolioDto) {
+        Model model = modelRepository.findById(favoritePortfolioDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         Portfolio portfolio = portfolioRepository.findById(favoritePortfolioDto.getPortfolioId())

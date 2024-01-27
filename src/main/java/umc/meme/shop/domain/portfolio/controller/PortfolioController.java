@@ -16,10 +16,10 @@ public class PortfolioController {
     private final PortfolioService portfolioService;
 
     @Operation(summary = "포트폴리오 생성", description = "포트폴리오를 생성하는 API입니다.")
-    @PostMapping("/{artistId}")
-    public ApiResponse createPortfolio(@PathVariable Long artistId, @RequestBody CreatePortfolioDto portfolioDto){
+    @PostMapping("/")
+    public ApiResponse createPortfolio(@RequestBody CreatePortfolioDto portfolioDto){
         // TODO: PortfolioImg 추가
-        portfolioService.createPortfolio(artistId, portfolioDto);
+        portfolioService.createPortfolio(portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_CREATE);
     }
 
@@ -36,10 +36,10 @@ public class PortfolioController {
     }
 
     @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 수정/삭제하는 API입니다.")
-    @PatchMapping("/{artistId}")
-    public ApiResponse updatePortfolio(@PathVariable Long artistId, @RequestBody UpdatePortfolioDto portfolioDto){
+    @PatchMapping("/")
+    public ApiResponse updatePortfolio(@RequestBody UpdatePortfolioDto portfolioDto){
         // TODO: PortfolioImg 추가
-        portfolioService.updatePortfolio(artistId, portfolioDto);
+        portfolioService.updatePortfolio(portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_UPDATE);
     }
 }

@@ -22,9 +22,9 @@ public class ReservationController {
     @Parameters({
             @Parameter(name = "status", description = "Status enum 에 있는 값 (EXPECTED, COMPLETE, CANCEL)")
     })
-    @PatchMapping("/{reservationId}/alteration")
-    public ApiResponse alteration(@PathVariable Long reservationId, @RequestBody AlterReservationDto alterReservationDto){
-        reservationService.updateReservationStatus(reservationId, alterReservationDto);
+    @PatchMapping("/alteration")
+    public ApiResponse alteration(@RequestBody AlterReservationDto alterReservationDto){
+        reservationService.updateReservationStatus(alterReservationDto);
         return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_UPDATE);
     }
 

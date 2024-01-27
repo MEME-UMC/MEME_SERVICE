@@ -1,5 +1,6 @@
 package umc.meme.shop.domain.portfolio.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,9 @@ import umc.meme.shop.domain.portfolio.entity.enums.Category;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdatePortfolioDto {
+    @NotBlank(message = "artistId를 입력해주세요.")
+    private Long artistId;
+    @NotBlank(message = "portfolioId를 입력해주세요.")
     private Long portfolioId;
     private Category category;
     private String makeupName;

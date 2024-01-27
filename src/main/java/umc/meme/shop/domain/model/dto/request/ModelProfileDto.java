@@ -7,6 +7,7 @@ import umc.meme.shop.domain.model.entity.enums.SkinType;
 
 @Data
 public class ModelProfileDto {
+    private Long modelId;
     private String profileImg;
     private String nickname;
     private Gender gender;

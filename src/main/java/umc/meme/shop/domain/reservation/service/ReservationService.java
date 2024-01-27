@@ -58,8 +58,8 @@ public class ReservationService {
 
     //예약하기 상태 변경
     @Transactional
-    public void updateReservationStatus(Long reservationId, AlterReservationDto reservationDto){
-        Reservation reservation = reservationRepository.findById(reservationId)
+    public void updateReservationStatus(AlterReservationDto reservationDto){
+        Reservation reservation = reservationRepository.findById(reservationDto.getReservationId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
         Status status = reservationDto.getStatus();
 

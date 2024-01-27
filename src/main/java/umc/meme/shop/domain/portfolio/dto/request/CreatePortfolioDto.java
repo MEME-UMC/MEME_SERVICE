@@ -11,6 +11,8 @@ import umc.meme.shop.domain.portfolio.entity.enums.Category;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreatePortfolioDto {
+    @NotBlank(message = "artistId를 입력해주세요.")
+    private Long artistId;
     @NotBlank(message = "카테고리를 입력해주세요")
     private Category category;
     @NotBlank(message = "메이크업 명을 입력해주세요")

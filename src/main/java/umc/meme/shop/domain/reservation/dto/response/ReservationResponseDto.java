@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.reservation.entity.Reservation;
+import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
@@ -28,6 +29,7 @@ public class ReservationResponseDto {
     private Date reservationDate;
     private Map<DayOfWeek, Times> reservationDayOfWeekAndTime;
     private String shopLocation; //샵 위치
+    private Status status;
 
     public static ReservationResponseDto from(Reservation reservation){
         Portfolio portfolio = reservation.getPortfolio();
@@ -44,6 +46,7 @@ public class ReservationResponseDto {
                 .reservationDayOfWeekAndTime(reservation.getReservationDayOfWeekAndTime())
                 .reservationDate(reservation.getReservationDate())
                 .shopLocation(artist.getShopLocation())
+                .status(reservation.getStatus())
                 .build();
     }
 

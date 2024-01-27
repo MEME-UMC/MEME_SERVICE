@@ -22,8 +22,8 @@ public class ArtistService {
 
     //아티스트 프로필 관리/수정
     @Transactional
-    public void updateArtistProfile(Long artistId, ArtistProfileDto profileDto){
-        Artist artist = artistRepository.findById(artistId)
+    public void updateArtistProfile(ArtistProfileDto profileDto){
+        Artist artist = artistRepository.findById(profileDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
         artist.updateArtist(profileDto);
     }
