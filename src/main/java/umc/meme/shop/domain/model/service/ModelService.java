@@ -76,9 +76,10 @@ public class ModelService {
         int end = Math.min((start + pageable.getPageSize()), favoritePortfolioList.size());
 
         //list를 page로 변환
-        Page<FavoritePortfolio> favoritePortfolioPage = new PageImpl<>(favoritePortfolioList.subList(start, end), pageable, favoritePortfolioList.size());
+        Page<FavoritePortfolio> favoritePortfolioPage = new PageImpl<>(favoritePortfolioList.subList(start, end),
+                pageable, favoritePortfolioList.size());
 
-        return PortfolioConverter.portfolioConverter(favoritePortfolioPage);
+        return PortfolioConverter.favoritePortfolioConverter(favoritePortfolioPage);
     }
 
     //관심 아티스트 추가

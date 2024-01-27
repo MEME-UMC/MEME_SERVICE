@@ -2,12 +2,19 @@ package umc.meme.shop.domain.portfolio.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
+import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
+import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
+import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
@@ -47,14 +54,20 @@ public class PortfolioService {
 
     // 포트폴리오 전체 조회
     @Transactional
-    public List<PortfolioDto> getPortfolio(Long artistId, int page) {
+    public PortfolioPageDto getPortfolio(Long artistId, int page) {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
+        //page
         List<Portfolio> portfolioList = artist.getPortfolioList();
-        return portfolioList.stream()
-                .map(PortfolioDto::from)
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, 10);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), portfolioList.size());
+
+        //list를 page로 변환
+        Page<Portfolio> portfolioPage = new PageImpl<>(portfolioList.subList(start, end),
+                pageable, portfolioList.size());
+        return PortfolioConverter.portfolioConverter(portfolioPage);
     }
 
     // 포트폴리오 하나만 조회
