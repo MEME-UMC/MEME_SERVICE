@@ -19,6 +19,7 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
+import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
@@ -147,14 +148,19 @@ public class ModelService {
 
     /**search**/
     //카테고리 검색
-    public List<PortfolioDto> searchCateroty(Category category, int page, int size){
+    public PortfolioPageDto searchCategory(Category category, int page, int size){
         //TODO: 정렬 기준 추가
         Pageable pageable = PageRequest.of(page, size);
         Page<Portfolio> portfolioPage = portfolioRepository.findByCategory(category, pageable);
-
-        return portfolioPage.getContent().stream()
+        List<PortfolioDto> portfolioDtoList = portfolioPage.getContent().stream()
                 .map(PortfolioDto::from)
                 .toList();
+        return PortfolioPageDto.builder()
+                .content(portfolioDtoList)
+                .currentPage(pageable.getPageNumber())
+                .pageSize(pageable.getPageSize())
+                .totalNumber(portfolioPage.getNumberOfElements())
+                .build();
     }
 
 
