@@ -12,13 +12,16 @@ import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
+import umc.meme.shop.domain.review.dto.response.ReviewListResponseDto;
 import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 import umc.meme.shop.domain.review.entity.Review;
 import umc.meme.shop.domain.review.repository.ReviewRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -72,13 +75,26 @@ public class ReviewService {
     }
 
     //리뷰 리스트 조회
-    public List<ReviewResponseDto> getReviewList(Long portfolioId){
+    public ReviewListResponseDto getReviewList(Long portfolioId){
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+
+        //review List
         List<Review> reviewList = portfolio.getReviewList();
-        return reviewList.stream()
+        List<ReviewResponseDto> responseDtoList = reviewList.stream()
                 .map(ReviewResponseDto::from)
                 .toList();
+
+        //별점 현황
+        Map<Integer, Integer> starStatus = new HashMap<>(Map.of(5, 0, 4, 0, 3, 0, 2, 0, 1, 0));
+        for(ReviewResponseDto review : responseDtoList){
+            starStatus.put(review.getStar(), starStatus.get(review.getStar())+1 );
+        }
+
+        return ReviewListResponseDto.builder()
+                .reviewResponseDtoList(responseDtoList)
+                .starStatus(starStatus)
+                .build();
     }
 
     //리뷰 삭제
