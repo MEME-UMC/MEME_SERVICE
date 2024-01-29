@@ -30,6 +30,7 @@ public class PortfolioDto {
     private Boolean isBlock;
 
     private String averageStars;
+    private int reviewCount; //리뷰 개수
 
     public static PortfolioDto from(Portfolio portfolio){
         return PortfolioDto.builder()
@@ -40,6 +41,7 @@ public class PortfolioDto {
                 .info(portfolio.getInfo())
                 .isBlock(portfolio.isBlock())
                 .averageStars(portfolio.getAverageStars())
+                .reviewCount(portfolio.getReviewList().size())
                 .build();
     }
 
@@ -54,6 +56,7 @@ public class PortfolioDto {
                 .info(portfolio.getInfo())
                 .isBlock(portfolio.isBlock())
                 .averageStars(portfolio.getAverageStars())
+                .reviewCount(portfolio.getReviewList().size())
                 .build();
     }
 
