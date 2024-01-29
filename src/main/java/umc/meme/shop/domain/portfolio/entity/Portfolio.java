@@ -45,6 +45,10 @@ public class Portfolio {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolioImgId")
     private List<PortfolioImg> portfolioImgList;
 
+    @Column
+    private String averageStars;
+
+
     @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
     private boolean isBlock;
 
@@ -76,5 +80,18 @@ public class Portfolio {
         this.reviewList.add(review);
     }
 
+    public void updateAverageStars(){
+        int count = this.reviewList.size();
+        if(count == 0) {
+            this.averageStars = "0.00";
+            return;
+        }
+
+        double stars = 0;
+        for(Review review : reviewList){
+            stars += review.getStar();
+        }
+        this.averageStars = String.format("%.2f", stars/count);
+    }
 
 }

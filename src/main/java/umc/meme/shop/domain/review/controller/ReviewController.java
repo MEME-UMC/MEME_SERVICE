@@ -15,6 +15,12 @@ import umc.meme.shop.global.response.ApiResponse;
 public class ReviewController {
     private final ReviewService reviewService;
 
+    @Operation(summary = "리뷰 리스트 조회", description = "리뷰 리스트를 조회하는 API입니다.")
+    @GetMapping("/{portfolioId}")
+    public ApiResponse getReviewList(@PathVariable Long portfolioId){
+        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, reviewService.getReviewList(portfolioId));
+    }
+
     @Operation(summary = "리뷰 작성", description = "리뷰를 작성하는 API입니다.")
     @PostMapping("/")
     public ApiResponse createReview(@RequestBody ReviewDto reviewDto){
@@ -24,8 +30,8 @@ public class ReviewController {
     }
 
     @Operation(summary = "내가 쓴 리뷰 조회", description = "본인이 쓴 리뷰를 조회하는 API입니다.")
-    @GetMapping("/{modelId}")
-    public ApiResponse getReview(@PathVariable Long modelId){
+    @GetMapping("/me/{modelId}")
+    public ApiResponse getMyReview(@PathVariable Long modelId){
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, reviewService.getMyReview(modelId));
     }
 

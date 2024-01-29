@@ -2,12 +2,10 @@ package umc.meme.shop.domain.model.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import umc.meme.shop.domain.artist.dto.response.ArtistDto;
+import umc.meme.shop.domain.artist.converter.ArtistConverter;
+import umc.meme.shop.domain.artist.dto.response.ArtistPageDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
@@ -20,7 +18,6 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
@@ -29,7 +26,6 @@ import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,14 +49,20 @@ public class ModelService {
 
     //관심 아티스트 조회
     @Transactional
-    public List<ArtistDto> getFavoriteArtist(Long modelId){
+    public ArtistPageDto getFavoriteArtist(Long modelId, int page){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
+        //paging
         List<FavoriteArtist> favoriteArtistList = model.getFavoriteArtistList();
-        return favoriteArtistList.stream()
-                .map(ArtistDto::from)
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, 30);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), favoriteArtistList.size());
+
+        Page<FavoriteArtist> favoriteArtistPage = new PageImpl<>(favoriteArtistList.subList(start, end),
+                pageable, favoriteArtistList.size());
+
+        return ArtistConverter.favoriteArtistPageConverter(favoriteArtistPage);
     }
 
     //관심 메이크업 조회
@@ -71,7 +73,7 @@ public class ModelService {
 
         //page
         List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 30);
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), favoritePortfolioList.size());
 
@@ -157,12 +159,36 @@ public class ModelService {
 
     /**search**/
     //카테고리 검색
-    public PortfolioPageDto searchCategory(Category category, int page){
-        //TODO: 정렬 기준 추가
-        Pageable pageable = PageRequest.of(page, 30);
+    public PortfolioPageDto searchCategory(Category category, int page, String sortBy){
+        Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findByCategory(category, pageable);
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
+    //관심 아티스트 검색
+    public PortfolioPageDto searchArtist(Long artistId, int page, String sortBy){
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+
+        Pageable pageable = setPageRequest(page, sortBy);
+        Page<Portfolio> portfolioPage = portfolioRepository.findByArtist(artist, pageable);
+        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+    }
+
+    //검색하기 정렬 기준 설정
+    private Pageable setPageRequest(int page, String sortBy){
+
+        Sort sort;
+        if(sortBy.equals("desc"))
+            sort = Sort.by("price").descending();
+        else if(sortBy.equals("asc"))
+            sort = Sort.by("price").ascending();
+        else if(sortBy.equals("review"))
+            sort = Sort.by("averageStars").descending();
+        else
+            throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
+
+        return PageRequest.of(page, 30, sort);
+    }
 
 }

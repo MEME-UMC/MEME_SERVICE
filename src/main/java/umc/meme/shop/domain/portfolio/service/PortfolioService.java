@@ -59,6 +59,7 @@ public class PortfolioService {
                 .info(portfolioDto.getInfo())
                 .price(portfolioDto.getPrice())
                 .portfolioImgList(new ArrayList<PortfolioImg>())
+                .averageStars("0.00")
                 .isBlock(false)
                 .build();
 

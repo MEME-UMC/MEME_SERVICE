@@ -12,6 +12,7 @@ import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -68,10 +69,6 @@ public class ArtistDto {
     //관심 아티스트
     public static ArtistDto from(FavoriteArtist favoriteArtist){
         Artist artist = favoriteArtist.getArtist();
-        List<PortfolioDto> portfolioDtoList = artist.getPortfolioList()
-                .stream()
-                .map(PortfolioDto::from)
-                .toList();
 
         return ArtistDto.builder()
                 .artistId(artist.getArtistId())
@@ -84,7 +81,7 @@ public class ArtistDto {
                 .specialization(artist.getSpecialization())
                 .makeupLocation(artist.getMakeupLocation())
                 .availableDayOfWeekAndTime(artist.getAvailableDayOfWeekAndTime())
-                .portfolioDtoList(portfolioDtoList)
+                .portfolioDtoList(new ArrayList<>())
                 .build();
     }
 

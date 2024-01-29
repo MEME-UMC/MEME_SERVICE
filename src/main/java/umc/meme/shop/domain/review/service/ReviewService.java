@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
@@ -24,6 +25,7 @@ public class ReviewService {
     private final ModelRepository modelRepository;
     private final ReviewRepository reviewRepository;
     private final ReservationRepository reservationRepository;
+    private final PortfolioRepository portfolioRepository;
 
     //리뷰 작성
     @Transactional
@@ -51,6 +53,7 @@ public class ReviewService {
                 .build();
 
         portfolio.updateReviewList(review);
+        portfolio.updateAverageStars();
         model.updateReviewList(review);
 
         reviewRepository.save(review);
@@ -62,6 +65,16 @@ public class ReviewService {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         List<Review> reviewList = reviewRepository.findByModel(model);
+        return reviewList.stream()
+                .map(ReviewResponseDto::from)
+                .toList();
+    }
+
+    //리뷰 리스트 조회
+    public List<ReviewResponseDto> getReviewList(Long portfolioId){
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+        List<Review> reviewList = portfolio.getReviewList();
         return reviewList.stream()
                 .map(ReviewResponseDto::from)
                 .toList();
