@@ -2,10 +2,7 @@ package umc.meme.shop.domain.model.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
@@ -159,12 +156,19 @@ public class ModelService {
     //카테고리 검색
     public PortfolioPageDto searchCategory(Category category, int page){
         //TODO: 정렬 기준 추가
-        Pageable pageable = PageRequest.of(page, 30);
+        Pageable pageable = PageRequest.of(page, 50);
         Page<Portfolio> portfolioPage = portfolioRepository.findByCategory(category, pageable);
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
     //관심 아티스트 검색
+    public PortfolioPageDto searchArtist(Long artistId, int page, String sortBy){
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+        Pageable pageable = PageRequest.of(page, 50, Sort.by(sortBy).ascending());
+        Page<Portfolio> portfolioPage = portfolioRepository.findByArtist(artist, pageable);
+        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+    }
 
 
 }

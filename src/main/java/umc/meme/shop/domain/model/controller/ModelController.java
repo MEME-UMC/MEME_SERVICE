@@ -80,8 +80,11 @@ public class ModelController {
 
     @Operation(summary = "메이크업 검색 - 관심 아티스트", description = "관심 아티스트로 검색하는 API입니다.")
     @GetMapping("/search/artist")
-    public ApiResponse searchArtist(){
-        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, "");
+    public ApiResponse searchArtist(@Parameter Long artistId,
+                                     @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                     @RequestParam(value = "sortBy", defaultValue = "", required = true) String sortBy
+                                    ){
+        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchArtist(artistId, page, sortBy));
     }
 
     @Operation(summary = "메이크업 검색 - 최근 검색어", description = "최근 검색어 안에서 검색하는 API입니다.")
