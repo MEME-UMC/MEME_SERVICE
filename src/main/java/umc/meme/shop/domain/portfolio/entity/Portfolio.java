@@ -42,12 +42,11 @@ public class Portfolio {
     @Column(nullable = false)
     private String info;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolioImgId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
     private List<PortfolioImg> portfolioImgList;
 
     @Column
     private String averageStars;
-
 
     @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
     private boolean isBlock;
