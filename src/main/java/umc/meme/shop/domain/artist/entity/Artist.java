@@ -116,6 +116,8 @@ public class Artist {
 
     public void updatePortfolioList(Portfolio portfolio){
         this.portfolioList.add(portfolio);
+        System.out.println("updatePortfolioList");
+        System.out.println(portfolio.getPortfolioImgList());
     }
 
     public void tempMethod(String email, String name){
