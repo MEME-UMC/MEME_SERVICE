@@ -8,11 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateReviewDto {
-    @NotBlank(message = "artistId를 입력해주세요")
-    private Long artistId;
+public class DeleteReviewDto {
+    @NotBlank(message = "modelId를 입력해주세요")
+    private Long modelId;
     @NotBlank(message = "reviewId를 입력해주세요")
     private Long reviewId;
-    @NotBlank(message = "block 여부를 입력해주세요")
-    private boolean isBlock;
 }

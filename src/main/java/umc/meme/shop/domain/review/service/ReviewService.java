@@ -10,6 +10,7 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
+import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 import umc.meme.shop.domain.review.entity.Review;
@@ -78,5 +79,18 @@ public class ReviewService {
         return reviewList.stream()
                 .map(ReviewResponseDto::from)
                 .toList();
+    }
+
+    //리뷰 삭제
+    @Transactional
+    public void deleteReview(DeleteReviewDto reviewDto){
+        Model model = modelRepository.findById(reviewDto.getModelId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+        Review review = reviewRepository.findById(reviewDto.getReviewId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_REVIEW));
+        if(!review.getModel().equals(model))
+            throw new GlobalException(ErrorStatus.INVALID_MODEL_FOR_REVIEW);
+
+        reviewRepository.delete(review);
     }
 }
