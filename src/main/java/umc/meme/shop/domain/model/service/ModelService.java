@@ -3,6 +3,7 @@ package umc.meme.shop.domain.model.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
@@ -154,9 +155,8 @@ public class ModelService {
 
     /**search**/
     //카테고리 검색
-    public PortfolioPageDto searchCategory(Category category, int page){
-        //TODO: 정렬 기준 추가
-        Pageable pageable = PageRequest.of(page, 50);
+    public PortfolioPageDto searchCategory(Category category, int page, String sortBy){
+        Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findByCategory(category, pageable);
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
@@ -165,10 +165,25 @@ public class ModelService {
     public PortfolioPageDto searchArtist(Long artistId, int page, String sortBy){
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
-        Pageable pageable = PageRequest.of(page, 50, Sort.by(sortBy).ascending());
+
+        Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findByArtist(artist, pageable);
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
+    private Pageable setPageRequest(int page, String sortBy){
+
+        Sort sort;
+        if(sortBy.equals("desc"))
+            sort = Sort.by("price").descending();
+        else if(sortBy.equals("asc"))
+            sort = Sort.by("price").ascending();
+//        else if(sortBy.equals("review"))
+//            sort = Sort.by("review").ascending();
+        else
+            throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
+
+        return PageRequest.of(page, 50, sort);
+    }
 
 }
