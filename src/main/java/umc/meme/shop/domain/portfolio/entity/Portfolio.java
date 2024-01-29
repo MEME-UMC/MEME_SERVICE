@@ -72,7 +72,7 @@ public class Portfolio {
             this.makeupName = request.getMakeupName();
         }
 
-        this.isBlock = request.isBlock();
+        this.isBlock = request.getIsBlock();
     }
 
     public void updateReviewList(Review review){

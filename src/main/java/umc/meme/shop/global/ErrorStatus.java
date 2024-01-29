@@ -40,6 +40,7 @@ public enum ErrorStatus {
     //portfolio
     ALREADY_EXIST_PORTFOLIO(400, "해당 포트폴리오 제목이 이미 존재합니다"),
     INVALID_SORT_CRITERIA(400, "잘못된 정렬 기준입니다"),
+    BLOCKED_PORTFOLIO(400, "숨김 처리된 포트폴리오입니다"),
 
     //review
     ALREADY_REVIEWED(400, "이미 리뷰 작성이 완료된 예약입니다."),

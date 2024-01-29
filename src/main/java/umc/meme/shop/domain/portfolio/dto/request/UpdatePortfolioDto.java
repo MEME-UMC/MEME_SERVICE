@@ -20,6 +20,6 @@ public class UpdatePortfolioDto {
     private String makeupName;
     private int price;
     private String info;
-    private boolean isBlock;
+    private Boolean isBlock;
     private PortfolioImgDto portfolioImg;
 }
