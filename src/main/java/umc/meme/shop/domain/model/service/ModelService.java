@@ -3,10 +3,8 @@ package umc.meme.shop.domain.model.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
-import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.converter.ArtistConverter;
-import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.dto.response.ArtistPageDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
@@ -20,7 +18,6 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
@@ -29,7 +26,6 @@ import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +55,7 @@ public class ModelService {
 
         //paging
         List<FavoriteArtist> favoriteArtistList = model.getFavoriteArtistList();
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 30);
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), favoriteArtistList.size());
 
@@ -77,7 +73,7 @@ public class ModelService {
 
         //page
         List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 30);
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), favoritePortfolioList.size());
 
@@ -192,7 +188,7 @@ public class ModelService {
         else
             throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
 
-        return PageRequest.of(page, 50, sort);
+        return PageRequest.of(page, 30, sort);
     }
 
 }
