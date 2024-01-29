@@ -1,13 +1,14 @@
 package umc.meme.shop.domain.model.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.service.ModelService;
-import umc.meme.shop.domain.review.dto.request.ReviewDto;
+import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
 
@@ -34,8 +35,10 @@ public class ModelController {
 
     @Operation(summary = "관심 메이크업 조회", description = "관심 메이크업을 조회하는 API입니다.")
     @GetMapping("/mypage/{modelId}/favorite/portfolio")
-    public ApiResponse getFavoritePortfolio(@PathVariable Long modelId){
-        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(modelId));
+    public ApiResponse getFavoritePortfolio(@PathVariable Long modelId,
+                                            @RequestParam(value = "page", defaultValue = "0", required = false) int page
+                                            ){
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(modelId, page));
     }
 
     @Operation(summary = "관심 아티스트 추가", description = "관심 아티스트를 추가하는 API입니다.")
@@ -89,7 +92,9 @@ public class ModelController {
 
     @Operation(summary = "메이크업 검색 - 카테고리", description = "메이크업 카테고리로 검색하는 API입니다.")
     @GetMapping("/search/category")
-    public ApiResponse searchCategory(){
-        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, "");
+    public ApiResponse searchCategory(@Parameter Category category,
+                                      @RequestParam(value = "page", defaultValue = "0", required = false) int page
+                                      ){
+        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchCategory(category, page));
     }
 }

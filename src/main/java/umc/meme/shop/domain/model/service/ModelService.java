@@ -2,6 +2,10 @@ package umc.meme.shop.domain.model.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
@@ -15,8 +19,11 @@ import umc.meme.shop.domain.favorite.repository.FavoritePortfolioRepository;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
+import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
+import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
@@ -58,14 +65,21 @@ public class ModelService {
 
     //관심 메이크업 조회
     @Transactional
-    public List<PortfolioDto> getFavoritePortfolio(Long modelId){
+    public PortfolioPageDto getFavoritePortfolio(Long modelId, int page){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
+        //page
         List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
-        return favoritePortfolioList.stream()
-                .map(PortfolioDto::from)
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, 10);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), favoritePortfolioList.size());
+
+        //list를 page로 변환
+        Page<FavoritePortfolio> favoritePortfolioPage = new PageImpl<>(favoritePortfolioList.subList(start, end),
+                pageable, favoritePortfolioList.size());
+
+        return PortfolioConverter.favoritePortfolioPageConverter(favoritePortfolioPage);
     }
 
     //관심 아티스트 추가
@@ -138,6 +152,16 @@ public class ModelService {
         FavoritePortfolio favoritePortfolio = favoritePortfolioRepository.findByModelAndPortfolio(model, portfolio)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_FAVORITE_PORTFOLIO));
         favoritePortfolioRepository.delete(favoritePortfolio);
+    }
+
+
+    /**search**/
+    //카테고리 검색
+    public PortfolioPageDto searchCategory(Category category, int page){
+        //TODO: 정렬 기준 추가
+        Pageable pageable = PageRequest.of(page, 30);
+        Page<Portfolio> portfolioPage = portfolioRepository.findByCategory(category, pageable);
+        return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
 
