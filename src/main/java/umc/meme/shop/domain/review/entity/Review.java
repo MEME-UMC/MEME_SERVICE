@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.portfolio.entity.PortfolioImg;
+
+import java.util.List;
 
 @Builder
 @Getter
@@ -25,6 +28,9 @@ public class Review {
     @ManyToOne
     @JoinColumn(name="model_id", nullable = false)
     private Model model;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
+    private List<ReviewImg> reviewImgList;
 
     @Column(nullable = false)
     private int star;
