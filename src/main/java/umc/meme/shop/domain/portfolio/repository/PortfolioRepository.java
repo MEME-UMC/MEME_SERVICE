@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
     @Query("SELECT r FROM Portfolio r WHERE r.artist = :artist")
-    List<Portfolio> findByArtist(@Param("artist") Artist artist);
+    Page<Portfolio> findByArtist(@Param("artist") Artist artist, Pageable pageable);
 
     @Query("SELECT p FROM Portfolio p WHERE p.category = :category")
     Page<Portfolio> findByCategory(@Param("category") Category category, Pageable pageable);

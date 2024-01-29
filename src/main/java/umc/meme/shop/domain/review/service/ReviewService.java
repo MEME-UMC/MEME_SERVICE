@@ -51,6 +51,7 @@ public class ReviewService {
                 .build();
 
         portfolio.updateReviewList(review);
+        portfolio.updateAverageStars();
         model.updateReviewList(review);
 
         reviewRepository.save(review);

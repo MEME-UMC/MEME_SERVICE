@@ -45,6 +45,7 @@ public class PortfolioService {
                 .makeupName(portfolioDto.getMakeupName())
                 .info(portfolioDto.getInfo())
                 .price(portfolioDto.getPrice())
+                .averageStars("0.00")
                 .isBlock(false)
                 .build();
 
