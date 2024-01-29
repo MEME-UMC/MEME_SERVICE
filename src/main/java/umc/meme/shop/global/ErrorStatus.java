@@ -44,6 +44,7 @@ public enum ErrorStatus {
     //review
     ALREADY_REVIEWED(400, "이미 리뷰 작성이 완료된 예약입니다."),
     INVALID_REVIEW_REQUEST(400, "예약이 완료되지 않아 리뷰를 작성할 수 없습니다."),
+    INVALID_MODEL_FOR_REVIEW(400,  "사용자가 작성하지 않은 리뷰입니다."),
 
     //reservation
     ALREADY_CHANGE_STATUS(400, "이미 예약 상태가 변경되었습니다."),
@@ -63,6 +64,7 @@ public enum ErrorStatus {
     NOT_EXIST_RESERVATION(404, "존재하지 않는 예약입니다."),
     NOT_EXIST_FAVORITE_ARTIST(404, "존재하지 않는 관심 아티스트입니다."),
     NOT_EXIST_FAVORITE_PORTFOLIO(404, "존재하지 않는 관심 메이크업입니다."),
+    NOT_EXIST_REVIEW(404, "존재하지 않는 리뷰입니다."),
     PAGE_NOT_FOUND(404,"페이지를 찾을 수 없습니다"), ;
 
 

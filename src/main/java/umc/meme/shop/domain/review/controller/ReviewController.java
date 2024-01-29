@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
-import umc.meme.shop.domain.review.dto.request.UpdateReviewDto;
+import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.service.ReviewService;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
@@ -35,9 +35,10 @@ public class ReviewController {
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, reviewService.getMyReview(modelId));
     }
 
-    @Operation(summary = "리뷰 관리", description = "block 상태를 통해 리뷰 공개 유무를 결정할 수 있는 API입니다.")
-    @PatchMapping("/")
-    public ApiResponse updateReview(@RequestBody UpdateReviewDto reviewDto){
-        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_UPDATE);
+    @Operation(summary = "리뷰 삭제", description = "모델이 작성한 리뷰를 삭제하는 API입니다.")
+    @DeleteMapping("/")
+    public ApiResponse updateReview(@RequestBody DeleteReviewDto reviewDto){
+        reviewService.deleteReview(reviewDto);
+        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_DELETE);
     }
 }

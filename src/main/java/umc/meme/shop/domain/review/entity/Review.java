@@ -31,7 +31,4 @@ public class Review {
 
     @Column(nullable = true, length = 200)
     private String comment;
-
-    @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
-    private boolean isBlock;
 }
