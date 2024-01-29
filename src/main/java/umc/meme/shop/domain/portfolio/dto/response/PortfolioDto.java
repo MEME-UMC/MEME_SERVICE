@@ -43,10 +43,6 @@ public class PortfolioDto {
                 .stream()
                 .map(portfolioImg -> new PortfolioImgDto(portfolioImg.getPortfolioImgId(), portfolioImg.getSrc(), false))
                 .toList();
-        System.out.println("getPortfolio");
-        System.out.println(portfolio.getPortfolioImgList());
-        System.out.println(portfolioImgDtoList);
-        System.out.println("Converting Portfolio ID " + portfolio.getPortfolioId() + " with " + portfolio.getPortfolioImgList().size() + " images");
 
         return PortfolioDto.builder()
                 .portfolioId(portfolio.getPortfolioId())

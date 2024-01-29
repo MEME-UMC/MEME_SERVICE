@@ -12,13 +12,17 @@ import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
+import umc.meme.shop.domain.review.dto.response.ReviewImgDto;
 import umc.meme.shop.domain.review.dto.response.ReviewListResponseDto;
 import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 import umc.meme.shop.domain.review.entity.Review;
+import umc.meme.shop.domain.review.entity.ReviewImg;
+import umc.meme.shop.domain.review.repository.ReviewImgRepository;
 import umc.meme.shop.domain.review.repository.ReviewRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +34,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReservationRepository reservationRepository;
     private final PortfolioRepository portfolioRepository;
+    private final ReviewImgRepository reviewImgRepository;
 
     //리뷰 작성
     @Transactional
@@ -49,12 +54,25 @@ public class ReviewService {
 
         Portfolio portfolio = reservation.getPortfolio();
 
+        List<ReviewImg> reviewImgList = new ArrayList<>();
+        for (String src : reviewDto.getReviewImgSrc()) {
+            ReviewImg reviewImg = new ReviewImg();
+            reviewImg.setSrc(src);
+            reviewImgList.add(reviewImg);
+        }
+
         Review review = Review.builder()
                 .model(model)
                 .portfolio(portfolio)
                 .star(reviewDto.getStar())
                 .comment(reviewDto.getComment())
+                .reviewImgList(new ArrayList<ReviewImg>())
                 .build();
+
+        for (ReviewImg reviewImg : reviewImgList) {
+            reviewImg.setReview(review);
+            review.getReviewImgList().add(reviewImg);
+        }
 
         portfolio.updateReviewList(review);
         portfolio.updateAverageStars();

@@ -1,7 +1,10 @@
 package umc.meme.shop.domain.review.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jdk.dynalink.linker.LinkerServices;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ReviewDto {
@@ -12,4 +15,5 @@ public class ReviewDto {
     @NotBlank(message = "별점을 입력해주세요")
     private int star;
     private String comment;
+    private List<String> reviewImgSrc;
 }
