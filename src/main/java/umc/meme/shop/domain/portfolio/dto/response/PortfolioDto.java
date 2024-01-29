@@ -31,15 +31,7 @@ public class PortfolioDto {
 
     private String averageStars;
 
-    private List<ReviewResponseDto> reviewResponseDtoList;
-
     public static PortfolioDto from(Portfolio portfolio){
-        List<ReviewResponseDto> reviewResponseDtoList = portfolio.getReviewList()
-                .stream()
-                .map(ReviewResponseDto::from)
-                .toList();
-        //별점 평균
-
         return PortfolioDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
                 .category(portfolio.getCategory())
@@ -48,19 +40,12 @@ public class PortfolioDto {
                 .info(portfolio.getInfo())
                 .isBlock(portfolio.isBlock())
                 .averageStars(portfolio.getAverageStars())
-                .reviewResponseDtoList(reviewResponseDtoList)
                 .build();
     }
 
     //관심 메이크업
     public static PortfolioDto from(FavoritePortfolio favoritePortfolio){
         Portfolio portfolio = favoritePortfolio.getPortfolio();
-
-        List<ReviewResponseDto> reviewResponseDtoList = portfolio.getReviewList()
-                .stream()
-                .map(ReviewResponseDto::from)
-                .toList();
-
         return PortfolioDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
                 .category(portfolio.getCategory())
@@ -69,7 +54,6 @@ public class PortfolioDto {
                 .info(portfolio.getInfo())
                 .isBlock(portfolio.isBlock())
                 .averageStars(portfolio.getAverageStars())
-                .reviewResponseDtoList(reviewResponseDtoList)
                 .build();
     }
 
