@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
-import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
@@ -24,8 +23,8 @@ import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,8 +67,6 @@ public class PortfolioService {
             portfolio.getPortfolioImgList().add(portfolioImg); // Portfolio의 이미지 리스트에 추가
         }
 
-        System.out.println(portfolio.getPortfolioImgList());
-
         artist.updatePortfolioList(portfolio);
         portfolioRepository.save(portfolio);
     }
@@ -80,8 +77,18 @@ public class PortfolioService {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        //page
         List<Portfolio> portfolioList = artist.getPortfolioList();
+
+        //isblock이면 리스트에서 제거
+        Iterator<Portfolio> iterator = portfolioList.iterator();
+        while (iterator.hasNext()) {
+            Portfolio portfolio = iterator.next();
+            if (portfolio.isBlock()) {
+                iterator.remove();
+            }
+        }
+
+        //page로 mapping
         Pageable pageable = PageRequest.of(page, 30);
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), portfolioList.size());
@@ -97,6 +104,9 @@ public class PortfolioService {
     public PortfolioDto getPortfolioDetails(Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+
+        if(portfolio.isBlock())
+            throw new GlobalException(ErrorStatus.BLOCKED_PORTFOLIO);
 
         return PortfolioDto.from(portfolio);
     }
