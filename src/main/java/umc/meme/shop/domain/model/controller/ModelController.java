@@ -29,8 +29,9 @@ public class ModelController {
 
     @Operation(summary = "관심 아티스트 조회", description = "관심 아티스트를 조회하는 API입니다.")
     @GetMapping("/mypage/{modelId}/favorite/artist")
-    public ApiResponse getFavoriteArtist(@PathVariable Long modelId){
-        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, modelService.getFavoriteArtist(modelId));
+    public ApiResponse getFavoriteArtist(@PathVariable Long modelId,
+                                         @RequestParam(value = "page", defaultValue = "0", required = false)int page){
+        return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, modelService.getFavoriteArtist(modelId, page));
     }
 
     @Operation(summary = "관심 메이크업 조회", description = "관심 메이크업을 조회하는 API입니다.")

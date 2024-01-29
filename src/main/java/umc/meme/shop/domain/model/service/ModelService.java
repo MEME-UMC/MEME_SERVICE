@@ -7,7 +7,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import umc.meme.shop.domain.artist.converter.ArtistConverter;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
+import umc.meme.shop.domain.artist.dto.response.ArtistPageDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
@@ -53,14 +55,20 @@ public class ModelService {
 
     //관심 아티스트 조회
     @Transactional
-    public List<ArtistDto> getFavoriteArtist(Long modelId){
+    public ArtistPageDto getFavoriteArtist(Long modelId, int page){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
+        //paging
         List<FavoriteArtist> favoriteArtistList = model.getFavoriteArtistList();
-        return favoriteArtistList.stream()
-                .map(ArtistDto::from)
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, 10);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), favoriteArtistList.size());
+
+        Page<FavoriteArtist> favoriteArtistPage = new PageImpl<>(favoriteArtistList.subList(start, end),
+                pageable, favoriteArtistList.size());
+
+        return ArtistConverter.favoriteArtistPageConverter(favoriteArtistPage);
     }
 
     //관심 메이크업 조회
