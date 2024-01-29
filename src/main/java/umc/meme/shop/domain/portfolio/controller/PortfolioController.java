@@ -18,7 +18,6 @@ public class PortfolioController {
     @Operation(summary = "포트폴리오 생성", description = "포트폴리오를 생성하는 API입니다.")
     @PostMapping("/")
     public ApiResponse createPortfolio(@RequestBody CreatePortfolioDto portfolioDto){
-        // TODO: PortfolioImg 추가
         portfolioService.createPortfolio(portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_CREATE);
     }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
+import umc.meme.shop.domain.portfolio.repository.PortfolioImgRepository;
 import umc.meme.shop.domain.review.entity.Review;
 
 import java.util.List;
@@ -41,8 +42,12 @@ public class Portfolio {
     @Column(nullable = false)
     private String info;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolioImgId")
+    private List<PortfolioImg> portfolioImgList;
+
     @Column
     private String averageStars;
+
 
     @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
     private boolean isBlock;
@@ -51,6 +56,7 @@ public class Portfolio {
     private List<Review> reviewList;
 
     public void updatePortfolio(UpdatePortfolioDto request) {
+
         if(request.getCategory() != null){
             this.category = request.getCategory();
         }

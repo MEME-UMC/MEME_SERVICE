@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.portfolio.dto.response.PortfolioImgDto;
+import umc.meme.shop.domain.portfolio.entity.PortfolioImg;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 
 @Data
@@ -19,4 +21,5 @@ public class UpdatePortfolioDto {
     private int price;
     private String info;
     private boolean isBlock;
+    private PortfolioImgDto portfolioImg;
 }
