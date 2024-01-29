@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.portfolio.entity.PortfolioImg;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,4 +24,6 @@ public class CreatePortfolioDto {
     private int price;
     @NotBlank(message = "메이크업 정보를 입력해주세요")
     private String info;
+    @NotBlank(message = "포트폴리오 이미지를 업로드해주세요")
+    private List<String> portfolioImgSrc;
 }

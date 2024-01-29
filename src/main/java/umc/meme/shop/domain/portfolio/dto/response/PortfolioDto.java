@@ -1,12 +1,12 @@
 package umc.meme.shop.domain.portfolio.dto.response;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.portfolio.entity.PortfolioImg;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 
@@ -31,15 +31,25 @@ public class PortfolioDto {
 
     private String averageStars;
 
+    private List<PortfolioImgDto> portfolioImgDtoList;
+
     private List<ReviewResponseDto> reviewResponseDtoList;
 
-    public static PortfolioDto from(Portfolio portfolio){
+    public static PortfolioDto from(Portfolio portfolio) {
+        // 리뷰 리스트를 ReviewResponseDto 리스트로 변환
         List<ReviewResponseDto> reviewResponseDtoList = portfolio.getReviewList()
                 .stream()
                 .map(ReviewResponseDto::from)
                 .toList();
-        //별점 평균
+
+        // 별점 평균 계산
         String averageStars = calculateAverageStars(reviewResponseDtoList);
+
+        // PortfolioImg 리스트를 PortfolioImgDto 리스트로 변환
+        List<PortfolioImgDto> portfolioImgDtoList = portfolio.getPortfolioImgList()
+                .stream()
+                .map(portfolioImg -> new PortfolioImgDto(portfolioImg.getPortfolioImgId(), portfolioImg.getSrc(), false))
+                .toList();
 
         return PortfolioDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
@@ -49,6 +59,7 @@ public class PortfolioDto {
                 .info(portfolio.getInfo())
                 .isBlock(portfolio.isBlock())
                 .averageStars(averageStars)
+                .portfolioImgDtoList(portfolioImgDtoList)
                 .reviewResponseDtoList(reviewResponseDtoList)
                 .build();
     }
