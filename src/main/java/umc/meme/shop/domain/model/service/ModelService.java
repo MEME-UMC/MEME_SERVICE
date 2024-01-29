@@ -164,5 +164,7 @@ public class ModelService {
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
+    //관심 아티스트 검색
+
 
 }

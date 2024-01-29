@@ -21,6 +21,8 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationResponseDto {
+    private Long reservationId ;
+    private Long portfolioId;
     private String modelName;
     private String artistName;
     private String makeupName;
@@ -39,6 +41,8 @@ public class ReservationResponseDto {
         Artist artist = reservation.getPortfolio().getArtist();
 
         return ReservationResponseDto.builder()
+                .reservationId(reservation.getReservationId())
+                .portfolioId(portfolio.getPortfolioId())
                 .modelName(reservation.getModel().getName())
                 .artistName(artist.getName())
                 .makeupName(portfolio.getMakeupName())
