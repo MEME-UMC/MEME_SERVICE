@@ -67,6 +67,8 @@ public class PortfolioService {
             portfolio.getPortfolioImgList().add(portfolioImg); // Portfolio의 이미지 리스트에 추가
         }
 
+        System.out.println(portfolio.getPortfolioImgList());
+
         artist.updatePortfolioList(portfolio);
         portfolioRepository.save(portfolio);
     }
@@ -79,13 +81,14 @@ public class PortfolioService {
 
         //page
         List<Portfolio> portfolioList = artist.getPortfolioList();
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 30);
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), portfolioList.size());
 
         //list를 page로 변환
         Page<Portfolio> portfolioPage = new PageImpl<>(portfolioList.subList(start, end),
                 pageable, portfolioList.size());
+
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 

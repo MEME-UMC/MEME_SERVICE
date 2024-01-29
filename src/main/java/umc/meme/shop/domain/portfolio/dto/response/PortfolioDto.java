@@ -51,6 +51,8 @@ public class PortfolioDto {
                 .map(portfolioImg -> new PortfolioImgDto(portfolioImg.getPortfolioImgId(), portfolioImg.getSrc(), false))
                 .toList();
 
+        System.out.println(reviewResponseDtoList);
+
         return PortfolioDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
                 .category(portfolio.getCategory())
