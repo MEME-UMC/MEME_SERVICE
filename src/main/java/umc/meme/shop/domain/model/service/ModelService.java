@@ -171,6 +171,7 @@ public class ModelService {
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
+    //검색하기 정렬 기준 설정
     private Pageable setPageRequest(int page, String sortBy){
 
         Sort sort;
@@ -178,8 +179,8 @@ public class ModelService {
             sort = Sort.by("price").descending();
         else if(sortBy.equals("asc"))
             sort = Sort.by("price").ascending();
-//        else if(sortBy.equals("review"))
-//            sort = Sort.by("review").ascending();
+        else if(sortBy.equals("review"))
+            sort = Sort.by("averageStars").descending();
         else
             throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
 
