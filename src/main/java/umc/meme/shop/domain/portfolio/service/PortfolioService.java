@@ -68,8 +68,6 @@ public class PortfolioService {
             portfolio.getPortfolioImgList().add(portfolioImg); // Portfolio의 이미지 리스트에 추가
         }
 
-        System.out.println(portfolio.getPortfolioImgList());
-
         artist.updatePortfolioList(portfolio);
         portfolioRepository.save(portfolio);
     }
