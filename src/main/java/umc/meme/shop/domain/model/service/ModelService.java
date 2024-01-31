@@ -158,6 +158,13 @@ public class ModelService {
 
 
     /**search**/
+    //검색
+    public PortfolioPageDto search(String query, int page, String sortBy){
+        Pageable pageable = setPageRequest(page, sortBy);
+        Page<Portfolio> portfolioPage = null;
+        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+    }
+
     //카테고리 검색
     public PortfolioPageDto searchCategory(Category category, int page, String sortBy){
         Pageable pageable = setPageRequest(page, sortBy);
