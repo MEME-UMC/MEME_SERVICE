@@ -36,7 +36,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.HOST }}
-          username: ubuntu
+          username: ec2-user
           key: ${{ secrets.KEY }}
           script: |
             if ! apt list --upgradable 2>/dev/null | grep -q "upgradable"; then
