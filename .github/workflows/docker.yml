@@ -59,7 +59,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.HOST }}
-          username: ubuntu
+          username: ec2-user
           key: ${{ secrets.KEY }}
           script: |
             if [ "$(sudo docker ps -aq)" ]; then
@@ -74,7 +74,7 @@ jobs:
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: ubuntu
+          username: ec2-user
           key: ${{ secrets.KEY }}
           source: ./docker-compose.yaml
           target: /home/ubuntu/
@@ -83,7 +83,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.HOST }}
-          username: ubuntu
+          username: ec2-user
           key: ${{ secrets.KEY }}
           script: |
             # Create .env file
@@ -94,19 +94,17 @@ jobs:
             # Copy .env file to the project directory
             #cp ~/.env /home/ubuntu/.env
 
-
-
       ## docker compose up
       - name: Docker Compose on EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: ubuntu
+          username: ec2-user
           key: ${{ secrets.KEY }}
           script: |
             # Docker 이미지 다운로드
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/mappin-server
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/mappin-nginx
+            sudo docker pull ${{ secrets.DOCKER_REPO }}/meme-service
+#            sudo docker pull ${{ secrets.DOCKER_REPO }}/mappin-nginx
             
             # Docker Compose 실행
             sudo docker-compose up -d
