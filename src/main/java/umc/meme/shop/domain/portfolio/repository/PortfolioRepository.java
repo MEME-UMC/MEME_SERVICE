@@ -18,5 +18,10 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
     @Query("SELECT p FROM Portfolio p WHERE p.category = :category")
     Page<Portfolio> findByCategory(@Param("category") Category category, Pageable pageable);
 
+    @Query("SELECT p FROM Portfolio p " +
+            "WHERE p.makeupName LIKE %:query% " +
+            "OR p.info LIKE %:query% ")
+    Page<Portfolio> search(@Param("query") String query, Pageable pageable);
+
     boolean existsByMakeupName(String makeupName);
 }

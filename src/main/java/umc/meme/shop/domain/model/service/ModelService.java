@@ -161,7 +161,13 @@ public class ModelService {
     //검색
     public PortfolioPageDto search(String query, int page, String sortBy){
         Pageable pageable = setPageRequest(page, sortBy);
-        Page<Portfolio> portfolioPage = null;
+
+        //query 검색
+        Page<Portfolio> portfolioPage = portfolioRepository.search(query, pageable);
+
+        if(portfolioPage.getContent().isEmpty())
+            throw new GlobalException(ErrorStatus.SEARCH_NOT_FOUNT);
+
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
