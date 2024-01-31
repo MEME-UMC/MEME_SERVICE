@@ -19,9 +19,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Run chmod to make gradlew executable
-        run: chmod +x ./gradlew
-
       - name: Set .yml for main
         run: |
           # Create resources directory if it doesn't exist
@@ -30,6 +27,9 @@ jobs:
           touch ./application.yml
           echo "${{ secrets.MAIN_DATABASE_YML }}" >> ./application.yml
         shell: bash
+
+      - name: Run chmod to make gradlew executable
+        run: chmod +x ./gradlew
 
       - name: Build with Gradle
         run: ./gradlew clean build --exclude-task test
