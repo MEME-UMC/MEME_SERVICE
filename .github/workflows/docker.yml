@@ -32,29 +32,6 @@ jobs:
           docker build -t ${{ secrets.DOCKER_REPO }}/meme-service .
           docker push ${{ secrets.DOCKER_REPO }}/meme-service    
 
-      - name: Install Docker on EC2
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.HOST }}
-          username: ec2-user
-          key: ${{ secrets.KEY }}
-          script: |
-            if ! apt list --upgradable 2>/dev/null | grep -q "upgradable"; then
-              sudo apt update -y
-            fi
-            if ! command -v docker &> /dev/null; then
-              sudo apt install -y docker.io
-              sudo systemctl start docker
-              sudo systemctl enable docker
-              sudo usermod -aG docker ubuntu
-            else
-              echo "Docker is already installed"
-            fi
-            if ! command -v docker-compose &> /dev/null; then
-              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-              sudo chmod +x /usr/local/bin/docker-compose
-            fi
-
       - name: EC2 docker remove
         uses: appleboy/ssh-action@v0.1.6
         with:
