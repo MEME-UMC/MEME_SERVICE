@@ -21,8 +21,6 @@ jobs:
 
       - name: Set .yml for main
         run: |
-          # Create resources directory if it doesn't exist
-          mkdir -p ./src/main/resources
           cd ./src/main/resources
           touch ./application.yml
           echo "${{ secrets.MAIN_DATABASE_YML }}" >> ./application.yml
