@@ -25,10 +25,10 @@ jobs:
       - name: Set .yml for main
         run: |
           # Create resources directory if it doesn't exist
-          mkdir -p ./src/main/resources
+          mkdir ./src/main/resources
           cd ./src/main/resources
-          touch ./application-database.yaml
-          echo "${{ secrets.MAIN_DATABASE_YML }}" >> ./application-database.yml
+          touch ./application.yml
+          echo "${{ secrets.MAIN_DATABASE_YML }}" >> ./application.yml
         shell: bash
 
       - name: Build with Gradle
