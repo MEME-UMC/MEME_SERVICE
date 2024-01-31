@@ -22,6 +22,14 @@ jobs:
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
 
+      - name: Set .yml for main
+        run: |
+            # main 설정 파일 디렉토리로 이동
+            cd ./src/main/resources
+            touch ./application-database.yaml
+            echo "${{ secrets.MAIN_DATABASE_YML }}" >> ./application-database.yml
+        shell: bash
+
       - name: Build with Gradle
         run: ./gradlew clean build --exclude-task test
 
