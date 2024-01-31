@@ -45,7 +45,7 @@ public class Artist {
     private String profileImg;
 
     @Column(nullable = false, length = 500)
-    private String introduction = "안녕하세요! 저는 ___입니다!";
+    private String introduction;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -12,7 +12,6 @@ import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
-import umc.meme.shop.domain.review.dto.response.ReviewImgDto;
 import umc.meme.shop.domain.review.dto.response.ReviewListResponseDto;
 import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 import umc.meme.shop.domain.review.entity.Review;
