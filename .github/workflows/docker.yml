@@ -24,10 +24,11 @@ jobs:
 
       - name: Set .yml for main
         run: |
-            # main 설정 파일 디렉토리로 이동
-            cd ./src/main/resources
-            touch ./application-database.yaml
-            echo "${{ secrets.MAIN_DATABASE_YML }}" >> ./application-database.yml
+          # Create resources directory if it doesn't exist
+          mkdir -p ./src/main/resources
+          cd ./src/main/resources
+          touch ./application-database.yaml
+          echo "${{ secrets.MAIN_DATABASE_YML }}" >> ./application-database.yml
         shell: bash
 
       - name: Build with Gradle
