@@ -3,7 +3,7 @@ name: main Workflow
 on:
   push:
     branches:
-      - ci/#80
+      - develop
 jobs:
   build:
     runs-on: ubuntu-latest
