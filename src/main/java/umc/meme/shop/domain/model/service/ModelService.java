@@ -158,6 +158,19 @@ public class ModelService {
 
 
     /**search**/
+    //검색
+    public PortfolioPageDto search(String query, int page, String sortBy){
+        Pageable pageable = setPageRequest(page, sortBy);
+
+        //query 검색
+        Page<Portfolio> portfolioPage = portfolioRepository.search(query, pageable);
+
+        if(portfolioPage.getContent().isEmpty())
+            throw new GlobalException(ErrorStatus.SEARCH_NOT_FOUNT);
+
+        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+    }
+
     //카테고리 검색
     public PortfolioPageDto searchCategory(Category category, int page, String sortBy){
         Pageable pageable = setPageRequest(page, sortBy);
@@ -174,6 +187,14 @@ public class ModelService {
         Page<Portfolio> portfolioPage = portfolioRepository.findByArtist(artist, pageable);
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
+
+    //전체 조회
+    public PortfolioPageDto searchAll(int page, String sortBy){
+        Pageable pageable = setPageRequest(page, sortBy);
+        Page<Portfolio> portfolioPage = portfolioRepository.findAllNotBlocked(pageable);
+        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+    }
+
 
     //검색하기 정렬 기준 설정
     private Pageable setPageRequest(int page, String sortBy){

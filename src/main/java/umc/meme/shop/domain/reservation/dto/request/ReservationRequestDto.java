@@ -19,4 +19,6 @@ public class ReservationRequestDto {
     private Date reservationDate;
     @NotNull(message = "예약시간을 입력해주세요")
     private Map<DayOfWeek, Times> reservationDayOfWeekAndTime;
+    @NotNull(message = "예약 장소를 입력해주세요")
+    private String location;
 }

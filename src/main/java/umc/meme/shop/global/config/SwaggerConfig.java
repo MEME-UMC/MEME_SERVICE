@@ -1,4 +1,4 @@
-package umc.meme.shop.config;
+package umc.meme.shop.global.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

@@ -78,10 +78,12 @@ public class ModelController {
 
     /**search**/
 
-    @Operation(summary = "메이크업 검색", description = "메이크업을 검색하는 API입니다.")
+    @Operation(summary = "메이크업 검색", description = "메이크업을 검색/최근 검색어로 검색하는 API입니다.")
     @GetMapping("/search")
-    public ApiResponse search(){
-        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, "");
+    public ApiResponse search(@Parameter String query,
+                              @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                              @RequestParam(value = "sort", defaultValue = "desc") String sort){
+        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.search(query, page, sort));
     }
 
     @Operation(summary = "메이크업 검색 - 관심 아티스트", description = "관심 아티스트로 검색하는 API입니다.")
@@ -93,12 +95,6 @@ public class ModelController {
         return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchArtist(artistId, page, sort));
     }
 
-    @Operation(summary = "메이크업 검색 - 최근 검색어", description = "최근 검색어 안에서 검색하는 API입니다.")
-    @GetMapping("/search/recent")
-    public ApiResponse searchRecent(){
-        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, "");
-    }
-
     @Operation(summary = "메이크업 검색 - 카테고리", description = "메이크업 카테고리로 검색하는 API입니다.")
     @GetMapping("/search/category")
     public ApiResponse searchCategory(@Parameter Category category,
@@ -107,4 +103,13 @@ public class ModelController {
                                       ){
         return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchCategory(category, page, sort));
     }
+
+    @Operation(summary = "메이크업 검색 - 전체", description = "메이크업 전체를 검색하는 API입니다.")
+    @GetMapping("/search/all")
+    public ApiResponse searchAll( @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                      @RequestParam(value = "sort", defaultValue = "desc") String sort
+                                ){
+        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchAll(page, sort));
+    }
+
 }
