@@ -64,7 +64,6 @@ public class PortfolioService {
 
         for (PortfolioImg portfolioImg : portfolioImgList) {
             portfolioImg.setPortfolio(portfolio); // Portfolio 객체 설정
-            portfolioImgRepository.save(portfolioImg);
             portfolio.getPortfolioImgList().add(portfolioImg); // Portfolio의 이미지 리스트에 추가
         }
 

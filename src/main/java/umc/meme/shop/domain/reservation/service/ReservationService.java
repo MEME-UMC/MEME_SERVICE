@@ -23,6 +23,7 @@ import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 import umc.meme.shop.global.exception.GlobalException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -50,20 +51,27 @@ public class ReservationService {
 
     //아티스트 예약 가능 시간 조회
 
-    public ArtistTimeDto getArtistTime(Long artistId) {
+    public List<ArtistTimeDto> getArtistTime(Long artistId) {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         Map<DayOfWeek, Times> availableDayOfWeekAndTime = artist.getAvailableDayOfWeekAndTime();
 
-        Map.Entry<DayOfWeek, Times> firstEntry = availableDayOfWeekAndTime.entrySet().iterator().next();
-        DayOfWeek firstDayOfWeek = firstEntry.getKey();
-        Times firstAvailableTime = firstEntry.getValue();
+        List<ArtistTimeDto> artistTimeList = new ArrayList<>();
 
-        return ArtistTimeDto.builder()
-                .availableDayOfWeek(firstDayOfWeek)
-                .availableTime(firstAvailableTime)
-                .build();
+        for (Map.Entry<DayOfWeek, Times> entry : availableDayOfWeekAndTime.entrySet()) {
+            DayOfWeek dayOfWeek = entry.getKey();
+            Times availableTime = entry.getValue();
+
+            ArtistTimeDto artistTimeDto = ArtistTimeDto.builder()
+                    .availableDayOfWeek(dayOfWeek)
+                    .availableTime(availableTime)
+                    .build();
+
+            artistTimeList.add(artistTimeDto);
+        }
+
+        return artistTimeList;
     }
 
     //예약하기

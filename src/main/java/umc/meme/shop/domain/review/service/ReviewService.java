@@ -14,9 +14,11 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
+import umc.meme.shop.domain.review.converter.ReviewConverter;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.review.dto.response.ReviewImgDto;
+import umc.meme.shop.domain.review.dto.response.ReviewListPageDto;
 import umc.meme.shop.domain.review.dto.response.ReviewListResponseDto;
 import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 import umc.meme.shop.domain.review.entity.Review;
@@ -75,7 +77,6 @@ public class ReviewService {
 
         for (ReviewImg reviewImg : reviewImgList) {
             reviewImg.setReview(review);
-            reviewImgRepository.save(reviewImg);
             review.getReviewImgList().add(reviewImg);
 
         }
@@ -99,7 +100,7 @@ public class ReviewService {
     }
 
     //리뷰 리스트 조회
-    public ReviewListResponseDto getReviewList(Long portfolioId, int page) {
+    public ReviewListPageDto getReviewList(Long portfolioId, int page) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
@@ -114,20 +115,20 @@ public class ReviewService {
         List<Review> pagedReviewList = reviewList.subList(start, end);
         Page<Review> reviewPage = new PageImpl<>(pagedReviewList, pageable, reviewList.size());
 
-        List<ReviewResponseDto> responseDtoList = pagedReviewList.stream()
-                .map(ReviewResponseDto::from)
-                .toList();
-
         // 별점 현황
         Map<Integer, Integer> starStatus = new HashMap<>(Map.of(5, 0, 4, 0, 3, 0, 2, 0, 1, 0));
-        for (ReviewResponseDto review : responseDtoList) {
-            starStatus.put(review.getStar(), starStatus.get(review.getStar()) + 1);
+        for (Review review : pagedReviewList) {
+            int star = review.getStar();
+            starStatus.put(star, starStatus.get(star) + 1);
         }
 
-        return ReviewListResponseDto.builder()
-                .reviewResponseDtoList(responseDtoList)
-                .starStatus(starStatus)
-                .build();
+        // ReviewConverter를 사용하여 ReviewListPageDto 생성
+        ReviewListPageDto pageDto = ReviewConverter.reviewPageConverter(reviewPage);
+
+        // 별점 현황 추가
+        pageDto.setStarStatus(starStatus);
+
+        return pageDto;
     }
 
     //리뷰 삭제
