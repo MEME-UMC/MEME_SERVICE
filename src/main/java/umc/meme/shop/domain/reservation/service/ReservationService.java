@@ -11,6 +11,7 @@ import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.dto.request.AlterReservationDto;
 import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
+import umc.meme.shop.domain.reservation.dto.response.ArtistLocationDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationCompleteDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationResponseDto;
 import umc.meme.shop.domain.reservation.entity.Reservation;
@@ -30,6 +31,18 @@ public class ReservationService {
     private final ModelRepository modelRepository;
     private final PortfolioRepository portfolioRepository;
     private final ReservationRepository reservationRepository;
+
+    //아티스트 예약 가능 장소 조회
+    public ArtistLocationDto getArtistLocation(Long artistId){
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+
+        return ArtistLocationDto.builder()
+                .makeupLocation(artist.getMakeupLocation())
+                .shopLocation(artist.getShopLocation())
+                .region(artist.getRegion())
+                .build();
+    }
 
     //예약하기
     @Transactional
