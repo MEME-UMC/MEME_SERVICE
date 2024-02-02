@@ -191,7 +191,7 @@ public class ModelService {
     //전체 조회
     public PortfolioPageDto searchAll(int page, String sortBy){
         Pageable pageable = setPageRequest(page, sortBy);
-        Page<Portfolio> portfolioPage = portfolioRepository.findAll(pageable);
+        Page<Portfolio> portfolioPage = portfolioRepository.findAllNotBlocked(pageable);
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
