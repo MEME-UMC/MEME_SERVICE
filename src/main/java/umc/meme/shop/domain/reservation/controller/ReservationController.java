@@ -31,8 +31,7 @@ public class ReservationController {
     @Operation(summary = "예약하기", description = "예약하기 기능을 수행하는 API입니다.")
     @PostMapping("/")
     public ApiResponse createReservation(@RequestBody ReservationRequestDto reservationDto){
-        reservationService.createReservation(reservationDto);
-        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_CREATE);
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_CREATE, reservationService.createReservation(reservationDto));
     }
 
     //아티스트 예약 조회
