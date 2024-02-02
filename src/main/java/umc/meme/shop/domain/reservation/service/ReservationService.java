@@ -11,6 +11,7 @@ import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.dto.request.AlterReservationDto;
 import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
+import umc.meme.shop.domain.reservation.dto.response.ReservationCompleteDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationResponseDto;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
@@ -32,7 +33,7 @@ public class ReservationService {
 
     //예약하기
     @Transactional
-    public void createReservation(ReservationRequestDto reservationDto){
+    public ReservationCompleteDto createReservation(ReservationRequestDto reservationDto){
         Model model = modelRepository.findById(reservationDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
@@ -50,10 +51,19 @@ public class ReservationService {
                 .status(Status.EXPECTED)
                 .reservationDayOfWeekAndTime(reservationDto.getReservationDayOfWeekAndTime())
                 .reservationDate(reservationDto.getReservationDate())
+                .location(reservationDto.getLocation())
                 .build();
 
         model.updateReservationList(reservation);
         reservationRepository.save(reservation);
+
+        return ReservationCompleteDto.builder()
+                .makeupName(portfolio.getMakeupName())
+                .artist(portfolio.getArtist().getName())
+                .location(reservation.getLocation())
+                .reservationDate(reservation.getReservationDate())
+                .reservationDayOfWeekAndTime(reservation.getReservationDayOfWeekAndTime())
+                .build();
     }
 
     //예약하기 상태 변경

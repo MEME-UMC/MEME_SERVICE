@@ -50,6 +50,9 @@ public class Reservation {
     @Column(nullable = false)
     private Date reservationDate;
 
+    @Column(nullable = false)
+    private String location; //예약 장소
+
     public void updateReservation(Status status){
         if(status != null)
             this.status = status;

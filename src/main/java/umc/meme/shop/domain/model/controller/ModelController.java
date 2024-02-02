@@ -103,4 +103,13 @@ public class ModelController {
                                       ){
         return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchCategory(category, page, sort));
     }
+
+    @Operation(summary = "메이크업 검색 - 전체", description = "메이크업 전체를 검색하는 API입니다.")
+    @GetMapping("/search/all")
+    public ApiResponse searchAll( @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                      @RequestParam(value = "sort", defaultValue = "desc") String sort
+                                ){
+        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchAll(page, sort));
+    }
+
 }
