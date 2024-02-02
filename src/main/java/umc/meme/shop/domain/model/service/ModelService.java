@@ -188,6 +188,14 @@ public class ModelService {
         return PortfolioConverter.portfolioPageConverter(portfolioPage);
     }
 
+    //전체 조회
+    public PortfolioPageDto searchAll(int page, String sortBy){
+        Pageable pageable = setPageRequest(page, sortBy);
+        Page<Portfolio> portfolioPage = portfolioRepository.findAll(pageable);
+        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+    }
+
+
     //검색하기 정렬 기준 설정
     private Pageable setPageRequest(int page, String sortBy){
 
