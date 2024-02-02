@@ -51,6 +51,7 @@ public class ReservationService {
                 .status(Status.EXPECTED)
                 .reservationDayOfWeekAndTime(reservationDto.getReservationDayOfWeekAndTime())
                 .reservationDate(reservationDto.getReservationDate())
+                .location(reservationDto.getLocation())
                 .build();
 
         model.updateReservationList(reservation);
@@ -59,7 +60,7 @@ public class ReservationService {
         return ReservationCompleteDto.builder()
                 .makeupName(portfolio.getMakeupName())
                 .artist(portfolio.getArtist().getName())
-                .location(portfolio.getArtist().getShopLocation()) //TODO: 아티스트 위치 따라 변경 필요
+                .location(reservation.getLocation())
                 .reservationDate(reservation.getReservationDate())
                 .reservationDayOfWeekAndTime(reservation.getReservationDayOfWeekAndTime())
                 .build();
