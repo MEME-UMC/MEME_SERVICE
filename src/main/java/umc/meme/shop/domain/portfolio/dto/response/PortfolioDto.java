@@ -34,7 +34,6 @@ public class PortfolioDto {
 
     private List<PortfolioImgDto> portfolioImgDtoList;
 
-    private List<ReviewResponseDto> reviewResponseDtoList;
 
     public static PortfolioDto from(Portfolio portfolio) {
 
