@@ -2,6 +2,10 @@ package umc.meme.shop.domain.review.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
@@ -71,7 +75,9 @@ public class ReviewService {
 
         for (ReviewImg reviewImg : reviewImgList) {
             reviewImg.setReview(review);
+            reviewImgRepository.save(reviewImg);
             review.getReviewImgList().add(reviewImg);
+
         }
 
         portfolio.updateReviewList(review);
@@ -93,20 +99,29 @@ public class ReviewService {
     }
 
     //리뷰 리스트 조회
-    public ReviewListResponseDto getReviewList(Long portfolioId){
+    public ReviewListResponseDto getReviewList(Long portfolioId, int page) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
-        //review List
         List<Review> reviewList = portfolio.getReviewList();
-        List<ReviewResponseDto> responseDtoList = reviewList.stream()
+
+        // page로 mapping
+        Pageable pageable = PageRequest.of(page, 30);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), reviewList.size());
+
+        // list를 page로 변환
+        List<Review> pagedReviewList = reviewList.subList(start, end);
+        Page<Review> reviewPage = new PageImpl<>(pagedReviewList, pageable, reviewList.size());
+
+        List<ReviewResponseDto> responseDtoList = pagedReviewList.stream()
                 .map(ReviewResponseDto::from)
                 .toList();
 
-        //별점 현황
+        // 별점 현황
         Map<Integer, Integer> starStatus = new HashMap<>(Map.of(5, 0, 4, 0, 3, 0, 2, 0, 1, 0));
-        for(ReviewResponseDto review : responseDtoList){
-            starStatus.put(review.getStar(), starStatus.get(review.getStar())+1 );
+        for (ReviewResponseDto review : responseDtoList) {
+            starStatus.put(review.getStar(), starStatus.get(review.getStar()) + 1);
         }
 
         return ReviewListResponseDto.builder()

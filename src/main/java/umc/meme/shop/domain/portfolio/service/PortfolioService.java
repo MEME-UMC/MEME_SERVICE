@@ -64,6 +64,7 @@ public class PortfolioService {
 
         for (PortfolioImg portfolioImg : portfolioImgList) {
             portfolioImg.setPortfolio(portfolio); // Portfolio 객체 설정
+            portfolioImgRepository.save(portfolioImg);
             portfolio.getPortfolioImgList().add(portfolioImg); // Portfolio의 이미지 리스트에 추가
         }
 
@@ -80,13 +81,7 @@ public class PortfolioService {
         List<Portfolio> portfolioList = artist.getPortfolioList();
 
         //isblock이면 리스트에서 제거
-        Iterator<Portfolio> iterator = portfolioList.iterator();
-        while (iterator.hasNext()) {
-            Portfolio portfolio = iterator.next();
-            if (portfolio.isBlock()) {
-                iterator.remove();
-            }
-        }
+        portfolioList.removeIf(Portfolio::isBlock);
 
         //page로 mapping
         Pageable pageable = PageRequest.of(page, 30);
