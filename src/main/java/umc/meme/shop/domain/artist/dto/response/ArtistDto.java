@@ -39,6 +39,7 @@ public class ArtistDto {
     private List<String> specialization;
 
     private MakeupLocation makeupLocation;
+
     private Map<DayOfWeek, Times> availableDayOfWeekAndTime;
 
     private List<PortfolioDto> portfolioDtoList;

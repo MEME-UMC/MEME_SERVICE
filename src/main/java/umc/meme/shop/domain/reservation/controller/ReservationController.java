@@ -28,10 +28,16 @@ public class ReservationController {
         return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_UPDATE);
     }
 
-    @Operation()
+    @Operation(summary = "예약가능 장소 조회", description = "예약가능 장소 조회 기능을 수행하는 API입니다.")
     @GetMapping("/{artistId}/location")
     public ApiResponse getArtistLocation(@PathVariable Long artistId){
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_LOCATION_GET, reservationService.getArtistLocation(artistId));
+    }
+
+    @Operation(summary = "예약가능 시간 조회", description = "예약가능 시간 조회 기능을 수행하는 API입니다.")
+    @GetMapping("/{artistId}/time")
+    public ApiResponse getArtistTime(@PathVariable Long artistId){
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_LOCATION_GET, reservationService.getArtistTime(artistId));
     }
 
 
