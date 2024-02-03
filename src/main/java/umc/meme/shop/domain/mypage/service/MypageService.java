@@ -13,6 +13,10 @@ import umc.meme.shop.domain.mypage.dto.response.MypageDetailDto;
 import umc.meme.shop.domain.mypage.dto.response.MypageTosDto;
 import umc.meme.shop.domain.mypage.entity.Inquiry;
 import umc.meme.shop.domain.mypage.repository.InquiryRepository;
+import umc.meme.shop.domain.mypage.dto.response.MypageDetailDto;
+import umc.meme.shop.domain.mypage.dto.response.MypageTosDto;
+import umc.meme.shop.domain.user.User;
+import umc.meme.shop.domain.user.UserRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
@@ -23,34 +27,17 @@ public class MypageService {
     private final ModelRepository modelRepository;
     private final ArtistRepository artistRepository;
     private final InquiryRepository inquiryRepository;
-
-    // 모델 마이페이지 조회
+    private final UserRepository userRepository;
     @Transactional
-    public MypageDetailDto getModelProfile(Long modelId) {
-        Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
-
+    public MypageDetailDto getProfile(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
         return MypageDetailDto.builder()
-                .profileImg(model.getProfileImg())
-                .nickname(model.getNickname())
-                .name(model.getName())
-                .gender(model.getGender())
-                .email(model.getEmail())
-                .build();
-    }
-
-    //아티스트 마이페이지 조회
-    @Transactional
-    public MypageDetailDto getArtistProfile(Long artistId) {
-        Artist artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
-
-        return MypageDetailDto.builder()
-                .profileImg(artist.getProfileImg())
-                .nickname(artist.getNickname())
-                .name(artist.getName())
-                .gender(artist.getGender())
-                .email(artist.getEmail())
+                .profileImg(user.getProfileImg())
+                .nickname(user.getNickname())
+                .name(user.getName())
+                .gender(user.getGender())
+                .email(user.getEmail())
                 .build();
     }
 

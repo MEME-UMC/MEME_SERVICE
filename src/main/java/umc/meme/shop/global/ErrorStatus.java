@@ -59,6 +59,7 @@ public enum ErrorStatus {
      * Code : 404
      * Not Found
      */
+    NOT_EXIST_USER(404, "존재하지 않는 유저입니다."),
     NOT_EXIST_MODEL(404, "존재하지 않는 모델입니다."),
     NOT_EXIST_ARTIST(404, "존재하지 않는 아티스트입니다."),
     NOT_EXIST_PORTFOLIO(404, "존재하지 않는 포트폴리오입니다."),

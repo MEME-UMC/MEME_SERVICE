@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface FavoriteArtistRepository extends JpaRepository<FavoriteArtist, Long> {
     List<FavoriteArtist> findByModel(Model model);
-    boolean existsByModelAndArtist(Model model, Artist artist);
-    Optional<FavoriteArtist> findByModelAndArtist(Model model, Artist artist);
+    boolean existsByModelAndArtistId(Model model, Long userId);
+    Optional<FavoriteArtist> findByModelAndArtistId(Model model, Long userId);
 }

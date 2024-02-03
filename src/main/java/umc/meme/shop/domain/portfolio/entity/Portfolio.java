@@ -26,7 +26,7 @@ public class Portfolio {
     private Long portfolioId;
 
     @ManyToOne
-    @JoinColumn(name="artist_id", nullable = false)
+    @JoinColumn(name="user_id", nullable = false)
     private Artist artist;
 
     @Enumerated(EnumType.STRING)
