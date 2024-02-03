@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.user.User;
 
 @Builder
 @Getter
@@ -20,8 +20,8 @@ public class FavoritePortfolio {
     private Long favoritePortfolioId;
 
     @ManyToOne
-    @JoinColumn(name="model_id", nullable = false)
-    private Model model;
+    @JoinColumn(name="user_id", nullable = false)
+    private User model;
 
     @ManyToOne
     @JoinColumn(name="portfolio_id", nullable = false)

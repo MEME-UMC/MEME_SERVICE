@@ -19,11 +19,14 @@ public class FavoriteArtist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long favoriteArtistId;
 
+    //TODO: field fix
     @ManyToOne
-    @JoinColumn(name="model_id", nullable = false)
+//    @MapsId
+    @JoinColumn(name="user_id", nullable = false)
     private Model model;
 
     @ManyToOne
-    @JoinColumn(name="artist_id", nullable = false)
+//    @MapsId
+    @JoinColumn(name="user_id", nullable = false)
     private Artist artist;
 }

@@ -5,9 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.portfolio.entity.PortfolioImg;
+import umc.meme.shop.domain.user.User;
 
 import java.util.List;
 
@@ -26,8 +25,8 @@ public class Review {
     private Portfolio portfolio;
 
     @ManyToOne
-    @JoinColumn(name="model_id", nullable = false)
-    private Model model;
+    @JoinColumn(name="user_id", nullable = false)
+    private User model;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
     private List<ReviewImg> reviewImgList;
