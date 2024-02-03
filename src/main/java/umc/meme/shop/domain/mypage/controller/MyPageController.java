@@ -3,7 +3,9 @@ package umc.meme.shop.domain.mypage.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import umc.meme.shop.domain.mypage.dto.request.MypageInquiryDto;
 import umc.meme.shop.domain.mypage.service.MypageService;
+import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
 
@@ -41,7 +43,14 @@ public class MyPageController {
 
     @Operation(summary = "문의하기", description = "문의하기 API입니다.")
     @PostMapping("/contact")
-    public ApiResponse contact(){
-        return ApiResponse.SuccessResponse(SuccessStatus.CONTACT_CREATE, "");
+    public ApiResponse contact(@RequestBody MypageInquiryDto mypageInquiryDto){
+        mypageService.createInquiry(mypageInquiryDto);
+        return ApiResponse.SuccessResponse(SuccessStatus.CONTACT_CREATE);
+    }
+
+    @Operation(summary = "문의 조회하기", description = "문의 조회하기 API입니다.")
+    @GetMapping("/contact/{userId}")
+    public ApiResponse contact(@PathVariable Long userId){
+        return ApiResponse.SuccessResponse(SuccessStatus.CONTACT_GET, mypageService.getInquiry(userId));
     }
 }

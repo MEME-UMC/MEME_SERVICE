@@ -46,7 +46,8 @@ public enum SuccessStatus {
     MYPAGE_GET(200, "마이페이지 조회가 완료되었습니다"),
     DETAILS_GET(200, "내 정보 조회가 완료되었습니다"),
     TOS_GET(200, "약관 및 정책 조회가 완료되었습니다"),
-    CONTACT_CREATE(200, "문의 작성이 완료되었습니다");
+    CONTACT_CREATE(200, "문의 작성이 완료되었습니다"),
+    CONTACT_GET(200, "문의 조회가 완료되었습니다.");
 
 
     private final int code;
