@@ -25,6 +25,7 @@ import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
+import umc.meme.shop.global.enums.Provider;
 import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class ModelService {
                 .gender(dto.getGender())
                 .skinType(dto.getSkinType())
                 .personalColor(dto.getPersonalColor())
+                .provider(Provider.KAKAO)
                 .build();
         modelRepository.save(model);
     }
