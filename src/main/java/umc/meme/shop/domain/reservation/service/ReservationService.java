@@ -102,7 +102,7 @@ public class ReservationService {
 
         return ReservationCompleteDto.builder()
                 .makeupName(portfolio.getMakeupName())
-                .artist(portfolio.getArtist().getName())
+                .artistNickName(portfolio.getArtist().getNickname())
                 .location(reservation.getLocation())
                 .reservationDate(reservation.getReservationDate())
                 .reservationDayOfWeekAndTime(reservation.getReservationDayOfWeekAndTime())

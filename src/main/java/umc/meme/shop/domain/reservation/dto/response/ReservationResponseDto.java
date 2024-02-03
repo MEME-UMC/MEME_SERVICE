@@ -23,8 +23,8 @@ import java.util.Map;
 public class ReservationResponseDto {
     private Long reservationId ;
     private Long portfolioId;
-    private String modelName;
-    private String artistName;
+    private String modelNickName;
+    private String artistNickName;
     private String makeupName;
     private int price;
 
@@ -43,8 +43,8 @@ public class ReservationResponseDto {
         return ReservationResponseDto.builder()
                 .reservationId(reservation.getReservationId())
                 .portfolioId(portfolio.getPortfolioId())
-                .modelName(reservation.getModel().getName())
-                .artistName(artist.getName())
+                .modelNickName(reservation.getModel().getNickname())
+                .artistNickName(artist.getNickname())
                 .makeupName(portfolio.getMakeupName())
                 .price(portfolio.getPrice())
                 .reservationDayOfWeekAndTime(reservation.getReservationDayOfWeekAndTime())

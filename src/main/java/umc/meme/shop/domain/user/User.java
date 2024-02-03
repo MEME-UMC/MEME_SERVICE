@@ -10,6 +10,7 @@ import umc.meme.shop.domain.artist.entity.enums.Gender;
 import umc.meme.shop.domain.mypage.entity.Inquiry;
 
 import java.util.List;
+import umc.meme.shop.global.enums.Provider;
 
 @SuperBuilder
 @Getter
@@ -30,7 +31,7 @@ public class User {
     protected String nickname;
 
     @Column(nullable = false, length = 20)
-    protected String name;
+    protected String userName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -45,4 +46,8 @@ public class User {
     public void updateInquiryList(Inquiry inquiry) {
         this.inquiryList.add(inquiry);
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    protected Provider provider;
 }

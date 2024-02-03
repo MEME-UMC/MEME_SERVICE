@@ -22,7 +22,7 @@ public class PortfolioDto {
 
     private Category category;
 
-    private String artistName;
+    private String artistNickName;
 
     private String makeupName;
 
@@ -57,7 +57,7 @@ public class PortfolioDto {
         return PortfolioDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
                 .category(portfolio.getCategory())
-                .artistName(artist.getName())
+                .artistNickName(artist.getNickname())
                 .makeupName(portfolio.getMakeupName())
                 .price(portfolio.getPrice())
                 .info(portfolio.getInfo())

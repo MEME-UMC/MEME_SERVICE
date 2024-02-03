@@ -11,6 +11,7 @@ import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.enums.Category;
 import umc.meme.shop.global.enums.DayOfWeek;
+import umc.meme.shop.global.enums.Provider;
 import umc.meme.shop.global.enums.Times;
 
 import java.util.ArrayList;
@@ -99,8 +100,9 @@ public class Artist extends User {
         this.portfolioList.add(portfolio);
     }
 
-    public void tempMethod(String email, String name){
+    public void tempMethod(String email, String name, Provider provider){
         this.email = email;
-        this.name = name;
+        this.userName = name;
+        this.provider = provider;
     }
 }

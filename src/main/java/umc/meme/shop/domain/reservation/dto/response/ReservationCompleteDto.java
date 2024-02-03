@@ -17,7 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class ReservationCompleteDto {
     private String makeupName;
-    private String artist;
+    private String artistNickName;
     private String location; //장소
     private Date reservationDate; //날짜
     private Map<DayOfWeek, Times> reservationDayOfWeekAndTime; //요일과 시간
