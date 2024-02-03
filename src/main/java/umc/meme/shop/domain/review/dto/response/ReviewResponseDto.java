@@ -19,7 +19,6 @@ public class ReviewResponseDto {
     private List<ReviewImgDto> reviewImgDtoList;
 
     public static ReviewResponseDto from(Review review){
-
         List<ReviewImgDto> reviewImgDtoList = review.getReviewImgList()
                 .stream()
                 .map(reviewImg -> new ReviewImgDto(reviewImg.getReviewImgId(), reviewImg.getSrc(), false))
