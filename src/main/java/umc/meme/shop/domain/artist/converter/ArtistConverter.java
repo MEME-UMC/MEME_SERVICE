@@ -8,10 +8,7 @@ import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import java.util.List;
 
 public class ArtistConverter {
-    public static FavoriteArtistPageResponseDto favoriteArtistPageConverter(Page<FavoriteArtist> page) {
-        List<FavoriteArtistResponseDto> content = page.stream()
-                .map(FavoriteArtistResponseDto::from)
-                .toList();
+    public static FavoriteArtistPageResponseDto favoriteArtistPageConverter(Page<FavoriteArtist> page, List<FavoriteArtistResponseDto> content) {
 
         return FavoriteArtistPageResponseDto.builder()
                 .content(content)

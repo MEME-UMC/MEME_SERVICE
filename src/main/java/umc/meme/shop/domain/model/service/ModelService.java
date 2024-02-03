@@ -10,6 +10,7 @@ import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
 import umc.meme.shop.domain.favorite.dto.response.FavoriteArtistPageResponseDto;
+import umc.meme.shop.domain.favorite.dto.response.FavoriteArtistResponseDto;
 import umc.meme.shop.domain.favorite.dto.response.FavoritePortfolioResponsePageDto;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
@@ -26,6 +27,7 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -78,7 +80,16 @@ public class ModelService {
         Page<FavoriteArtist> favoriteArtistPage = new PageImpl<>(favoriteArtistList.subList(start, end),
                 pageable, favoriteArtistList.size());
 
-        return ArtistConverter.favoriteArtistPageConverter(favoriteArtistPage);
+        List<FavoriteArtistResponseDto> content = new ArrayList<>();
+        for(int i=0; i<favoriteArtistPage.getContent().size(); i++){
+            FavoriteArtist favoriteArtist = favoriteArtistPage.getContent().get(i);
+            Artist artist = artistRepository.findById(favoriteArtist.getArtistId())
+                    .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+            FavoriteArtistResponseDto dto = FavoriteArtistResponseDto.from(artist);
+            content.add(dto);
+        }
+
+        return ArtistConverter.favoriteArtistPageConverter(favoriteArtistPage, content);
     }
 
     //관심 메이크업 조회
@@ -110,12 +121,12 @@ public class ModelService {
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         //이미 관심 아티스트가 존재하는 경우
-        if (favoriteArtistRepository.existsByModelAndArtist(model, artist)) {
+        if (favoriteArtistRepository.existsByModelAndArtistId(model, artist.getUserId())) {
             throw new GlobalException(ErrorStatus.ALREADY_EXIST_FAVORITE_ARTIST);
         }
 
         FavoriteArtist favoriteArtist = FavoriteArtist.builder()
-                        .artist(artist)
+                        .artistId(artist.getUserId())
                         .model(model)
                         .build();
         model.updateFavoriteArtistList(favoriteArtist);
@@ -153,7 +164,7 @@ public class ModelService {
         Artist artist = artistRepository.findById(favoriteArtistDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        FavoriteArtist favoriteArtist = favoriteArtistRepository.findByModelAndArtist(model, artist)
+        FavoriteArtist favoriteArtist = favoriteArtistRepository.findByModelAndArtistId(model, artist.getUserId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_FAVORITE_ARTIST));
         favoriteArtistRepository.delete(favoriteArtist);
     }

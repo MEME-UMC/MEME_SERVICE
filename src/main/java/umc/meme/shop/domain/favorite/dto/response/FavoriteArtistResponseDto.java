@@ -16,8 +16,7 @@ public class FavoriteArtistResponseDto {
     private String profileImg;
     private String artistNickName;
 
-    public static FavoriteArtistResponseDto from(FavoriteArtist favoriteArtist) {
-        Artist artist = favoriteArtist.getArtist();
+    public static FavoriteArtistResponseDto from(Artist artist) {
         return FavoriteArtistResponseDto.builder()
                 .artistId(artist.getUserId())
                 .profileImg(artist.getProfileImg())
