@@ -10,6 +10,7 @@ import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
+import umc.meme.shop.domain.favorite.dto.response.FavoritePortfolioResponsePageDto;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.favorite.repository.FavoriteArtistRepository;
@@ -67,7 +68,7 @@ public class ModelService {
 
     //관심 메이크업 조회
     @Transactional
-    public PortfolioPageDto getFavoritePortfolio(Long modelId, int page){
+    public FavoritePortfolioResponsePageDto getFavoritePortfolio(Long modelId, int page){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
