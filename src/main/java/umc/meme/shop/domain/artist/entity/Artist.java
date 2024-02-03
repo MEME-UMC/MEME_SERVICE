@@ -2,9 +2,10 @@ package umc.meme.shop.domain.artist.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import umc.meme.shop.domain.user.User;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
@@ -17,32 +18,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@Builder
+@SuperBuilder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Artist {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "artist_id")
-    private Long artistId;
-
-    @Column(nullable = false, length = 20)
-    private String name;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Gender gender;
-
-    @Column(nullable = false, length = 40)
-    private String email;
-
-    @Column(nullable = false, length = 40)
-    private String nickname;
-
-    @Column(nullable = false)
-    private String profileImg;
+public class Artist extends User {
 
     @Column(nullable = false, length = 500)
     private String introduction;
@@ -69,7 +50,7 @@ public class Artist {
 
     @ElementCollection
     @CollectionTable(name = "available_time_mapping",
-            joinColumns = {@JoinColumn(name = "artist_id", referencedColumnName = "artist_id")})
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
     @MapKeyColumn(name = "day_of_week")
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
@@ -116,8 +97,6 @@ public class Artist {
 
     public void updatePortfolioList(Portfolio portfolio){
         this.portfolioList.add(portfolio);
-        System.out.println("updatePortfolioList");
-        System.out.println(portfolio.getPortfolioImgList());
     }
 
     public void tempMethod(String email, String name){

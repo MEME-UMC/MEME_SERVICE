@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import umc.meme.shop.domain.artist.entity.enums.Gender;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
@@ -13,36 +14,17 @@ import umc.meme.shop.domain.model.entity.enums.PersonalColor;
 import umc.meme.shop.domain.model.entity.enums.SkinType;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.review.entity.Review;
+import umc.meme.shop.domain.user.User;
 
 import java.util.Date;
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Model {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "model_id")
-    private Long modelId;
-
-    @Column(nullable = false, length = 20)
-    private String name;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Gender gender;
-
-    @Column(nullable = false, length = 40)
-    private String email;
-
-    @Column(nullable = false, length = 40)
-    private String nickname;
-
-    @Column(nullable = false)
-    private String profileImg;
+public class Model extends User {
 
     @Column(nullable = true, length = 500)
     private String introduction;

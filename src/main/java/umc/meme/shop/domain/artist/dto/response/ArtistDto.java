@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.entity.enums.*;
+import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
+import umc.meme.shop.domain.user.User;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 
@@ -53,7 +56,7 @@ public class ArtistDto {
                 .toList();
 
         return ArtistDto.builder()
-                .artistId(artist.getArtistId())
+                .artistId(artist.getUserId())
                 .gender(artist.getGender())
                 .nickname(artist.getNickname())
                 .profileImg(artist.getProfileImg())
@@ -64,25 +67,6 @@ public class ArtistDto {
                 .makeupLocation(artist.getMakeupLocation())
                 .availableDayOfWeekAndTime(artist.getAvailableDayOfWeekAndTime())
                 .portfolioDtoList(portfolioDtoList)
-                .build();
-    }
-
-    //관심 아티스트
-    public static ArtistDto from(FavoriteArtist favoriteArtist){
-        Artist artist = favoriteArtist.getArtist();
-
-        return ArtistDto.builder()
-                .artistId(artist.getArtistId())
-                .gender(artist.getGender())
-                .nickname(artist.getNickname())
-                .profileImg(artist.getProfileImg())
-                .introduction(artist.getIntroduction())
-                .workExperience(artist.getWorkExperience())
-                .region(artist.getRegion())
-                .specialization(artist.getSpecialization())
-                .makeupLocation(artist.getMakeupLocation())
-                .availableDayOfWeekAndTime(artist.getAvailableDayOfWeekAndTime())
-                .portfolioDtoList(new ArrayList<>())
                 .build();
     }
 

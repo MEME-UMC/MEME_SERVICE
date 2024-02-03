@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.converter.ArtistConverter;
-import umc.meme.shop.domain.artist.dto.response.ArtistPageDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
@@ -38,6 +37,21 @@ public class ModelService {
     private final FavoritePortfolioRepository favoritePortfolioRepository;
     private final PortfolioRepository portfolioRepository;
 
+    /**temp model create method**/
+    @Transactional
+    public void createModel(ModelProfileDto dto){
+        Model model = Model.builder()
+                .profileImg(dto.getProfileImg())
+                .nickname(dto.getNickname())
+                .introduction("")
+                .email("")
+                .name("")
+                .gender(dto.getGender())
+                .skinType(dto.getSkinType())
+                .personalColor(dto.getPersonalColor())
+                .build();
+        modelRepository.save(model);
+    }
 
     //모델 프로필 관리
     @Transactional

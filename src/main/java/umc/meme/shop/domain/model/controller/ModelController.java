@@ -3,11 +3,8 @@ package umc.meme.shop.domain.model.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
+import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
@@ -22,6 +19,13 @@ import umc.meme.shop.global.response.ApiResponse;
 @RequestMapping("/api/v1")
 public class ModelController {
     private final ModelService modelService;
+
+    /**temp model create method**/
+    @PostMapping("/model")
+    public ApiResponse createModel(@RequestBody ModelProfileDto profileDto){
+        modelService.createModel(profileDto);
+        return ApiResponse.SuccessResponse(SuccessStatus.TEMP);
+    }
 
     @Operation(summary = "모델 프로필 관리")
     @PatchMapping("/mypage/profile/model")
