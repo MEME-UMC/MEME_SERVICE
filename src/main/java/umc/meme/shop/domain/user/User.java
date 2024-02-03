@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import umc.meme.shop.domain.artist.entity.enums.Gender;
+import umc.meme.shop.global.enums.Provider;
 
 @SuperBuilder
 @Getter
@@ -27,7 +28,7 @@ public class User {
     protected String nickname;
 
     @Column(nullable = false, length = 20)
-    protected String name;
+    protected String userName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -35,4 +36,8 @@ public class User {
 
     @Column(nullable = false, length = 40)
     protected String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    protected Provider provider;
 }

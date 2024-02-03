@@ -101,6 +101,6 @@ public class Artist extends User {
 
     public void tempMethod(String email, String name){
         this.email = email;
-        this.name = name;
+        this.userName = name;
     }
 }

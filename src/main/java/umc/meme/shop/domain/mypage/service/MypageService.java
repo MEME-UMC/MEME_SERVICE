@@ -35,7 +35,7 @@ public class MypageService {
         return MypageDetailDto.builder()
                 .profileImg(user.getProfileImg())
                 .nickname(user.getNickname())
-                .name(user.getName())
+                .name(user.getUserName())
                 .gender(user.getGender())
                 .email(user.getEmail())
                 .build();

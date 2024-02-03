@@ -47,7 +47,7 @@ public class ModelService {
                 .nickname(dto.getNickname())
                 .introduction("")
                 .email("")
-                .name("")
+                .userName("")
                 .gender(dto.getGender())
                 .skinType(dto.getSkinType())
                 .personalColor(dto.getPersonalColor())
