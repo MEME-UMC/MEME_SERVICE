@@ -3,6 +3,7 @@ package umc.meme.shop.domain.review.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jdk.dynalink.linker.LinkerServices;
 import lombok.Data;
+import umc.meme.shop.domain.review.entity.Review;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public class ReviewDto {
     private int star;
     private String comment;
     private List<String> reviewImgSrc;
+
 }

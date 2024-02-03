@@ -12,15 +12,20 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.dto.request.AlterReservationDto;
 import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
 import umc.meme.shop.domain.reservation.dto.response.ArtistLocationDto;
+import umc.meme.shop.domain.reservation.dto.response.ArtistTimeDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationCompleteDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationResponseDto;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.global.ErrorStatus;
+import umc.meme.shop.global.enums.DayOfWeek;
+import umc.meme.shop.global.enums.Times;
 import umc.meme.shop.global.exception.GlobalException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,6 +47,31 @@ public class ReservationService {
                 .shopLocation(artist.getShopLocation())
                 .region(artist.getRegion())
                 .build();
+    }
+
+    //아티스트 예약 가능 시간 조회
+
+    public List<ArtistTimeDto> getArtistTime(Long artistId) {
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+
+        Map<DayOfWeek, Times> availableDayOfWeekAndTime = artist.getAvailableDayOfWeekAndTime();
+
+        List<ArtistTimeDto> artistTimeList = new ArrayList<>();
+
+        for (Map.Entry<DayOfWeek, Times> entry : availableDayOfWeekAndTime.entrySet()) {
+            DayOfWeek dayOfWeek = entry.getKey();
+            Times availableTime = entry.getValue();
+
+            ArtistTimeDto artistTimeDto = ArtistTimeDto.builder()
+                    .availableDayOfWeek(dayOfWeek)
+                    .availableTime(availableTime)
+                    .build();
+
+            artistTimeList.add(artistTimeDto);
+        }
+
+        return artistTimeList;
     }
 
     //예약하기
@@ -117,4 +147,6 @@ public class ReservationService {
                 .map(ReservationResponseDto::from)
                 .collect(Collectors.toList());
     }
+
+
 }

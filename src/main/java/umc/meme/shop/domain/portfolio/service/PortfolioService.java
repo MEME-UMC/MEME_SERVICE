@@ -80,13 +80,7 @@ public class PortfolioService {
         List<Portfolio> portfolioList = artist.getPortfolioList();
 
         //isblock이면 리스트에서 제거
-        Iterator<Portfolio> iterator = portfolioList.iterator();
-        while (iterator.hasNext()) {
-            Portfolio portfolio = iterator.next();
-            if (portfolio.isBlock()) {
-                iterator.remove();
-            }
-        }
+        portfolioList.removeIf(Portfolio::isBlock);
 
         //page로 mapping
         Pageable pageable = PageRequest.of(page, 30);
