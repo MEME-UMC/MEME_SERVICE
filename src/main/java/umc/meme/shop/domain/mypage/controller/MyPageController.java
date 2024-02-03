@@ -14,23 +14,10 @@ public class MyPageController {
 
     private final MypageService mypageService;
 
-    @Operation(summary = "모델 마이페이지 조회")
-    @GetMapping("/{modelId}/profile/model")
-    public ApiResponse getModelProfile (@PathVariable Long modelId){
-        return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, mypageService.getModelProfile(modelId));
-    }
-
-    @Operation(summary = "아티스트 마이페이지 조회")
-    @GetMapping("/{artistId}/profile/artist")
-    public ApiResponse getArtistProfile(@PathVariable Long artistId){
-        return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, mypageService.getArtistProfile(artistId));
-    }
-
-    @Operation(summary = "내 정보 조회", description = "본인 정보를 조회하는 API입니다.")
-    @GetMapping("/{userId}/details")
-    public ApiResponse details(@PathVariable Long userId){
-        //MypageDetailDto
-        return ApiResponse.SuccessResponse(SuccessStatus.DETAILS_GET, "");
+    @Operation(summary = "마이페이지 조회")
+    @GetMapping("/profile/{userId}")
+    public ApiResponse getProfile(@PathVariable Long userId) {
+        return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, mypageService.getProfile(userId));
     }
 
     @Operation(summary = "약관 및 정책", description = "약관 및 정책을 조회하는 API입니다.")
