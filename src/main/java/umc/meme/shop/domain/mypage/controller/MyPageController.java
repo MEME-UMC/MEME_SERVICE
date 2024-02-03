@@ -37,7 +37,7 @@ public class MyPageController {
 
     @Operation(summary = "문의 조회하기", description = "문의 조회하기 API입니다.")
     @GetMapping("/contact/{userId}")
-    public ApiResponse contact(@PathVariable Long userId){
+    public ApiResponse getContact(@PathVariable Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.CONTACT_GET, mypageService.getInquiry(userId));
     }
 }

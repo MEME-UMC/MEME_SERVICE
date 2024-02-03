@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import umc.meme.shop.domain.artist.entity.enums.Gender;
+import umc.meme.shop.domain.mypage.entity.Inquiry;
+
+import java.util.List;
 import umc.meme.shop.global.enums.Provider;
 
 @SuperBuilder
@@ -36,6 +39,13 @@ public class User {
 
     @Column(nullable = false, length = 40)
     protected String email;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    protected List<Inquiry> inquiryList;
+
+    public void updateInquiryList(Inquiry inquiry) {
+        this.inquiryList.add(inquiry);
+    }
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

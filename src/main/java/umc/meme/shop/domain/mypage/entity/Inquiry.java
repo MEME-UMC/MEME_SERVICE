@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.mypage.dto.request.MypageInquiryDto;
+import umc.meme.shop.domain.user.User;
+import umc.meme.shop.domain.user.UserRepository;
 
 @Builder
 @Getter
@@ -24,13 +26,8 @@ public class Inquiry {
     @Column(nullable = false)
     private String inquiryText;
 
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
 
-    public void updateInquiry(MypageInquiryDto request) {
-        if (request.getInquiryTitle() != null) {
-            this.inquiryTitle = request.getInquiryTitle();
-        }
-        if (request.getInquiryText() != null) {
-            this.inquiryText = request.getInquiryText();
-        }
-    }
 }

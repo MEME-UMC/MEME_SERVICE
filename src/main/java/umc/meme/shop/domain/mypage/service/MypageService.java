@@ -9,8 +9,7 @@ import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.mypage.dto.request.MypageInquiryDto;
-import umc.meme.shop.domain.mypage.dto.response.MypageDetailDto;
-import umc.meme.shop.domain.mypage.dto.response.MypageTosDto;
+import umc.meme.shop.domain.mypage.dto.response.*;
 import umc.meme.shop.domain.mypage.entity.Inquiry;
 import umc.meme.shop.domain.mypage.repository.InquiryRepository;
 import umc.meme.shop.domain.mypage.dto.response.MypageDetailDto;
@@ -19,6 +18,9 @@ import umc.meme.shop.domain.user.User;
 import umc.meme.shop.domain.user.UserRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,18 +54,30 @@ public class MypageService {
     //문의하기
     @Transactional
     public void createInquiry(MypageInquiryDto mypageInquiryDto) {
-        Inquiry inquiry = new Inquiry();
-        inquiry.updateInquiry(mypageInquiryDto);
+        User user = userRepository.findById(mypageInquiryDto.getUserId())
+                        .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
+
+        Inquiry inquiry = Inquiry.builder()
+                        .inquiryText(mypageInquiryDto.getInquiryText())
+                        .inquiryTitle(mypageInquiryDto.getInquiryTitle())
+                        .user(user)
+                        .build();
+
+        user.updateInquiryList(inquiry);
         inquiryRepository.save(inquiry);
     }
 
     // 문의하기 조회
     @Transactional
-    public MypageInquiryDto getInquiry(Long inquiryId) {
-        Inquiry inquiry = inquiryRepository.findById(inquiryId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_INQUIRY));
+    public List<MypageInquiryResponseDto> getInquiry(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
 
-        return MypageInquiryDto.from(inquiry);
+        List<Inquiry> inquiryList = user.getInquiryList();
+
+        return inquiryList.stream()
+                .map(MypageInquiryResponseDto::from)
+                .toList();
     }
 
 }
