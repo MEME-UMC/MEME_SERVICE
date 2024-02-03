@@ -37,7 +37,7 @@ public class ReservationController {
     @Operation(summary = "예약가능 시간 조회", description = "예약가능 시간 조회 기능을 수행하는 API입니다.")
     @GetMapping("/{artistId}/time")
     public ApiResponse getArtistTime(@PathVariable Long artistId){
-        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_LOCATION_GET, reservationService.getArtistTime(artistId));
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_TIME_GET, reservationService.getArtistTime(artistId));
     }
 
 
