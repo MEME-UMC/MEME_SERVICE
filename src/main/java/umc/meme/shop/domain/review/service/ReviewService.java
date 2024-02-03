@@ -2,6 +2,10 @@ package umc.meme.shop.domain.review.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
@@ -10,9 +14,11 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.reservation.entity.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
+import umc.meme.shop.domain.review.converter.ReviewConverter;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.review.dto.response.ReviewImgDto;
+import umc.meme.shop.domain.review.dto.response.ReviewListPageDto;
 import umc.meme.shop.domain.review.dto.response.ReviewListResponseDto;
 import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 import umc.meme.shop.domain.review.entity.Review;
@@ -72,6 +78,7 @@ public class ReviewService {
         for (ReviewImg reviewImg : reviewImgList) {
             reviewImg.setReview(review);
             review.getReviewImgList().add(reviewImg);
+
         }
 
         portfolio.updateReviewList(review);
@@ -93,26 +100,35 @@ public class ReviewService {
     }
 
     //리뷰 리스트 조회
-    public ReviewListResponseDto getReviewList(Long portfolioId){
+    public ReviewListPageDto getReviewList(Long portfolioId, int page) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
-        //review List
         List<Review> reviewList = portfolio.getReviewList();
-        List<ReviewResponseDto> responseDtoList = reviewList.stream()
-                .map(ReviewResponseDto::from)
-                .toList();
 
-        //별점 현황
+        // page로 mapping
+        Pageable pageable = PageRequest.of(page, 30);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), reviewList.size());
+
+        // list를 page로 변환
+        List<Review> pagedReviewList = reviewList.subList(start, end);
+        Page<Review> reviewPage = new PageImpl<>(pagedReviewList, pageable, reviewList.size());
+
+        // 별점 현황
         Map<Integer, Integer> starStatus = new HashMap<>(Map.of(5, 0, 4, 0, 3, 0, 2, 0, 1, 0));
-        for(ReviewResponseDto review : responseDtoList){
-            starStatus.put(review.getStar(), starStatus.get(review.getStar())+1 );
+        for (Review review : pagedReviewList) {
+            int star = review.getStar();
+            starStatus.put(star, starStatus.get(star) + 1);
         }
 
-        return ReviewListResponseDto.builder()
-                .reviewResponseDtoList(responseDtoList)
-                .starStatus(starStatus)
-                .build();
+        // ReviewConverter를 사용하여 ReviewListPageDto 생성
+        ReviewListPageDto pageDto = ReviewConverter.reviewPageConverter(reviewPage);
+
+        // 별점 현황 추가
+        pageDto.setStarStatus(starStatus);
+
+        return pageDto;
     }
 
     //리뷰 삭제
