@@ -4,14 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.portfolio.entity.PortfolioImg;
-import umc.meme.shop.domain.portfolio.entity.enums.Category;
-
-import java.util.List;
+import umc.meme.shop.global.enums.Category;
 
 @Data
 @Builder

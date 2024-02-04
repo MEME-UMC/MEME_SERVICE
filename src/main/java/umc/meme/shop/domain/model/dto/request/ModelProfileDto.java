@@ -1,9 +1,9 @@
 package umc.meme.shop.domain.model.dto.request;
 
 import lombok.Data;
-import umc.meme.shop.domain.artist.entity.enums.Gender;
-import umc.meme.shop.domain.model.entity.enums.PersonalColor;
-import umc.meme.shop.domain.model.entity.enums.SkinType;
+import umc.meme.shop.global.enums.Gender;
+import umc.meme.shop.global.enums.PersonalColor;
+import umc.meme.shop.global.enums.SkinType;
 
 @Data
 public class ModelProfileDto {

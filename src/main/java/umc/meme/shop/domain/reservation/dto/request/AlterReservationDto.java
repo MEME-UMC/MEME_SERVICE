@@ -2,7 +2,7 @@ package umc.meme.shop.domain.reservation.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import umc.meme.shop.domain.reservation.entity.enums.Status;
+import umc.meme.shop.global.enums.Status;
 
 @Data
 public class AlterReservationDto {

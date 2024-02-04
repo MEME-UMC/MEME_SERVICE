@@ -7,10 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.portfolio.entity.enums.Category;
-
-import javax.sound.sampled.Port;
-import java.util.List;
+import umc.meme.shop.global.enums.Category;
 
 public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
     @Query("SELECT p FROM Portfolio p " +

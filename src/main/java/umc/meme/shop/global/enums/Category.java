@@ -1,4 +1,4 @@
-package umc.meme.shop.domain.portfolio.entity.enums;
+package umc.meme.shop.global.enums;
 
 public enum Category {
     DAILY("daily"), INTERVIEW("interview"), ACTOR("actor"), PARTY("party"),

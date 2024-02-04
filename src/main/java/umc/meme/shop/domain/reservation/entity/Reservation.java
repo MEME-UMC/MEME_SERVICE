@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.reservation.entity.enums.Status;
+import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.user.User;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;

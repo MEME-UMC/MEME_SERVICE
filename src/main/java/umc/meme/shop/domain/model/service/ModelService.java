@@ -22,7 +22,7 @@ import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.portfolio.entity.enums.Category;
+import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.enums.Provider;

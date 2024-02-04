@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import umc.meme.shop.domain.artist.entity.enums.Gender;
+import umc.meme.shop.global.enums.Gender;
 
 @Builder
 @NoArgsConstructor

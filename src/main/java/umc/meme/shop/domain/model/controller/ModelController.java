@@ -4,12 +4,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.service.ModelService;
-import umc.meme.shop.domain.portfolio.entity.enums.Category;
+import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
 
