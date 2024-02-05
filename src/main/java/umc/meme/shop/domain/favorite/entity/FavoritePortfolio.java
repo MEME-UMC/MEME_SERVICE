@@ -1,10 +1,12 @@
 package umc.meme.shop.domain.favorite.entity;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.user.User;
 
@@ -13,7 +15,7 @@ import umc.meme.shop.domain.user.User;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class FavoritePortfolio {
+public class FavoritePortfolio extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

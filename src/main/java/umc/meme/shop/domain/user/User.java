@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.global.enums.Gender;
 import umc.meme.shop.domain.mypage.entity.Inquiry;
 
@@ -17,7 +18,7 @@ import umc.meme.shop.global.enums.Provider;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")

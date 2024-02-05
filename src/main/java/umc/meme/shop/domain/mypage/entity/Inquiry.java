@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.domain.mypage.dto.request.MypageInquiryDto;
 import umc.meme.shop.domain.user.User;
 import umc.meme.shop.domain.user.UserRepository;
@@ -14,7 +15,7 @@ import umc.meme.shop.domain.user.UserRepository;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Inquiry {
+public class Inquiry extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inquiry_id")
