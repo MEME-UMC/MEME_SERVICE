@@ -28,6 +28,7 @@ public class ArtistController {
     }
 
     //temp method for Artist create
+    @Operation(summary = "temp 아티스트 생성(프론트랑 상관X)")
     @PostMapping("/artist")
     public ApiResponse createArtist(@RequestBody ArtistProfileDto profileDto){
         artistService.createArtist(profileDto);

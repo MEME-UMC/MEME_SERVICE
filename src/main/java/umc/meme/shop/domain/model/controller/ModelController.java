@@ -20,6 +20,7 @@ public class ModelController {
     private final ModelService modelService;
 
     /**temp model create method**/
+    @Operation(summary = "temp 모델 생성(프론트랑 상관X)")
     @PostMapping("/model")
     public ApiResponse createModel(@RequestBody ModelProfileDto profileDto){
         modelService.createModel(profileDto);
