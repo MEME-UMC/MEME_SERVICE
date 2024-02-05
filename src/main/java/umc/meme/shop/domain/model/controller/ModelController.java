@@ -115,4 +115,10 @@ public class ModelController {
         return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchAll(page, sort));
     }
 
+    /**recommend**/
+    @Operation(summary = "포트폴리오 추천 - 리뷰 순", description = "리뷰가 많은 순으로 포트폴리오를 추천하는 API입니다.")
+    @GetMapping("/recommend/review")
+    public ApiResponse recommendReview(){
+        return ApiResponse.SuccessResponse(SuccessStatus.RECOMMEND_REVIEW_GET, modelService.recommendReview());
+    }
 }
