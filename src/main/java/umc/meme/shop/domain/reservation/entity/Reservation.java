@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.user.User;
@@ -19,7 +20,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Reservation {
+public class Reservation extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

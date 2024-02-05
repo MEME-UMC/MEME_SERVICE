@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.domain.model.entity.Model;
 
 @Builder
@@ -12,7 +13,7 @@ import umc.meme.shop.domain.model.entity.Model;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class FavoriteArtist {
+public class FavoriteArtist extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

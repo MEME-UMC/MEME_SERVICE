@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.model.entity.Model;
+import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("SELECT r FROM Reservation r JOIN r.model m WHERE r.reservationId = :reservationId AND m.userId = :modelId")
     Optional<Reservation> findByReservationIdAndModelId(@Param("reservationId") Long reservationId, @Param("modelId") Long modelId);
 
+    List<Reservation> findByModelAndPortfolio(Model model, Portfolio portfolio);
 }
 
 

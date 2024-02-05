@@ -5,9 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.global.enums.Gender;
 import umc.meme.shop.domain.mypage.entity.Inquiry;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import umc.meme.shop.global.enums.Provider;
 
@@ -38,6 +42,12 @@ public class User {
 
     @Column(nullable = false, length = 40)
     protected String email;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     protected List<Inquiry> inquiryList;

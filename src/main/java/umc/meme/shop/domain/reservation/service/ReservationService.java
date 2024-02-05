@@ -87,6 +87,14 @@ public class ReservationService {
             throw new GlobalException(ErrorStatus.NOT_ALLOW_OVER_ONE_RESERVATION);
         }
 
+        //예약 중복 처리
+        List<Reservation> reservationList = reservationRepository.findByModelAndPortfolio(model, portfolio);
+        for(int i=0; i<reservationList.size(); i++){
+            if(reservationList.get(i).getReservationDayOfWeekAndTime().equals(reservationDto.getReservationDayOfWeekAndTime())){
+                throw new GlobalException(ErrorStatus.NOT_ALLOW_DUPLICATED_RESERVATION);
+            }
+        }
+
         Reservation reservation = Reservation.builder()
                 .model(model)
                 .portfolio(portfolio)
