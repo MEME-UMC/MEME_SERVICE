@@ -2,15 +2,15 @@ package umc.meme.shop.domain.review.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import umc.meme.shop.domain.common.BaseEntity;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Getter @Setter
 public class ReviewImg extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

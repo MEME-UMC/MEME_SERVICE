@@ -76,7 +76,6 @@ public class ReviewService {
         for (ReviewImg reviewImg : reviewImgList) {
             reviewImg.setReview(review);
             review.getReviewImgList().add(reviewImg);
-
         }
 
         portfolio.updateReviewList(review);
