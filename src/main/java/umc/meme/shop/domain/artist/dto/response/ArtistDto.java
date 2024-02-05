@@ -1,24 +1,15 @@
 package umc.meme.shop.domain.artist.dto.response;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import umc.meme.shop.domain.artist.entity.Artist;
-import umc.meme.shop.domain.artist.entity.enums.*;
-import umc.meme.shop.domain.artist.repository.ArtistRepository;
-import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
-import umc.meme.shop.domain.user.User;
-import umc.meme.shop.global.enums.DayOfWeek;
-import umc.meme.shop.global.enums.Times;
+import umc.meme.shop.global.enums.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter
 @Builder

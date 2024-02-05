@@ -20,9 +20,10 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
+import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.portfolio.entity.enums.Category;
+import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.enums.Provider;
@@ -237,8 +238,18 @@ public class ModelService {
             sort = Sort.by("averageStars").descending();
         else
             throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
+        Sort finalSort = sort.and(Sort.by("averageStars").descending());
 
-        return PageRequest.of(page, 30, sort);
+        return PageRequest.of(page, 30, finalSort);
+    }
+
+    /**recommend**/
+    public List<PortfolioDto> recommendReview(){
+        Pageable pageable = setPageRequest(0, "review");
+        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
+        return portfolioList.getContent().stream()
+                .map(PortfolioDto::from)
+                .toList();
     }
 
 }

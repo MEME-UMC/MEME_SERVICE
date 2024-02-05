@@ -3,11 +3,8 @@ package umc.meme.shop;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import umc.meme.shop.domain.artist.entity.Artist;
-import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
-import umc.meme.shop.domain.portfolio.entity.enums.Category;
-import umc.meme.shop.global.enums.DayOfWeek;
-import umc.meme.shop.global.enums.Times;
+import umc.meme.shop.global.enums.*;
 
 import java.util.List;
 

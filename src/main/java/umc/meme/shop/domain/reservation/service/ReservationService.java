@@ -16,7 +16,7 @@ import umc.meme.shop.domain.reservation.dto.response.ArtistTimeDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationCompleteDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationResponseDto;
 import umc.meme.shop.domain.reservation.entity.Reservation;
-import umc.meme.shop.domain.reservation.entity.enums.Status;
+import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.enums.DayOfWeek;
@@ -26,7 +26,6 @@ import umc.meme.shop.global.exception.GlobalException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

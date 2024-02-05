@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import umc.meme.shop.domain.artist.entity.enums.MakeupLocation;
-import umc.meme.shop.domain.artist.entity.enums.Region;
+import umc.meme.shop.global.enums.MakeupLocation;
 
 import java.util.List;
 

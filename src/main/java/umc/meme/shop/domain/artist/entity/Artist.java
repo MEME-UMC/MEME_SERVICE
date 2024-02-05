@@ -7,12 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import umc.meme.shop.domain.user.User;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
-import umc.meme.shop.domain.artist.entity.enums.*;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.portfolio.entity.enums.Category;
-import umc.meme.shop.global.enums.DayOfWeek;
-import umc.meme.shop.global.enums.Provider;
-import umc.meme.shop.global.enums.Times;
+import umc.meme.shop.global.enums.*;
 
 import java.util.ArrayList;
 import java.util.Date;

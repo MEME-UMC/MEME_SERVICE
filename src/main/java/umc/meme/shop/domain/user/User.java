@@ -2,11 +2,10 @@ package umc.meme.shop.domain.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import umc.meme.shop.domain.artist.entity.enums.Gender;
+import umc.meme.shop.global.enums.Gender;
 import umc.meme.shop.domain.mypage.entity.Inquiry;
 
 import java.util.List;

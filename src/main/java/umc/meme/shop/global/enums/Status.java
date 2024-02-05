@@ -1,4 +1,4 @@
-package umc.meme.shop.domain.reservation.entity.enums;
+package umc.meme.shop.global.enums;
 
 public enum Status {
     EXPECTED, COMPLETE, CANCEL

@@ -1,4 +1,4 @@
-package umc.meme.shop.domain.model.entity.enums;
+package umc.meme.shop.global.enums;
 
 public enum PersonalColor {
     SPRING, SUMMER, AUTUMN, WINTER

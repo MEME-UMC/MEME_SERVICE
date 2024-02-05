@@ -2,16 +2,14 @@ package umc.meme.shop.domain.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import umc.meme.shop.domain.artist.entity.enums.Gender;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
-import umc.meme.shop.domain.model.entity.enums.PersonalColor;
-import umc.meme.shop.domain.model.entity.enums.SkinType;
+import umc.meme.shop.global.enums.PersonalColor;
+import umc.meme.shop.global.enums.SkinType;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.review.entity.Review;
 import umc.meme.shop.domain.user.User;

@@ -1,4 +1,4 @@
-package umc.meme.shop.domain.artist.entity.enums;
+package umc.meme.shop.global.enums;
 
 public enum MakeupLocation {
     SHOP, VISIT, BOTH
