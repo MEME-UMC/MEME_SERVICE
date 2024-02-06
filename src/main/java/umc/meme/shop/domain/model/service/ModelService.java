@@ -22,6 +22,7 @@ import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
+import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
@@ -246,19 +247,19 @@ public class ModelService {
     }
 
     /**recommend**/
-    public List<PortfolioDto> recommendReview(){
+    public List<SimplePortfolioDto> recommendReview(){
         Pageable pageable = setPageRequest(0, "review");
         Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
         return portfolioList.getContent().stream()
-                .map(PortfolioDto::from)
+                .map(SimplePortfolioDto::from)
                 .toList();
     }
 
-    public List<PortfolioDto> recommendRecent(){
+    public List<SimplePortfolioDto> recommendRecent(){
         Pageable pageable = setPageRequest(0, "recent");
         Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
         return portfolioList.getContent().stream()
-                .map(PortfolioDto::from)
+                .map(SimplePortfolioDto::from)
                 .toList();
     }
 
