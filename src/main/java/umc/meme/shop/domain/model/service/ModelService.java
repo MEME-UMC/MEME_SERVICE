@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.converter.ArtistConverter;
+import umc.meme.shop.domain.artist.dto.response.SimpleArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
 import umc.meme.shop.domain.favorite.dto.response.FavoriteArtistPageResponseDto;
-import umc.meme.shop.domain.favorite.dto.response.FavoriteArtistResponseDto;
 import umc.meme.shop.domain.favorite.dto.response.FavoritePortfolioResponsePageDto;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
@@ -20,7 +20,6 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
@@ -84,12 +83,12 @@ public class ModelService {
         Page<FavoriteArtist> favoriteArtistPage = new PageImpl<>(favoriteArtistList.subList(start, end),
                 pageable, favoriteArtistList.size());
 
-        List<FavoriteArtistResponseDto> content = new ArrayList<>();
+        List<SimpleArtistDto> content = new ArrayList<>();
         for(int i=0; i<favoriteArtistPage.getContent().size(); i++){
             FavoriteArtist favoriteArtist = favoriteArtistPage.getContent().get(i);
             Artist artist = artistRepository.findById(favoriteArtist.getArtistId())
                     .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
-            FavoriteArtistResponseDto dto = FavoriteArtistResponseDto.from(artist);
+            SimpleArtistDto dto = SimpleArtistDto.from(artist);
             content.add(dto);
         }
 

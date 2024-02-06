@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
+import umc.meme.shop.domain.artist.dto.response.SimpleArtistDto;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavoriteArtistPageResponseDto {
-    private List<FavoriteArtistResponseDto> content;
+    private List<SimpleArtistDto> content;
     private int currentPage; //현재 페이지 번호
     private int pageSize; //페이지 크기
     private int totalNumber; //전체 메이크업 개수
