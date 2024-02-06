@@ -122,4 +122,10 @@ public class ModelController {
     public ApiResponse recommendReview(){
         return ApiResponse.SuccessResponse(SuccessStatus.RECOMMEND_REVIEW_GET, modelService.recommendReview());
     }
+
+    @Operation(summary = "포트폴리오 추천 - 최신 순", description = "최근 등록된 순으로 포트폴리오를 추천하는 API입니다.")
+    @GetMapping("/recommend/recent")
+    public ApiResponse recommendRecent(){
+        return ApiResponse.SuccessResponse(SuccessStatus.RECOMMEND_RECENT_GET, modelService.recommendRecent());
+    }
 }

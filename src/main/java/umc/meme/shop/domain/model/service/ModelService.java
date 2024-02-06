@@ -236,6 +236,8 @@ public class ModelService {
             sort = Sort.by("price").ascending();
         else if(sortBy.equals("review"))
             sort = Sort.by("averageStars").descending();
+        else if(sortBy.equals("recent"))
+            sort = Sort.by("createdAt").descending();
         else
             throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
         Sort finalSort = sort.and(Sort.by("averageStars").descending());
@@ -246,6 +248,14 @@ public class ModelService {
     /**recommend**/
     public List<PortfolioDto> recommendReview(){
         Pageable pageable = setPageRequest(0, "review");
+        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
+        return portfolioList.getContent().stream()
+                .map(PortfolioDto::from)
+                .toList();
+    }
+
+    public List<PortfolioDto> recommendRecent(){
+        Pageable pageable = setPageRequest(0, "recent");
         Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
         return portfolioList.getContent().stream()
                 .map(PortfolioDto::from)

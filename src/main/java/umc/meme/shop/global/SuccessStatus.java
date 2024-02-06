@@ -30,6 +30,7 @@ public enum SuccessStatus {
     SEARCH_GET(200, "조회가 완료되었습니다"),
 
     RECOMMEND_REVIEW_GET(200, "리뷰 순 포트폴리오 추천이 완료되었습니다."),
+    RECOMMEND_RECENT_GET(200, "최신 순 포트폴리오 추천이 완료되었습니다."),
 
     /**review**/
     REVIEW_CREATE(200, "리뷰 작성이 완료되었습니다"),
