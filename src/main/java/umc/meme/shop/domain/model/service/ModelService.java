@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.converter.ArtistConverter;
+import umc.meme.shop.domain.artist.dto.response.SimpleArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
 import umc.meme.shop.domain.favorite.dto.response.FavoriteArtistPageResponseDto;
-import umc.meme.shop.domain.favorite.dto.response.FavoriteArtistResponseDto;
 import umc.meme.shop.domain.favorite.dto.response.FavoritePortfolioResponsePageDto;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
@@ -20,8 +20,8 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
+import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
@@ -83,12 +83,12 @@ public class ModelService {
         Page<FavoriteArtist> favoriteArtistPage = new PageImpl<>(favoriteArtistList.subList(start, end),
                 pageable, favoriteArtistList.size());
 
-        List<FavoriteArtistResponseDto> content = new ArrayList<>();
+        List<SimpleArtistDto> content = new ArrayList<>();
         for(int i=0; i<favoriteArtistPage.getContent().size(); i++){
             FavoriteArtist favoriteArtist = favoriteArtistPage.getContent().get(i);
             Artist artist = artistRepository.findById(favoriteArtist.getArtistId())
                     .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
-            FavoriteArtistResponseDto dto = FavoriteArtistResponseDto.from(artist);
+            SimpleArtistDto dto = SimpleArtistDto.from(artist);
             content.add(dto);
         }
 
@@ -236,6 +236,8 @@ public class ModelService {
             sort = Sort.by("price").ascending();
         else if(sortBy.equals("review"))
             sort = Sort.by("averageStars").descending();
+        else if(sortBy.equals("recent"))
+            sort = Sort.by("createdAt").descending();
         else
             throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
         Sort finalSort = sort.and(Sort.by("averageStars").descending());
@@ -244,11 +246,19 @@ public class ModelService {
     }
 
     /**recommend**/
-    public List<PortfolioDto> recommendReview(){
+    public List<SimplePortfolioDto> recommendReview(){
         Pageable pageable = setPageRequest(0, "review");
         Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
         return portfolioList.getContent().stream()
-                .map(PortfolioDto::from)
+                .map(SimplePortfolioDto::from)
+                .toList();
+    }
+
+    public List<SimplePortfolioDto> recommendRecent(){
+        Pageable pageable = setPageRequest(0, "recent");
+        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
+        return portfolioList.getContent().stream()
+                .map(SimplePortfolioDto::from)
                 .toList();
     }
 

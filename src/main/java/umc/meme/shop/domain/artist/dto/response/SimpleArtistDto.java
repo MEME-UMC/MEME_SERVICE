@@ -1,23 +1,22 @@
-package umc.meme.shop.domain.favorite.dto.response;
+package umc.meme.shop.domain.artist.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
-import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 
-@Data
+@Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class FavoriteArtistResponseDto {
+@AllArgsConstructor
+public class SimpleArtistDto {
     private Long artistId;
     private String profileImg;
     private String artistNickName;
 
-    public static FavoriteArtistResponseDto from(Artist artist) {
-        return FavoriteArtistResponseDto.builder()
+    public static SimpleArtistDto from(Artist artist) {
+        return SimpleArtistDto.builder()
                 .artistId(artist.getUserId())
                 .profileImg(artist.getProfileImg())
                 .artistNickName(artist.getNickname())
