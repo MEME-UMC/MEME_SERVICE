@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
-import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
@@ -80,7 +79,7 @@ public class PortfolioService {
         Page<Portfolio> portfolioPage = new PageImpl<>(portfolioList.subList(start, end),
                 pageable, portfolioList.size());
 
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
     // 포트폴리오 하나만 조회

@@ -18,7 +18,6 @@ import umc.meme.shop.domain.favorite.repository.FavoritePortfolioRepository;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
-import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
@@ -110,7 +109,7 @@ public class ModelService {
         Page<FavoritePortfolio> favoritePortfolioPage = new PageImpl<>(favoritePortfolioList.subList(start, end),
                 pageable, favoritePortfolioList.size());
 
-        return PortfolioConverter.favoritePortfolioPageConverter(favoritePortfolioPage);
+        return FavoritePortfolioResponsePageDto.from(favoritePortfolioPage);
     }
 
     //관심 아티스트 추가
@@ -191,14 +190,14 @@ public class ModelService {
         if(portfolioPage.getContent().isEmpty())
             throw new GlobalException(ErrorStatus.SEARCH_NOT_FOUNT);
 
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
     //카테고리 검색
     public PortfolioPageDto searchCategory(Category category, int page, String sortBy){
         Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findByCategory(category, pageable);
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
     //관심 아티스트 검색
@@ -208,14 +207,14 @@ public class ModelService {
 
         Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findByArtist(artist, pageable);
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
     //전체 조회
     public PortfolioPageDto searchAll(int page, String sortBy){
         Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findAllNotBlocked(pageable);
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
 
