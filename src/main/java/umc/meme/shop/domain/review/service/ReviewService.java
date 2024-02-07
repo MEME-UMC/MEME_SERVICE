@@ -74,7 +74,6 @@ public class ReviewService {
         }
 
         portfolio.updateReviewList(review);
-        portfolio.updateAverageStars();
         model.updateReviewList(review);
 
         reviewRepository.save(review);

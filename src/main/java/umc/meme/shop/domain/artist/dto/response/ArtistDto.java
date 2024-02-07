@@ -29,9 +29,9 @@ public class ArtistDto {
 
     private WorkExperience workExperience;
 
-    private List<String> region;
+    private List<Region> region;
 
-    private List<String> specialization;
+    private List<Category> specialization;
 
     private MakeupLocation makeupLocation;
 

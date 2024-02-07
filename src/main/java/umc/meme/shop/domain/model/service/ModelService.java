@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import umc.meme.shop.domain.artist.converter.ArtistConverter;
 import umc.meme.shop.domain.artist.dto.response.SimpleArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
@@ -92,7 +91,7 @@ public class ModelService {
             content.add(dto);
         }
 
-        return ArtistConverter.favoriteArtistPageConverter(favoriteArtistPage, content);
+        return FavoriteArtistPageResponseDto.from(favoriteArtistPage, content);
     }
 
     //관심 메이크업 조회

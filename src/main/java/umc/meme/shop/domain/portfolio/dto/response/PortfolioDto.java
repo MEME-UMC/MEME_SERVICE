@@ -9,6 +9,7 @@ import umc.meme.shop.global.enums.MakeupLocation;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.enums.Category;
+import umc.meme.shop.global.enums.Region;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class PortfolioDto {
 
     private String shopLocation; //샵 위치
 
-    private List<String> region; //활동 가능 지역
+    private List<Region> region; //활동 가능 지역
 
     private Boolean isBlock;
 

@@ -30,10 +30,12 @@ public class Artist extends User {
     private WorkExperience workExperience;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> region;
+    @Enumerated(EnumType.STRING)
+    private List<Region> region;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> specialization;
+    @Enumerated(EnumType.STRING)
+    private List<Category> specialization;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -68,22 +70,10 @@ public class Artist extends User {
             this.introduction = request.getIntroduction();
         if (request.getWorkExperience() != null)
             this.workExperience = request.getWorkExperience();
-
-        //region mapping
-        if (request.getRegion() != null){
-            List<String> regionList = new ArrayList<>();
-            for(Region region : request.getRegion())
-                regionList.add(region.getValue());
-            this.region = regionList;
-        }
-
-        //specialization mapping
-        if (request.getSpecialization() != null){
-            List<String> specialization = new ArrayList<>();
-            for(Category category : request.getSpecialization())
-                specialization.add(category.getValue());
-            this.specialization = specialization;
-        }
+        if (request.getRegion() != null)
+            this.region = request.getRegion();
+        if (request.getSpecialization() != null)
+            this.specialization = request.getSpecialization();
         if (request.getMakeupLocation() != null)
             this.makeupLocation = request.getMakeupLocation();
         if (request.getShopLocation() != null)

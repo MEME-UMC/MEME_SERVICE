@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.global.enums.MakeupLocation;
+import umc.meme.shop.global.enums.Region;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class ArtistLocationDto {
     private MakeupLocation makeupLocation; //샵 재직 여부
     private String shopLocation; //샵 위치
-    private List<String> region; //활동 가능 지역
+    private List<Region> region; //활동 가능 지역
 
     public static ArtistLocationDto from(Artist artist){
         return ArtistLocationDto.builder()
