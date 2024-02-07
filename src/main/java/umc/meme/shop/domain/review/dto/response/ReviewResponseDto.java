@@ -21,7 +21,7 @@ public class ReviewResponseDto {
     public static ReviewResponseDto from(Review review){
         List<ReviewImgDto> reviewImgDtoList = review.getReviewImgList()
                 .stream()
-                .map(reviewImg -> new ReviewImgDto(reviewImg.getReviewImgId(), reviewImg.getSrc(), false))
+                .map(ReviewImgDto::from)
                 .toList();
 
         return ReviewResponseDto.builder()

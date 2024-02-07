@@ -9,6 +9,7 @@ import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.global.enums.PersonalColor;
+import umc.meme.shop.global.enums.Provider;
 import umc.meme.shop.global.enums.SkinType;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.review.entity.Review;
@@ -80,5 +81,21 @@ public class Model extends User {
 
     public void updateReviewList(Review review){
         this.reviewList.add(review);
+    }
+
+
+    //temp create model builder
+    public static Model from(ModelProfileDto dto){
+        return Model.builder()
+                .profileImg(dto.getProfileImg())
+                .nickname(dto.getNickname())
+                .introduction("")
+                .email("")
+                .userName("")
+                .gender(dto.getGender())
+                .skinType(dto.getSkinType())
+                .personalColor(dto.getPersonalColor())
+                .provider(Provider.KAKAO)
+                .build();
     }
 }

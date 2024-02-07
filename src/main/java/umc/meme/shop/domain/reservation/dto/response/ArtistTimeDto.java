@@ -14,4 +14,11 @@ import umc.meme.shop.global.enums.Times;
 public class ArtistTimeDto {
     private DayOfWeek availableDayOfWeek;
     private Times availableTime;
+
+    public static ArtistTimeDto from(DayOfWeek dayOfWeek, Times availableTime){
+        return ArtistTimeDto.builder()
+                .availableDayOfWeek(dayOfWeek)
+                .availableTime(availableTime)
+                .build();
+    }
 }

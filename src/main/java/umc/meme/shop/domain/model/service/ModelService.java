@@ -24,11 +24,10 @@ import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
-import umc.meme.shop.global.enums.Provider;
 import umc.meme.shop.global.exception.GlobalException;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,17 +41,7 @@ public class ModelService {
     /**temp model create method**/
     @Transactional
     public void createModel(ModelProfileDto dto){
-        Model model = Model.builder()
-                .profileImg(dto.getProfileImg())
-                .nickname(dto.getNickname())
-                .introduction("")
-                .email("")
-                .userName("")
-                .gender(dto.getGender())
-                .skinType(dto.getSkinType())
-                .personalColor(dto.getPersonalColor())
-                .provider(Provider.KAKAO)
-                .build();
+        Model model = Model.from(dto);
         modelRepository.save(model);
     }
 
@@ -74,21 +63,14 @@ public class ModelService {
 
         //paging
         List<FavoriteArtist> favoriteArtistList = model.getFavoriteArtistList();
-        Pageable pageable = PageRequest.of(page, 30);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), favoriteArtistList.size());
+        Page<FavoriteArtist> favoriteArtistPage = getPage(page, favoriteArtistList);
 
-        Page<FavoriteArtist> favoriteArtistPage = new PageImpl<>(favoriteArtistList.subList(start, end),
-                pageable, favoriteArtistList.size());
-
-        List<SimpleArtistDto> content = new ArrayList<>();
-        for(int i=0; i<favoriteArtistPage.getContent().size(); i++){
-            FavoriteArtist favoriteArtist = favoriteArtistPage.getContent().get(i);
-            Artist artist = artistRepository.findById(favoriteArtist.getArtistId())
-                    .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
-            SimpleArtistDto dto = SimpleArtistDto.from(artist);
-            content.add(dto);
-        }
+        //관심 아티스트 리스트
+        List<SimpleArtistDto> content = favoriteArtistPage.getContent().stream()
+                .map(favoriteArtist -> artistRepository.findById(favoriteArtist.getArtistId())
+                        .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST)))
+                .map(SimpleArtistDto::from)
+                .collect(Collectors.toList());
 
         return FavoriteArtistPageResponseDto.from(favoriteArtistPage, content);
     }
@@ -99,15 +81,9 @@ public class ModelService {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
-        //page
-        List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
-        Pageable pageable = PageRequest.of(page, 30);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), favoritePortfolioList.size());
-
         //list를 page로 변환
-        Page<FavoritePortfolio> favoritePortfolioPage = new PageImpl<>(favoritePortfolioList.subList(start, end),
-                pageable, favoritePortfolioList.size());
+        List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
+        Page<FavoritePortfolio> favoritePortfolioPage = getPage(page, favoritePortfolioList);
 
         return FavoritePortfolioResponsePageDto.from(favoritePortfolioPage);
     }
@@ -186,10 +162,6 @@ public class ModelService {
 
         //query 검색
         Page<Portfolio> portfolioPage = portfolioRepository.search(query, pageable);
-
-        if(portfolioPage.getContent().isEmpty())
-            throw new GlobalException(ErrorStatus.SEARCH_NOT_FOUNT);
-
         return PortfolioPageDto.from(portfolioPage);
     }
 
@@ -217,6 +189,26 @@ public class ModelService {
         return PortfolioPageDto.from(portfolioPage);
     }
 
+    /**recommend**/
+    //리뷰 많은 순 포트폴리오 추천
+    public List<SimplePortfolioDto> recommendReview(){
+        Pageable pageable = setPageRequest(0, "review");
+        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
+
+        return portfolioList.getContent().stream()
+                .map(SimplePortfolioDto::from)
+                .toList();
+    }
+
+    //최신 등록 순 포트폴리오 추천
+    public List<SimplePortfolioDto> recommendRecent(){
+        Pageable pageable = setPageRequest(0, "recent");
+        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
+
+        return portfolioList.getContent().stream()
+                .map(SimplePortfolioDto::from)
+                .toList();
+    }
 
     //검색하기 정렬 기준 설정
     private Pageable setPageRequest(int page, String sortBy){
@@ -232,26 +224,22 @@ public class ModelService {
             sort = Sort.by("createdAt").descending();
         else
             throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
-        Sort finalSort = sort.and(Sort.by("averageStars").descending());
 
+        //별점 높은 순 정렬 추가
+        Sort finalSort = sort.and(Sort.by("averageStars").descending());
         return PageRequest.of(page, 30, finalSort);
     }
 
-    /**recommend**/
-    public List<SimplePortfolioDto> recommendReview(){
-        Pageable pageable = setPageRequest(0, "review");
-        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
-        return portfolioList.getContent().stream()
-                .map(SimplePortfolioDto::from)
-                .toList();
-    }
+    //TODO: change List -> Page
+    private Page getPage(int page, List list){
+        Pageable pageable = PageRequest.of(page, 30);
 
-    public List<SimplePortfolioDto> recommendRecent(){
-        Pageable pageable = setPageRequest(0, "recent");
-        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
-        return portfolioList.getContent().stream()
-                .map(SimplePortfolioDto::from)
-                .toList();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        //list를 page로 변환
+        return new PageImpl<>(list.subList(start, end),
+                pageable, list.size());
     }
 
 }

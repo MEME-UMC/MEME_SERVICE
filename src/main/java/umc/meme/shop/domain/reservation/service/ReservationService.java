@@ -57,11 +57,7 @@ public class ReservationService {
             DayOfWeek dayOfWeek = entry.getKey();
             Times availableTime = entry.getValue();
 
-            ArtistTimeDto artistTimeDto = ArtistTimeDto.builder()
-                    .availableDayOfWeek(dayOfWeek)
-                    .availableTime(availableTime)
-                    .build();
-
+            ArtistTimeDto artistTimeDto = ArtistTimeDto.from(dayOfWeek, availableTime);
             artistTimeList.add(artistTimeDto);
         }
 

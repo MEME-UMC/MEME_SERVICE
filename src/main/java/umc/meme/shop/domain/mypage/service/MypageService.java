@@ -45,7 +45,6 @@ public class MypageService {
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_USER));
 
         List<Inquiry> inquiryList = user.getInquiryList();
-
         return inquiryList.stream()
                 .map(MypageInquiryResponseDto::from)
                 .toList();

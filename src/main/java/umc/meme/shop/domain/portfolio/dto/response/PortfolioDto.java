@@ -51,7 +51,7 @@ public class PortfolioDto {
         // PortfolioImg 리스트를 PortfolioImgDto 리스트로 변환
         List<PortfolioImgDto> portfolioImgDtoList = portfolio.getPortfolioImgList()
                 .stream()
-                .map(portfolioImg -> new PortfolioImgDto(portfolioImg.getPortfolioImgId(), portfolioImg.getSrc(), false))
+                .map(PortfolioImgDto::from)
                 .toList();
 
         return PortfolioDto.builder()
