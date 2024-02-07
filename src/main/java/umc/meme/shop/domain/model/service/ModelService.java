@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import umc.meme.shop.domain.artist.converter.ArtistConverter;
 import umc.meme.shop.domain.artist.dto.response.SimpleArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
@@ -19,18 +18,16 @@ import umc.meme.shop.domain.favorite.repository.FavoritePortfolioRepository;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
-import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.global.ErrorStatus;
-import umc.meme.shop.global.enums.Provider;
 import umc.meme.shop.global.exception.GlobalException;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,24 +41,15 @@ public class ModelService {
     /**temp model create method**/
     @Transactional
     public void createModel(ModelProfileDto dto){
-        Model model = Model.builder()
-                .profileImg(dto.getProfileImg())
-                .nickname(dto.getNickname())
-                .introduction("")
-                .email("")
-                .userName("")
-                .gender(dto.getGender())
-                .skinType(dto.getSkinType())
-                .personalColor(dto.getPersonalColor())
-                .provider(Provider.KAKAO)
-                .build();
+        Model model = Model.from(dto);
+        model.tempMethod();
         modelRepository.save(model);
     }
 
     //모델 프로필 관리
     @Transactional
     public void updateModelProfile(ModelProfileDto request){
-        Model model = modelRepository.findById(request.getModelId())
+        Model model = modelRepository.findById(request.getUserId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         model.updateModel(request);
@@ -76,23 +64,16 @@ public class ModelService {
 
         //paging
         List<FavoriteArtist> favoriteArtistList = model.getFavoriteArtistList();
-        Pageable pageable = PageRequest.of(page, 30);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), favoriteArtistList.size());
+        Page<FavoriteArtist> favoriteArtistPage = getPage(page, favoriteArtistList);
 
-        Page<FavoriteArtist> favoriteArtistPage = new PageImpl<>(favoriteArtistList.subList(start, end),
-                pageable, favoriteArtistList.size());
+        //관심 아티스트 리스트
+        List<SimpleArtistDto> content = favoriteArtistPage.getContent().stream()
+                .map(favoriteArtist -> artistRepository.findById(favoriteArtist.getArtistId())
+                        .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST)))
+                .map(SimpleArtistDto::from)
+                .collect(Collectors.toList());
 
-        List<SimpleArtistDto> content = new ArrayList<>();
-        for(int i=0; i<favoriteArtistPage.getContent().size(); i++){
-            FavoriteArtist favoriteArtist = favoriteArtistPage.getContent().get(i);
-            Artist artist = artistRepository.findById(favoriteArtist.getArtistId())
-                    .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
-            SimpleArtistDto dto = SimpleArtistDto.from(artist);
-            content.add(dto);
-        }
-
-        return ArtistConverter.favoriteArtistPageConverter(favoriteArtistPage, content);
+        return FavoriteArtistPageResponseDto.from(favoriteArtistPage, content);
     }
 
     //관심 메이크업 조회
@@ -101,17 +82,11 @@ public class ModelService {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
-        //page
-        List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
-        Pageable pageable = PageRequest.of(page, 30);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), favoritePortfolioList.size());
-
         //list를 page로 변환
-        Page<FavoritePortfolio> favoritePortfolioPage = new PageImpl<>(favoritePortfolioList.subList(start, end),
-                pageable, favoritePortfolioList.size());
+        List<FavoritePortfolio> favoritePortfolioList = model.getFavoritePortfolioList();
+        Page<FavoritePortfolio> favoritePortfolioPage = getPage(page, favoritePortfolioList);
 
-        return PortfolioConverter.favoritePortfolioPageConverter(favoritePortfolioPage);
+        return FavoritePortfolioResponsePageDto.from(favoritePortfolioPage);
     }
 
     //관심 아티스트 추가
@@ -188,18 +163,14 @@ public class ModelService {
 
         //query 검색
         Page<Portfolio> portfolioPage = portfolioRepository.search(query, pageable);
-
-        if(portfolioPage.getContent().isEmpty())
-            throw new GlobalException(ErrorStatus.SEARCH_NOT_FOUNT);
-
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
     //카테고리 검색
     public PortfolioPageDto searchCategory(Category category, int page, String sortBy){
         Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findByCategory(category, pageable);
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
     //관심 아티스트 검색
@@ -209,16 +180,36 @@ public class ModelService {
 
         Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findByArtist(artist, pageable);
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
     //전체 조회
     public PortfolioPageDto searchAll(int page, String sortBy){
         Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findAllNotBlocked(pageable);
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
+    /**recommend**/
+    //리뷰 많은 순 포트폴리오 추천
+    public List<SimplePortfolioDto> recommendReview(){
+        Pageable pageable = setPageRequest(0, "review");
+        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
+
+        return portfolioList.getContent().stream()
+                .map(SimplePortfolioDto::from)
+                .toList();
+    }
+
+    //최신 등록 순 포트폴리오 추천
+    public List<SimplePortfolioDto> recommendRecent(){
+        Pageable pageable = setPageRequest(0, "recent");
+        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
+
+        return portfolioList.getContent().stream()
+                .map(SimplePortfolioDto::from)
+                .toList();
+    }
 
     //검색하기 정렬 기준 설정
     private Pageable setPageRequest(int page, String sortBy){
@@ -234,26 +225,22 @@ public class ModelService {
             sort = Sort.by("createdAt").descending();
         else
             throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
-        Sort finalSort = sort.and(Sort.by("averageStars").descending());
 
+        //별점 높은 순 정렬 추가
+        Sort finalSort = sort.and(Sort.by("averageStars").descending());
         return PageRequest.of(page, 30, finalSort);
     }
 
-    /**recommend**/
-    public List<SimplePortfolioDto> recommendReview(){
-        Pageable pageable = setPageRequest(0, "review");
-        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
-        return portfolioList.getContent().stream()
-                .map(SimplePortfolioDto::from)
-                .toList();
-    }
+    //TODO: change List -> Page
+    private Page getPage(int page, List list){
+        Pageable pageable = PageRequest.of(page, 30);
 
-    public List<SimplePortfolioDto> recommendRecent(){
-        Pageable pageable = setPageRequest(0, "recent");
-        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
-        return portfolioList.getContent().stream()
-                .map(SimplePortfolioDto::from)
-                .toList();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        //list를 page로 변환
+        return new PageImpl<>(list.subList(start, end),
+                pageable, list.size());
     }
 
 }

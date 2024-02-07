@@ -14,7 +14,6 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
-import umc.meme.shop.domain.review.converter.ReviewConverter;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.review.dto.response.ReviewListPageDto;
@@ -27,10 +26,7 @@ import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +35,6 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReservationRepository reservationRepository;
     private final PortfolioRepository portfolioRepository;
-    private final ReviewImgRepository reviewImgRepository;
 
     //리뷰 작성
     @Transactional
@@ -74,7 +69,6 @@ public class ReviewService {
         }
 
         portfolio.updateReviewList(review);
-        portfolio.updateAverageStars();
         model.updateReviewList(review);
 
         reviewRepository.save(review);
@@ -85,6 +79,7 @@ public class ReviewService {
     public List<ReviewResponseDto> getMyReview(Long modelId){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+
         //리뷰 리스트 조회
         List<Review> reviewList = reviewRepository.findByModel(model);
         return reviewList.stream()
@@ -97,31 +92,11 @@ public class ReviewService {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
-        List<Review> reviewList = portfolio.getReviewList();
-
-        // page로 mapping
-        Pageable pageable = PageRequest.of(page, 30);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), reviewList.size());
-
         // list를 page로 변환
-        List<Review> pagedReviewList = reviewList.subList(start, end);
-        Page<Review> reviewPage = new PageImpl<>(pagedReviewList, pageable, reviewList.size());
+        List<Review> reviewList = portfolio.getReviewList();
+        Page<Review> reviewPage = getPage(page, reviewList);
 
-        // 별점 현황
-        Map<Integer, Integer> starStatus = new HashMap<>(Map.of(5, 0, 4, 0, 3, 0, 2, 0, 1, 0));
-        for (Review review : pagedReviewList) {
-            int star = review.getStar();
-            starStatus.put(star, starStatus.get(star) + 1);
-        }
-
-        // ReviewConverter를 사용하여 ReviewListPageDto 생성
-        ReviewListPageDto pageDto = ReviewConverter.reviewPageConverter(reviewPage);
-
-        // 별점 현황 추가
-        pageDto.setStarStatus(starStatus);
-
-        return pageDto;
+        return ReviewListPageDto.from(reviewPage);
     }
 
     //리뷰 삭제
@@ -135,5 +110,17 @@ public class ReviewService {
             throw new GlobalException(ErrorStatus.INVALID_MODEL_FOR_REVIEW);
 
         reviewRepository.delete(review);
+    }
+
+    //TODO: change List -> Page
+    private Page<Review> getPage(int page, List<Review> list){
+        Pageable pageable = PageRequest.of(page, 30);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        //list를 page로 변환
+        return new PageImpl<>(list.subList(start, end),
+                pageable, list.size());
     }
 }

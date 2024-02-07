@@ -16,14 +16,14 @@ public class ArtistTest {
     @Test
     void createArtist(){
 
-        List<String> categories = List.of(new String[]{Category.DAILY.getValue(), Category.PARTY.getValue()});
-        List<String> regions = List.of(new String[]{Region.DONGJAK.getValue(), Region.GANGNAM.getValue()});
+        List<Category> categories = List.of(new Category[]{Category.DAILY, Category.PARTY});
+        List<Region> regions = List.of(new Region[]{Region.DONGJAK, Region.GANGNAM});
         Artist artist1 = Artist.builder()
                 .availableDayOfWeekAndTime(null)
                 .gender(Gender.FEMALE)
                 .specialization(categories)
                 .email("")
-                .userName("testName")
+                .username("testName")
                 .nickname("testNickName")
                 .makeupLocation(MakeupLocation.SHOP)
                 .region(regions)
@@ -41,7 +41,7 @@ public class ArtistTest {
                 .profileImg("")
                 .specialization(categories)
                 .email("")
-                .userName("test2Name")
+                .username("test2Name")
                 .nickname("test2NickName")
                 .makeupLocation(MakeupLocation.SHOP)
                 .region(regions)
@@ -58,7 +58,7 @@ public class ArtistTest {
                 .gender(Gender.FEMALE)
                 .specialization(categories)
                 .email("")
-                .userName("test3Name")
+                .username("test3Name")
                 .nickname("test3NickName")
                 .makeupLocation(MakeupLocation.SHOP)
                 .region(regions)

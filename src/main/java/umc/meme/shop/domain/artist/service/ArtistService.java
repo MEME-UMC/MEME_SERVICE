@@ -8,10 +8,7 @@ import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.global.ErrorStatus;
-import umc.meme.shop.global.enums.Provider;
 import umc.meme.shop.global.exception.GlobalException;
-
-import java.util.List;
 
 
 @Service
@@ -22,7 +19,7 @@ public class ArtistService {
     //아티스트 프로필 관리/수정
     @Transactional
     public void updateArtistProfile(ArtistProfileDto profileDto){
-        Artist artist = artistRepository.findById(profileDto.getArtistId())
+        Artist artist = artistRepository.findById(profileDto.getUserId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
         artist.updateArtist(profileDto);
     }
@@ -39,7 +36,7 @@ public class ArtistService {
     public void createArtist(ArtistProfileDto dto){
         Artist artist = new Artist();
         artist.updateArtist(dto);
-        artist.tempMethod("", "testName", Provider.KAKAO);
+        artist.tempMethod();
         artistRepository.save(artist);
     }
 

@@ -79,9 +79,11 @@ public class Portfolio extends BaseEntity {
 
     public void updateReviewList(Review review){
         this.reviewList.add(review);
+        //별점 업데이트
+        updateAverageStars();
     }
 
-    public void updateAverageStars(){
+    private void updateAverageStars(){
         int count = this.reviewList.size();
         if(count == 0) {
             this.averageStars = "0.00";

@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
-import umc.meme.shop.domain.portfolio.converter.PortfolioConverter;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
@@ -71,16 +70,10 @@ public class PortfolioService {
         //isblock이면 리스트에서 제거
         portfolioList.removeIf(Portfolio::isBlock);
 
-        //page로 mapping
-        Pageable pageable = PageRequest.of(page, 30);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), portfolioList.size());
-
         //list를 page로 변환
-        Page<Portfolio> portfolioPage = new PageImpl<>(portfolioList.subList(start, end),
-                pageable, portfolioList.size());
+        Page<Portfolio> portfolioPage = getPage(page, portfolioList);
 
-        return PortfolioConverter.portfolioPageConverter(portfolioPage);
+        return PortfolioPageDto.from(portfolioPage);
     }
 
     // 포트폴리오 하나만 조회
@@ -134,5 +127,16 @@ public class PortfolioService {
         portfolio.updatePortfolio(request);
     }
 
+    //TODO: change List -> Page
+    private Page<Portfolio> getPage(int page, List<Portfolio> list){
+        Pageable pageable = PageRequest.of(page, 30);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        //list를 page로 변환
+        return new PageImpl<>(list.subList(start, end),
+                pageable, list.size());
+    }
 
 }
