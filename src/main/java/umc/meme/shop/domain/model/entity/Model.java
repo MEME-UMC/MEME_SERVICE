@@ -14,6 +14,7 @@ import umc.meme.shop.global.enums.SkinType;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.review.entity.Review;
 import umc.meme.shop.domain.user.User;
+import umc.meme.shop.global.enums.UserStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -25,9 +26,6 @@ import java.util.List;
 @Entity
 public class Model extends User {
 
-    @Column(nullable = true, length = 500)
-    private String introduction;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SkinType skinType;
@@ -35,8 +33,6 @@ public class Model extends User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PersonalColor personalColor;
-
-    private Date inactive;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "model")
     private List<FavoritePortfolio> favoritePortfolioList;
@@ -89,13 +85,18 @@ public class Model extends User {
         return Model.builder()
                 .profileImg(dto.getProfileImg())
                 .nickname(dto.getNickname())
-                .introduction("")
-                .email("")
-                .userName("")
                 .gender(dto.getGender())
                 .skinType(dto.getSkinType())
                 .personalColor(dto.getPersonalColor())
-                .provider(Provider.KAKAO)
                 .build();
+    }
+
+    public void tempMethod(){
+        this.username = "name";
+        this.email="";
+        this.password="";
+        this.role="ARTIST";
+        this.userStatus = UserStatus.ACTIVE;
+        this.provider = Provider.KAKAO;
     }
 }

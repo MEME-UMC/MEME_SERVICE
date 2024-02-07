@@ -1,19 +1,21 @@
 package umc.meme.shop.domain.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.global.enums.Gender;
 import umc.meme.shop.domain.mypage.entity.Inquiry;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import umc.meme.shop.global.enums.Provider;
+import umc.meme.shop.global.enums.UserStatus;
 
 @SuperBuilder
 @Getter
@@ -25,29 +27,49 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    protected Long userId;
+    private Long userId;
 
-    @Column(nullable = false)
+    @NotNull
     protected String profileImg;
 
-    @Column(nullable = false, length = 40)
+    @NotNull
+    @Column(length = 40)
     protected String nickname;
 
-    @Column(nullable = false, length = 20)
-    protected String userName;
+    @NotNull
+    @Column(length = 20)
+    protected String username;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     protected Gender gender;
 
-    @Column(nullable = false, length = 40)
+    @NotNull
+    @Column(length = 40)
     protected String email;
+
+    @NotNull
+    protected String password;
+
+    @NotNull
+    protected String role;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Column(nullable = true)
+    private LocalDate inactiveDate;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    protected UserStatus userStatus;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    protected Provider provider;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     protected List<Inquiry> inquiryList;
@@ -56,7 +78,4 @@ public class User {
         this.inquiryList.add(inquiry);
     }
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    protected Provider provider;
 }

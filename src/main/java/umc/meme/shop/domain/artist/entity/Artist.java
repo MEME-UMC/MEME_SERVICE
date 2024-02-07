@@ -10,8 +10,6 @@ import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.enums.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,35 +20,35 @@ import java.util.Map;
 @Entity
 public class Artist extends User {
 
-    @Column(nullable = false, length = 500)
+    @Column(length = 500, nullable = true)
     private String introduction;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private WorkExperience workExperience;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private List<Region> region;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private List<Category> specialization;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private MakeupLocation makeupLocation;
 
     @Column(nullable = true)
     private String shopLocation; //샵의 위치
 
-    @Column(nullable = true)
-    private Date inactiveDate;
-
     @ElementCollection
     @CollectionTable(name = "available_time_mapping",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
     @MapKeyColumn(name = "day_of_week")
+    @MapKeyEnumerated(EnumType.STRING)
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
     private Map<DayOfWeek, Times> availableDayOfWeekAndTime;
@@ -86,9 +84,12 @@ public class Artist extends User {
         this.portfolioList.add(portfolio);
     }
 
-    public void tempMethod(String email, String name, Provider provider){
-        this.email = email;
-        this.userName = name;
-        this.provider = provider;
+    public void tempMethod(){
+        this.username = "name";
+        this.email="";
+        this.password="";
+        this.role="ARTIST";
+        this.userStatus = UserStatus.ACTIVE;
+        this.provider = Provider.KAKAO;
     }
 }

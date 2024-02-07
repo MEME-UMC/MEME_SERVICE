@@ -23,7 +23,7 @@ public class MypageDetailDto {
         return MypageDetailDto.builder()
                 .profileImg(user.getProfileImg())
                 .nickname(user.getNickname())
-                .name(user.getUserName())
+                .name(user.getUsername())
                 .gender(user.getGender())
                 .email(user.getEmail())
                 .build();

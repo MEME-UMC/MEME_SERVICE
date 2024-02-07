@@ -42,13 +42,14 @@ public class ModelService {
     @Transactional
     public void createModel(ModelProfileDto dto){
         Model model = Model.from(dto);
+        model.tempMethod();
         modelRepository.save(model);
     }
 
     //모델 프로필 관리
     @Transactional
     public void updateModelProfile(ModelProfileDto request){
-        Model model = modelRepository.findById(request.getModelId())
+        Model model = modelRepository.findById(request.getUserId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         model.updateModel(request);
