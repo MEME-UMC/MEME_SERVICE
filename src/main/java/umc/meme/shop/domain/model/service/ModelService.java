@@ -128,10 +128,7 @@ public class ModelService {
             throw new GlobalException(ErrorStatus.ALREADY_EXIST_FAVORITE_ARTIST);
         }
 
-        FavoriteArtist favoriteArtist = FavoriteArtist.builder()
-                        .artistId(artist.getUserId())
-                        .model(model)
-                        .build();
+        FavoriteArtist favoriteArtist = FavoriteArtist.from(artist, model);
         model.updateFavoriteArtistList(favoriteArtist);
         favoriteArtistRepository.save(favoriteArtist);
     }
@@ -150,10 +147,7 @@ public class ModelService {
             throw new GlobalException(ErrorStatus.ALREADY_EXIST_FAVORITE_PORTFOLIO);
         }
 
-        FavoritePortfolio favoritePortfolio = FavoritePortfolio.builder()
-                .model(model)
-                .portfolio(portfolio)
-                .build();
+        FavoritePortfolio favoritePortfolio = FavoritePortfolio.from(model, portfolio);
         model.updateFavoritePortfolioList(favoritePortfolio);
         favoritePortfolioRepository.save(favoritePortfolio);
     }

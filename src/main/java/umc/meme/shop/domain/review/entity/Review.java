@@ -6,9 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.common.BaseEntity;
+import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -37,4 +40,14 @@ public class Review extends BaseEntity {
 
     @Column(nullable = true, length = 200)
     private String comment;
+
+    public static Review from(Model model, Portfolio portfolio, ReviewDto dto){
+        return Review.builder()
+                .model(model)
+                .portfolio(portfolio)
+                .star(dto.getStar())
+                .comment(dto.getComment())
+                .reviewImgList(new ArrayList<ReviewImg>())
+                .build();
+    }
 }

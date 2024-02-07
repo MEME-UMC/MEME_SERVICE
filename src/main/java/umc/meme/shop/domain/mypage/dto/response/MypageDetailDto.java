@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.user.User;
 import umc.meme.shop.global.enums.Gender;
 
 @Builder
@@ -17,4 +18,14 @@ public class MypageDetailDto {
     private String name;
     private Gender gender;
     private String email;
+
+    public static MypageDetailDto from(User user){
+        return MypageDetailDto.builder()
+                .profileImg(user.getProfileImg())
+                .nickname(user.getNickname())
+                .name(user.getUserName())
+                .gender(user.getGender())
+                .email(user.getEmail())
+                .build();
+    }
 }

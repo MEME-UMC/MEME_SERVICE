@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.domain.model.entity.Model;
 
@@ -24,4 +25,11 @@ public class FavoriteArtist extends BaseEntity {
     private Model model;
 
     private Long artistId;
+
+    public static FavoriteArtist from(Artist artist, Model model){
+        return FavoriteArtist.builder()
+                .model(model)
+                .artistId(artist.getUserId())
+                .build();
+    }
 }

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.common.BaseEntity;
+import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.user.User;
 
@@ -28,4 +29,11 @@ public class FavoritePortfolio extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="portfolio_id", nullable = false)
     private Portfolio portfolio;
+
+    public static FavoritePortfolio from(Model model, Portfolio portfolio){
+        return FavoritePortfolio.builder()
+                .model(model)
+                .portfolio(portfolio)
+                .build();
+    }
 }

@@ -28,7 +28,15 @@ public class Inquiry extends BaseEntity {
     private String inquiryText;
 
     @ManyToOne
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public static Inquiry from(MypageInquiryDto dto, User user) {
+        return Inquiry.builder()
+                .inquiryText(dto.getInquiryText())
+                .inquiryTitle(dto.getInquiryTitle())
+                .user(user)
+                .build();
+    }
 
 }

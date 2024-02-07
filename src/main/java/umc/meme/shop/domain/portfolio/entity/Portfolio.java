@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.common.BaseEntity;
+import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.domain.review.entity.Review;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -91,6 +93,19 @@ public class Portfolio extends BaseEntity {
             stars += review.getStar();
         }
         this.averageStars = String.format("%.2f", stars/count);
+    }
+
+    public static Portfolio from(Artist artist, CreatePortfolioDto dto){
+        return Portfolio.builder()
+                .artist(artist)
+                .category(dto.getCategory())
+                .makeupName(dto.getMakeupName())
+                .info(dto.getInfo())
+                .price(dto.getPrice())
+                .portfolioImgList(new ArrayList<PortfolioImg>())
+                .averageStars("0.00")
+                .isBlock(false)
+                .build();
     }
 
 }

@@ -41,15 +41,10 @@ public class ReservationService {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        return ArtistLocationDto.builder()
-                .makeupLocation(artist.getMakeupLocation())
-                .shopLocation(artist.getShopLocation())
-                .region(artist.getRegion())
-                .build();
+        return ArtistLocationDto.from(artist);
     }
 
     //아티스트 예약 가능 시간 조회
-
     public List<ArtistTimeDto> getArtistTime(Long artistId) {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
@@ -95,25 +90,11 @@ public class ReservationService {
             }
         }
 
-        Reservation reservation = Reservation.builder()
-                .model(model)
-                .portfolio(portfolio)
-                .status(Status.EXPECTED)
-                .reservationDayOfWeekAndTime(reservationDto.getReservationDayOfWeekAndTime())
-                .reservationDate(reservationDto.getReservationDate())
-                .location(reservationDto.getLocation())
-                .build();
-
+        Reservation reservation = Reservation.from(model, portfolio, reservationDto);
         model.updateReservationList(reservation);
         reservationRepository.save(reservation);
 
-        return ReservationCompleteDto.builder()
-                .makeupName(portfolio.getMakeupName())
-                .artistNickName(portfolio.getArtist().getNickname())
-                .location(reservation.getLocation())
-                .reservationDate(reservation.getReservationDate())
-                .reservationDayOfWeekAndTime(reservation.getReservationDayOfWeekAndTime())
-                .build();
+        return ReservationCompleteDto.from(portfolio, reservation);
     }
 
     //예약하기 상태 변경

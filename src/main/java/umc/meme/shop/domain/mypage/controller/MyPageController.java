@@ -22,12 +22,6 @@ public class MyPageController {
         return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, mypageService.getProfile(userId));
     }
 
-    @Operation(summary = "약관 및 정책", description = "약관 및 정책을 조회하는 API입니다.")
-    @GetMapping("/tos")
-    public ApiResponse tos(){
-        return ApiResponse.SuccessResponse(SuccessStatus.TOS_GET, mypageService.getTos());
-    }
-
     @Operation(summary = "문의하기", description = "문의하기 API입니다.")
     @PostMapping("/contact")
     public ApiResponse contact(@RequestBody MypageInquiryDto mypageInquiryDto){
