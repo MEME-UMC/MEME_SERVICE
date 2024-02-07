@@ -23,7 +23,6 @@ import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -39,6 +38,10 @@ public class PortfolioService {
         Artist artist = artistRepository.findById(portfolioDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
+        //포트폴리오 이름이 이미 존재할 시
+        if(portfolioRepository.existsByMakeupName(portfolioDto.getMakeupName()))
+            throw new GlobalException(ErrorStatus.ALREADY_EXIST_PORTFOLIO);
+
         List<PortfolioImg> portfolioImgList = new ArrayList<>();
         for (String src : portfolioDto.getPortfolioImgSrc()) {
             PortfolioImg portfolioImg = new PortfolioImg();
@@ -46,21 +49,7 @@ public class PortfolioService {
             portfolioImgList.add(portfolioImg);
         }
 
-
-        //포트폴리오 이름이 이미 존재할 시
-        if(portfolioRepository.existsByMakeupName(portfolioDto.getMakeupName()))
-            throw new GlobalException(ErrorStatus.ALREADY_EXIST_PORTFOLIO);
-
-        Portfolio portfolio = Portfolio.builder()
-                .artist(artist)
-                .category(portfolioDto.getCategory())
-                .makeupName(portfolioDto.getMakeupName())
-                .info(portfolioDto.getInfo())
-                .price(portfolioDto.getPrice())
-                .portfolioImgList(new ArrayList<PortfolioImg>())
-                .averageStars("0.00")
-                .isBlock(false)
-                .build();
+        Portfolio portfolio = Portfolio.from(artist, portfolioDto);
 
         for (PortfolioImg portfolioImg : portfolioImgList) {
             portfolioImg.setPortfolio(portfolio); // Portfolio 객체 설정

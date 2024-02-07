@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,13 +66,7 @@ public class ReviewService {
             reviewImgList.add(reviewImg);
         }
 
-        Review review = Review.builder()
-                .model(model)
-                .portfolio(portfolio)
-                .star(reviewDto.getStar())
-                .comment(reviewDto.getComment())
-                .reviewImgList(new ArrayList<ReviewImg>())
-                .build();
+        Review review = Review.from(model, portfolio, reviewDto);
 
         for (ReviewImg reviewImg : reviewImgList) {
             reviewImg.setReview(review);
@@ -90,6 +85,7 @@ public class ReviewService {
     public List<ReviewResponseDto> getMyReview(Long modelId){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+        //리뷰 리스트 조회
         List<Review> reviewList = reviewRepository.findByModel(model);
         return reviewList.stream()
                 .map(ReviewResponseDto::from)

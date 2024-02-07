@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.common.BaseEntity;
+import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.user.User;
 import umc.meme.shop.global.enums.DayOfWeek;
@@ -61,5 +63,16 @@ public class Reservation extends BaseEntity {
 
     public void updateIsReview(boolean bool){
         this.isReview = bool;
+    }
+
+    public static Reservation from(Model model, Portfolio portfolio, ReservationRequestDto dto){
+        return Reservation.builder()
+                .model(model)
+                .portfolio(portfolio)
+                .status(Status.EXPECTED)
+                .reservationDayOfWeekAndTime(dto.getReservationDayOfWeekAndTime())
+                .reservationDate(dto.getReservationDate())
+                .location(dto.getLocation())
+                .build();
     }
 }
