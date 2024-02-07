@@ -51,17 +51,9 @@ public class ReservationService {
 
         Map<DayOfWeek, Times> availableDayOfWeekAndTime = artist.getAvailableDayOfWeekAndTime();
 
-        List<ArtistTimeDto> artistTimeList = new ArrayList<>();
-
-        for (Map.Entry<DayOfWeek, Times> entry : availableDayOfWeekAndTime.entrySet()) {
-            DayOfWeek dayOfWeek = entry.getKey();
-            Times availableTime = entry.getValue();
-
-            ArtistTimeDto artistTimeDto = ArtistTimeDto.from(dayOfWeek, availableTime);
-            artistTimeList.add(artistTimeDto);
-        }
-
-        return artistTimeList;
+        return availableDayOfWeekAndTime.entrySet().stream()
+                .map(entry -> ArtistTimeDto.from(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     //예약하기
