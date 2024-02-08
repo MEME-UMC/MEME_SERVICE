@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.mypage.entity.Inquiry;
-import umc.meme.shop.domain.user.User;
-
-import java.util.List;
 
 @Data
 @Builder

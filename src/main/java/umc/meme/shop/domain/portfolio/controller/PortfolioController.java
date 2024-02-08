@@ -2,6 +2,9 @@ package umc.meme.shop.domain.portfolio.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
@@ -25,7 +28,7 @@ public class PortfolioController {
     @Operation(summary = "포트폴리오 전체 조회", description = "포트폴리오 전체를 조회하는 API입니다.")
     @GetMapping("/{artistId}")
     public ApiResponse getPortfolio(@PathVariable Long artistId,
-                                    @RequestParam(value = "page", defaultValue = "0", required = false) int page
+                                    @PageableDefault(size = 30, sort = "id", direction = Sort.Direction.ASC) Pageable page
                                     ){
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolio(artistId, page));
     }
