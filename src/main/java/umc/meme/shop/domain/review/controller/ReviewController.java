@@ -2,6 +2,9 @@ package umc.meme.shop.domain.review.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
@@ -18,7 +21,7 @@ public class ReviewController {
     @Operation(summary = "리뷰 리스트 조회", description = "리뷰 리스트를 조회하는 API입니다.")
     @GetMapping("/{portfolioId}")
     public ApiResponse getReviewList(@PathVariable Long portfolioId,
-                                     @RequestParam(value = "page", defaultValue = "0", required = false) int page
+                                     @PageableDefault(size = 30, sort = "portfolio", direction = Sort.Direction.ASC) Pageable page
     ){
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, reviewService.getReviewList(portfolioId, page));
     }
