@@ -214,17 +214,13 @@ public class ModelService {
     //검색하기 정렬 기준 설정
     private Pageable setPageRequest(int page, String sortBy){
 
-        Sort sort;
-        if(sortBy.equals("desc"))
-            sort = Sort.by("price").descending();
-        else if(sortBy.equals("asc"))
-            sort = Sort.by("price").ascending();
-        else if(sortBy.equals("review"))
-            sort = Sort.by("averageStars").descending();
-        else if(sortBy.equals("recent"))
-            sort = Sort.by("createdAt").descending();
-        else
-            throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
+        Sort sort = switch (sortBy) {
+            case "desc" -> Sort.by("price").descending();
+            case "asc" -> Sort.by("price").ascending();
+            case "review" -> Sort.by("averageStars").descending();
+            case "recent" -> Sort.by("createdAt").descending();
+            default -> throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
+        };
 
         //별점 높은 순 정렬 추가
         Sort finalSort = sort.and(Sort.by("averageStars").descending());

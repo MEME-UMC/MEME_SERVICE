@@ -29,4 +29,5 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
     Page<Portfolio> findAllNotBlocked(Pageable pageable);
 
     boolean existsByMakeupName(String makeupName);
+
 }
