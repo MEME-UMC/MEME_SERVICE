@@ -29,7 +29,6 @@ public class ReviewController {
     @Operation(summary = "리뷰 작성", description = "리뷰를 작성하는 API입니다.")
     @PostMapping("/")
     public ApiResponse createReview(@RequestBody ReviewDto reviewDto){
-        //TODO: ReviewImg 추가
         reviewService.createReview(reviewDto);
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
     }

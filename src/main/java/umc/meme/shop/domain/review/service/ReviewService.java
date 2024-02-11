@@ -27,6 +27,7 @@ import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,35 +39,29 @@ public class ReviewService {
 
     //리뷰 작성
     @Transactional
-    public void createReview(ReviewDto reviewDto){
+    public void createReview(ReviewDto reviewDto) {
         Model model = modelRepository.findById(reviewDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         Reservation reservation = reservationRepository.findByReservationIdAndModelId(reviewDto.getReservationId(), reviewDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
 
-        //이미 리뷰 작성 완료
-        if(reservation.isReview())
+        // 이미 리뷰 작성 완료
+        if (reservation.isReview())
             throw new GlobalException(ErrorStatus.ALREADY_REVIEWED);
 
-        //예약 미완료
-        if(reservation.getStatus() != Status.COMPLETE)
+        // 예약 미완료
+        if (reservation.getStatus() != Status.COMPLETE)
             throw new GlobalException(ErrorStatus.INVALID_REVIEW_REQUEST);
 
         Portfolio portfolio = reservation.getPortfolio();
 
-        List<ReviewImg> reviewImgList = new ArrayList<>();
-        for (String src : reviewDto.getReviewImgSrc()) {
-            ReviewImg reviewImg = new ReviewImg();
-            reviewImg.setSrc(src);
-            reviewImgList.add(reviewImg);
-        }
+        List<ReviewImg> reviewImgList = reviewDto.getReviewImgSrc().stream()
+                .map(ReviewImg::new)
+                .toList();
 
         Review review = Review.from(model, portfolio, reviewDto);
 
-        for (ReviewImg reviewImg : reviewImgList) {
-            reviewImg.setReview(review);
-            review.getReviewImgList().add(reviewImg);
-        }
+        reviewImgList.forEach(review::addReviewImg);
 
         portfolio.updateReviewList(review);
         model.updateReviewList(review);

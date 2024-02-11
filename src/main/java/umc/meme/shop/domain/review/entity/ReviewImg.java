@@ -22,4 +22,8 @@ public class ReviewImg extends BaseEntity {
 
     @Column(nullable = false)
     private String src;
+
+    public ReviewImg(String src) {
+        this.src = src;
+    }
 }
