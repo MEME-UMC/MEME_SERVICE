@@ -81,7 +81,6 @@ public class PortfolioService {
         return PortfolioDto.from(portfolio);
     }
 
-
     // 포트폴리오 수정/삭제
     @Transactional
     public void updatePortfolio(UpdatePortfolioDto request) {
@@ -96,28 +95,35 @@ public class PortfolioService {
             throw new GlobalException(ErrorStatus.NOT_AUTHORIZED_PORTFOLIO);
         }
 
-        updatePortfolioImg(portfolio, request.getPortfolioImg());
+        updatePortfolioImg(portfolio, request.getPortfolioImgList()); // 수정
 
         portfolio.updatePortfolio(request);
     }
 
-    private void updatePortfolioImg(Portfolio portfolio, PortfolioImgDto portfolioImgDto) {
-        PortfolioImg portfolioImg = portfolioImgRepository.findById(portfolioImgDto.getPortfolioImgId())
-                .orElseThrow(() -> new RuntimeException("포트폴리오 이미지를 찾을 수 없습니다."));
+    private void updatePortfolioImg(Portfolio portfolio, List<PortfolioImgDto> portfolioImgDtoList) {
+        List<PortfolioImg> updatedPortfolioImgs = new ArrayList<>();
 
-        if (portfolioImgDto.isDelete()) {
-            // 이미지 삭제
-            portfolio.getPortfolioImgList().remove(portfolioImg);
-            portfolioImgRepository.delete(portfolioImg);
-        } else if (portfolioImgDto.getPortfolioImgSrc() != null) {
-            // 이미지 수정 (src 업데이트)
-            portfolioImg.updateSrc(portfolioImgDto.getPortfolioImgSrc());
-            portfolioImgRepository.save(portfolioImg);
+        for (PortfolioImgDto portfolioImgDto : portfolioImgDtoList) {
+            PortfolioImg portfolioImg = portfolioImgRepository.findById(portfolioImgDto.getPortfolioImgId())
+                    .orElseThrow(() -> new RuntimeException("포트폴리오 이미지를 찾을 수 없습니다."));
 
-            // 업데이트된 이미지 정보를 포트폴리오의 이미지 리스트에 반영
-            portfolio.getPortfolioImgList().removeIf(img -> img.getPortfolioImgId().equals(portfolioImg.getPortfolioImgId()));
-            portfolio.getPortfolioImgList().add(portfolioImg);
+            if (portfolioImgDto.isDelete()) {
+                // 이미지 삭제
+                portfolio.getPortfolioImgList().remove(portfolioImg);
+                portfolioImgRepository.delete(portfolioImg);
+            } else if (portfolioImgDto.getPortfolioImgSrc() != null) {
+                // 이미지 수정 (src 업데이트)
+                portfolioImg.updateSrc(portfolioImgDto.getPortfolioImgSrc());
+                portfolioImgRepository.save(portfolioImg);
+
+                // 업데이트된 이미지 정보를 리스트에 추가
+                updatedPortfolioImgs.add(portfolioImg);
+            }
         }
+
+        // 업데이트된 이미지 리스트를 포트폴리오의 이미지 리스트에 반영
+        portfolio.getPortfolioImgList().removeAll(updatedPortfolioImgs);
+        portfolio.getPortfolioImgList().addAll(updatedPortfolioImgs);
     }
 
 
