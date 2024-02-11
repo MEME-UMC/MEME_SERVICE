@@ -105,7 +105,11 @@ public class PortfolioService {
 
         for (PortfolioImgDto portfolioImgDto : portfolioImgDtoList) {
             PortfolioImg portfolioImg = portfolioImgRepository.findById(portfolioImgDto.getPortfolioImgId())
-                    .orElseThrow(() -> new RuntimeException("포트폴리오 이미지를 찾을 수 없습니다."));
+                    .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO_IMG));
+
+            if (!portfolio.getPortfolioImgList().contains(portfolioImg)) {
+                throw new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO_IMG);
+            }
 
             if (portfolioImgDto.isDelete()) {
                 // 이미지 삭제
