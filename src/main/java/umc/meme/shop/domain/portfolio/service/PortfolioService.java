@@ -38,18 +38,15 @@ public class PortfolioService {
         Artist artist = artistRepository.findById(portfolioDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        // 포트폴리오 이름이 이미 존재할 시
-        if (portfolioRepository.existsByMakeupName(portfolioDto.getMakeupName())) {
+        //포트폴리오 이름이 이미 존재할 시
+        if(portfolioRepository.existsByMakeupName(portfolioDto.getMakeupName()))
             throw new GlobalException(ErrorStatus.ALREADY_EXIST_PORTFOLIO);
-        }
 
-        Portfolio portfolio = Portfolio.from(artist, portfolioDto);
-
-        // 포트폴리오에 이미지 추가
         List<PortfolioImg> portfolioImgList = portfolioDto.getPortfolioImgSrc().stream()
                 .map(PortfolioImg::new)
                 .toList();
 
+        Portfolio portfolio = Portfolio.from(artist, portfolioDto);
         portfolioImgList.forEach(portfolio::addPortfolioImg);
 
         artist.updatePortfolioList(portfolio);
