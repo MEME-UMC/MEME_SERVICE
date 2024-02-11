@@ -23,6 +23,7 @@ import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,23 +38,19 @@ public class PortfolioService {
         Artist artist = artistRepository.findById(portfolioDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        //포트폴리오 이름이 이미 존재할 시
-        if(portfolioRepository.existsByMakeupName(portfolioDto.getMakeupName()))
+        // 포트폴리오 이름이 이미 존재할 시
+        if (portfolioRepository.existsByMakeupName(portfolioDto.getMakeupName())) {
             throw new GlobalException(ErrorStatus.ALREADY_EXIST_PORTFOLIO);
-
-        List<PortfolioImg> portfolioImgList = new ArrayList<>();
-        for (String src : portfolioDto.getPortfolioImgSrc()) {
-            PortfolioImg portfolioImg = new PortfolioImg();
-            portfolioImg.setSrc(src);
-            portfolioImgList.add(portfolioImg);
         }
 
         Portfolio portfolio = Portfolio.from(artist, portfolioDto);
 
-        for (PortfolioImg portfolioImg : portfolioImgList) {
-            portfolioImg.setPortfolio(portfolio); // Portfolio 객체 설정
-            portfolio.getPortfolioImgList().add(portfolioImg); // Portfolio의 이미지 리스트에 추가
-        }
+        // 포트폴리오에 이미지 추가
+        List<PortfolioImg> portfolioImgList = portfolioDto.getPortfolioImgSrc().stream()
+                .map(PortfolioImg::new)
+                .toList();
+
+        portfolioImgList.forEach(portfolio::addPortfolioImg);
 
         artist.updatePortfolioList(portfolio);
         portfolioRepository.save(portfolio);
@@ -61,7 +58,7 @@ public class PortfolioService {
 
     // 포트폴리오 전체 조회
     @Transactional
-    public PortfolioPageDto getPortfolio(Long artistId, Pageable page) {
+    public PortfolioPageDto getPortfolio(Long artistId, int page) {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
@@ -71,7 +68,7 @@ public class PortfolioService {
         portfolioList.removeIf(Portfolio::isBlock);
 
         //list를 page로 변환
-        Page<Portfolio> portfolioPage = portfolioRepository.findByArtist(artist, page);
+        Page<Portfolio> portfolioPage = getPage(page, portfolioList);
 
         return PortfolioPageDto.from(portfolioPage);
     }
@@ -121,10 +118,23 @@ public class PortfolioService {
                 // 업데이트된 이미지 정보를 포트폴리오의 이미지 리스트에 반영
                 portfolio.getPortfolioImgList().removeIf(img -> img.getPortfolioImgId().equals(portfolioImg.getPortfolioImgId()));
                 portfolio.getPortfolioImgList().add(portfolioImg);
+
             }
         }
         // Portfolio 업데이트
         portfolio.updatePortfolio(request);
     }
+
+    private Page<Portfolio> getPage(int page, List<Portfolio> list){
+        Pageable pageable = PageRequest.of(page, 30);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        //list를 page로 변환
+        return new PageImpl<>(list.subList(start, end),
+                pageable, list.size());
+    }
+
 
 }

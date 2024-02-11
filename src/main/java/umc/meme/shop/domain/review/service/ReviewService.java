@@ -88,12 +88,13 @@ public class ReviewService {
     }
 
     //리뷰 리스트 조회
-    public ReviewListPageDto getReviewList(Long portfolioId, Pageable page) {
+    public ReviewListPageDto getReviewList(Long portfolioId, int page) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
         // list를 page로 변환
-        Page<Review> reviewPage = reviewRepository.findByPortfolio(portfolio, page);
+        List<Review> reviewList = portfolio.getReviewList();
+        Page<Review> reviewPage = getPage(page, reviewList);
 
         return ReviewListPageDto.from(reviewPage);
     }
@@ -109,5 +110,16 @@ public class ReviewService {
             throw new GlobalException(ErrorStatus.INVALID_MODEL_FOR_REVIEW);
 
         reviewRepository.delete(review);
+    }
+
+    private Page<Review> getPage(int page, List<Review> list){
+        Pageable pageable = PageRequest.of(page, 30);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        //list를 page로 변환
+        return new PageImpl<>(list.subList(start, end),
+                pageable, list.size());
     }
 }
