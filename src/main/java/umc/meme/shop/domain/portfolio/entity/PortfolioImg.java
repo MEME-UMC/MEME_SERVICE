@@ -26,4 +26,8 @@ public class PortfolioImg extends BaseEntity {
     public PortfolioImg(String src) {
         this.src = src;
     }
+
+    public void updateSrc(String src) {
+        this.src = src;
+    }
 }
