@@ -11,6 +11,4 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByModel(Model model);
-
-    Page<Review> findByPortfolio(Portfolio portfolio, Pageable page);
 }

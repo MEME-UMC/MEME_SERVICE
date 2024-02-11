@@ -110,4 +110,8 @@ public class Portfolio extends BaseEntity {
                 .build();
     }
 
+    public void addPortfolioImg(PortfolioImg portfolioImg) {
+        this.portfolioImgList.add(portfolioImg);
+        portfolioImg.setPortfolio(this);
+    }
 }

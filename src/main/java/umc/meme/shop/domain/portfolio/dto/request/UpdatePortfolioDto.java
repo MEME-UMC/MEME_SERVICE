@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioImgDto;
 import umc.meme.shop.global.enums.Category;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,5 +22,6 @@ public class UpdatePortfolioDto {
     private int price;
     private String info;
     private Boolean isBlock;
-    private PortfolioImgDto portfolioImg;
+    private List<PortfolioImgDto> portfolioImgList; // List 형태로 변경
 }
+

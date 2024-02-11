@@ -50,4 +50,9 @@ public class Review extends BaseEntity {
                 .reviewImgList(new ArrayList<ReviewImg>())
                 .build();
     }
+
+    public void addReviewImg(ReviewImg reviewImg) {
+        this.reviewImgList.add(reviewImg);
+        reviewImg.setReview(this);
+    }
 }

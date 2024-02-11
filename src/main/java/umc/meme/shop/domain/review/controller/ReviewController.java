@@ -21,7 +21,7 @@ public class ReviewController {
     @Operation(summary = "리뷰 리스트 조회", description = "리뷰 리스트를 조회하는 API입니다.")
     @GetMapping("/{portfolioId}")
     public ApiResponse getReviewList(@PathVariable Long portfolioId,
-                                     @PageableDefault(size = 30, sort = "portfolio", direction = Sort.Direction.ASC) Pageable page
+                                     @RequestParam(value = "page", defaultValue = "0", required = false) int page
     ){
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, reviewService.getReviewList(portfolioId, page));
     }
@@ -29,7 +29,6 @@ public class ReviewController {
     @Operation(summary = "리뷰 작성", description = "리뷰를 작성하는 API입니다.")
     @PostMapping("/")
     public ApiResponse createReview(@RequestBody ReviewDto reviewDto){
-        //TODO: ReviewImg 추가
         reviewService.createReview(reviewDto);
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
     }

@@ -28,7 +28,7 @@ public class PortfolioController {
     @Operation(summary = "포트폴리오 전체 조회", description = "포트폴리오 전체를 조회하는 API입니다.")
     @GetMapping("/{artistId}")
     public ApiResponse getPortfolio(@PathVariable Long artistId,
-                                    @PageableDefault(size = 30, sort = "id", direction = Sort.Direction.ASC) Pageable page
+                                    @RequestParam(value = "page", defaultValue = "0", required = false) int page
                                     ){
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolio(artistId, page));
     }
