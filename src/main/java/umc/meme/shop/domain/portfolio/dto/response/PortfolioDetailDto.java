@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
-import umc.meme.shop.global.enums.MakeupLocation;
-import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.enums.Category;
+import umc.meme.shop.global.enums.MakeupLocation;
 import umc.meme.shop.global.enums.Region;
 
 import java.util.List;
@@ -17,8 +16,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PortfolioDto {
+public class PortfolioDetailDto {
     private Long portfolioId;
+
+    private Boolean isFavorite;
 
     private Category category;
 
@@ -27,6 +28,8 @@ public class PortfolioDto {
     private String makeupName;
 
     private int price;
+
+    private String info;
 
     private MakeupLocation makeupLocation; //샵 재직 여부
 
@@ -42,8 +45,7 @@ public class PortfolioDto {
 
     private List<PortfolioImgDto> portfolioImgDtoList;
 
-
-    public static PortfolioDto from(Portfolio portfolio) {
+    public static PortfolioDetailDto from(Portfolio portfolio, boolean isFavorite) {
         Artist artist = portfolio.getArtist();
 
         // PortfolioImg 리스트를 PortfolioImgDto 리스트로 변환
@@ -52,12 +54,14 @@ public class PortfolioDto {
                 .map(PortfolioImgDto::from)
                 .toList();
 
-        return PortfolioDto.builder()
+        return PortfolioDetailDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
+                .isFavorite(isFavorite)
                 .category(portfolio.getCategory())
                 .artistNickName(artist.getNickname())
                 .makeupName(portfolio.getMakeupName())
                 .price(portfolio.getPrice())
+                .info(portfolio.getInfo())
                 .makeupLocation(artist.getMakeupLocation())
                 .shopLocation(artist.getShopLocation())
                 .region(artist.getRegion())
@@ -67,19 +71,4 @@ public class PortfolioDto {
                 .reviewCount(portfolio.getReviewList().size())
                 .build();
     }
-
-    //관심 메이크업
-    public static PortfolioDto from(FavoritePortfolio favoritePortfolio){
-        Portfolio portfolio = favoritePortfolio.getPortfolio();
-        return PortfolioDto.builder()
-                .portfolioId(portfolio.getPortfolioId())
-                .category(portfolio.getCategory())
-                .makeupName(portfolio.getMakeupName())
-                .price(portfolio.getPrice())
-                .isBlock(portfolio.isBlock())
-                .averageStars(portfolio.getAverageStars())
-                .reviewCount(portfolio.getReviewList().size())
-                .build();
-    }
-
 }

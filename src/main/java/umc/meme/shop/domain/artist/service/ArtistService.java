@@ -28,7 +28,9 @@ public class ArtistService {
     public ArtistDto getArtistProfile(Long artistId){
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
-        return ArtistDto.from(artist);
+
+        boolean isFavorite = false;
+        return ArtistDto.from(artist, isFavorite);
     }
 
     //temp method for create Artist

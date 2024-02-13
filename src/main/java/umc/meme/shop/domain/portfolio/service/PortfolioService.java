@@ -11,7 +11,7 @@ import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
+import umc.meme.shop.domain.portfolio.dto.response.PortfolioDetailDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioImgDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
@@ -71,14 +71,15 @@ public class PortfolioService {
     }
 
     // 포트폴리오 하나만 조회
-    public PortfolioDto getPortfolioDetails(Long portfolioId) {
+    public PortfolioDetailDto getPortfolioDetails(Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
         if(portfolio.isBlock())
             throw new GlobalException(ErrorStatus.BLOCKED_PORTFOLIO);
+        boolean isFavorite = false;
 
-        return PortfolioDto.from(portfolio);
+        return PortfolioDetailDto.from(portfolio, false);
     }
 
     // 포트폴리오 수정/삭제
@@ -87,9 +88,11 @@ public class PortfolioService {
         Artist artist = artistRepository.findById(request.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        PortfolioDto portfolioDto = getPortfolioDetails(request.getPortfolioId());
-        Portfolio portfolio = portfolioRepository.findById(portfolioDto.getPortfolioId())
+        Portfolio portfolio = portfolioRepository.findById(request.getPortfolioId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
+
+        if(portfolio.isBlock() && !request.getIsBlock())
+            throw new GlobalException(ErrorStatus.BLOCKED_PORTFOLIO);
 
         if (!portfolio.getArtist().equals(artist)) {
             throw new GlobalException(ErrorStatus.NOT_AUTHORIZED_PORTFOLIO);

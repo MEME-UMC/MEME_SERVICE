@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.global.enums.*;
 
@@ -17,7 +16,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArtistDto {
-    private Long artistId;
+    private Long artistId; //관심 등록 여부
+
+    private Boolean isFavorite;
 
     private Gender gender;
 
@@ -41,7 +42,7 @@ public class ArtistDto {
 
 
 
-    public static ArtistDto from(Artist artist){
+    public static ArtistDto from(Artist artist, boolean isFavorite){
         List<SimplePortfolioDto> portfolioDtoList = artist.getPortfolioList()
                 .stream()
                 .map(SimplePortfolioDto::from)
@@ -49,6 +50,7 @@ public class ArtistDto {
 
         return ArtistDto.builder()
                 .artistId(artist.getUserId())
+                .isFavorite(isFavorite)
                 .gender(artist.getGender())
                 .nickname(artist.getNickname())
                 .profileImg(artist.getProfileImg())
