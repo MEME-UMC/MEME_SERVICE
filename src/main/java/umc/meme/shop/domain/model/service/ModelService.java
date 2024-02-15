@@ -227,7 +227,6 @@ public class ModelService {
         return PageRequest.of(page, 30, finalSort);
     }
 
-    //TODO: change List -> Page
     private Page getPage(int page, List list){
         Pageable pageable = PageRequest.of(page, 30);
 
