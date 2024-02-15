@@ -3,6 +3,7 @@ package umc.meme.shop.domain.artist.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import umc.meme.shop.domain.artist.dto.request.ArtistProfileDetailDto;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.artist.service.ArtistService;
 import umc.meme.shop.global.SuccessStatus;
@@ -22,9 +23,9 @@ public class ArtistController {
     }
 
     @Operation(summary = "아티스트 프로필 조회")
-    @GetMapping("/profile/{artistId}")
-    public ApiResponse getArtistProfile(@PathVariable Long artistId){
-        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfile(artistId));
+    @GetMapping("/profile")
+    public ApiResponse getArtistProfile(@RequestBody ArtistProfileDetailDto profileDetailDto){
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfile(profileDetailDto));
     }
 
     //temp method for Artist create
