@@ -19,7 +19,7 @@ public class PortfolioController {
     private final PortfolioService portfolioService;
 
     @Operation(summary = "포트폴리오 생성", description = "포트폴리오를 생성하는 API입니다.")
-    @PostMapping("")
+    @PostMapping()
     public ApiResponse createPortfolio(@RequestBody CreatePortfolioDto portfolioDto){
         portfolioService.createPortfolio(portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_CREATE);
@@ -40,7 +40,7 @@ public class PortfolioController {
     }
 
     @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 수정/삭제하는 API입니다.")
-    @PatchMapping("")
+    @PatchMapping()
     public ApiResponse updatePortfolio(@RequestBody UpdatePortfolioDto portfolioDto){
         // TODO: PortfolioImg 추가
         portfolioService.updatePortfolio(portfolioDto);
