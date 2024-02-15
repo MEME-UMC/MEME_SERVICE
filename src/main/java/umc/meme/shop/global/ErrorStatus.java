@@ -71,7 +71,7 @@ public enum ErrorStatus {
     NOT_EXIST_REVIEW(404, "존재하지 않는 리뷰입니다."),
     NOT_EXIST_INQUIRY(404, "존재하지 않는 문의입니다."),
     SEARCH_NOT_FOUNT(404, "검색 결과가 존재하지 않습니다."),
-    PAGE_NOT_FOUND(404,"페이지를 찾을 수 없습니다");
+    PAGE_NOT_FOUND(404, "페이지를 찾을 수 없습니다");
 
 
     private final int code;
