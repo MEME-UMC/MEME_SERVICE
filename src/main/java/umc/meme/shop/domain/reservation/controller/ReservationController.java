@@ -42,7 +42,7 @@ public class ReservationController {
 
 
     @Operation(summary = "예약하기", description = "예약하기 기능을 수행하는 API입니다.")
-    @PostMapping("/")
+    @PostMapping()
     public ApiResponse createReservation(@RequestBody ReservationRequestDto reservationDto){
         return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_CREATE, reservationService.createReservation(reservationDto));
     }
