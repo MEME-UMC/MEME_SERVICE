@@ -2,11 +2,9 @@ package umc.meme.shop.domain.portfolio.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
+import umc.meme.shop.domain.portfolio.dto.request.PortfolioDetailRequestDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.service.PortfolioService;
 import umc.meme.shop.global.SuccessStatus;
@@ -34,9 +32,9 @@ public class PortfolioController {
     }
 
     @Operation(summary = "포트폴리오 조회", description = "특정 포트폴리오를 조회하는 API입니다.")
-    @GetMapping("/{portfolioId}/details")
-    public ApiResponse getPortfolioDetails(@PathVariable Long portfolioId) {
-        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolioDetails(portfolioId));
+    @GetMapping("/details")
+    public ApiResponse getPortfolioDetails(@RequestBody PortfolioDetailRequestDto detailDto) {
+        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolioDetails(detailDto));
     }
 
     @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 수정/삭제하는 API입니다.")

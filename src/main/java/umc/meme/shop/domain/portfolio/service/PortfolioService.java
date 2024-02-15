@@ -9,7 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
+import umc.meme.shop.domain.favorite.entity.FavoritePortfolio;
+import umc.meme.shop.domain.favorite.repository.FavoritePortfolioRepository;
+import umc.meme.shop.domain.model.entity.Model;
+import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
+import umc.meme.shop.domain.portfolio.dto.request.PortfolioDetailRequestDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDetailDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioImgDto;
@@ -23,7 +28,7 @@ import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,22 +36,24 @@ public class PortfolioService {
     private final ArtistRepository artistRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioImgRepository portfolioImgRepository;
+    private final ModelRepository modelRepository;
+    private final FavoritePortfolioRepository favoritePortfolioRepository;
 
     //포트폴리오 생성
     @Transactional
-    public void createPortfolio(CreatePortfolioDto portfolioDto) {
-        Artist artist = artistRepository.findById(portfolioDto.getArtistId())
+    public void createPortfolio(CreatePortfolioDto dto) {
+        Artist artist = artistRepository.findById(dto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         //포트폴리오 이름이 이미 존재할 시
-        if(portfolioRepository.existsByMakeupName(portfolioDto.getMakeupName()))
+        if(portfolioRepository.existsByMakeupName(dto.getMakeupName()))
             throw new GlobalException(ErrorStatus.ALREADY_EXIST_PORTFOLIO);
 
-        List<PortfolioImg> portfolioImgList = portfolioDto.getPortfolioImgSrc().stream()
+        List<PortfolioImg> portfolioImgList = dto.getPortfolioImgSrc().stream()
                 .map(PortfolioImg::new)
                 .toList();
 
-        Portfolio portfolio = Portfolio.from(artist, portfolioDto);
+        Portfolio portfolio = Portfolio.from(artist, dto);
         portfolioImgList.forEach(portfolio::addPortfolioImg);
 
         artist.updatePortfolioList(portfolio);
@@ -71,36 +78,45 @@ public class PortfolioService {
     }
 
     // 포트폴리오 하나만 조회
-    public PortfolioDetailDto getPortfolioDetails(Long portfolioId) {
+    public PortfolioDetailDto getPortfolioDetails(PortfolioDetailRequestDto dto) {
+        Long userId = dto.getUserId();
+        Long portfolioId = dto.getPortfolioId();
+
+        Model model = modelRepository.findById(userId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
         if(portfolio.isBlock())
             throw new GlobalException(ErrorStatus.BLOCKED_PORTFOLIO);
+
         boolean isFavorite = false;
+        Optional<FavoritePortfolio> favoritePortfolio = favoritePortfolioRepository.findByModelAndPortfolio(model, portfolio);
+        if(favoritePortfolio.isPresent())
+            isFavorite = true;
 
         return PortfolioDetailDto.from(portfolio, false);
     }
 
     // 포트폴리오 수정/삭제
     @Transactional
-    public void updatePortfolio(UpdatePortfolioDto request) {
-        Artist artist = artistRepository.findById(request.getArtistId())
+    public void updatePortfolio(UpdatePortfolioDto dto) {
+        Artist artist = artistRepository.findById(dto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        Portfolio portfolio = portfolioRepository.findById(request.getPortfolioId())
+        Portfolio portfolio = portfolioRepository.findById(dto.getPortfolioId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
-        if(portfolio.isBlock() && !request.getIsBlock())
+        if(portfolio.isBlock() && !dto.getIsBlock())
             throw new GlobalException(ErrorStatus.BLOCKED_PORTFOLIO);
 
         if (!portfolio.getArtist().equals(artist)) {
             throw new GlobalException(ErrorStatus.NOT_AUTHORIZED_PORTFOLIO);
         }
 
-        updatePortfolioImg(portfolio, request.getPortfolioImgList()); // 수정
+        updatePortfolioImg(portfolio, dto.getPortfolioImgList()); // 수정
 
-        portfolio.updatePortfolio(request);
+        portfolio.updatePortfolio(dto);
     }
 
     private void updatePortfolioImg(Portfolio portfolio, List<PortfolioImgDto> portfolioImgDtoList) {
