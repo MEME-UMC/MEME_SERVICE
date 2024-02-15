@@ -41,7 +41,7 @@ public class PortfolioService {
 
     //포트폴리오 생성
     @Transactional
-    public void createPortfolio(CreatePortfolioDto dto) {
+    public Long createPortfolio(CreatePortfolioDto dto) {
         Artist artist = artistRepository.findById(dto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
@@ -58,6 +58,7 @@ public class PortfolioService {
 
         artist.updatePortfolioList(portfolio);
         portfolioRepository.save(portfolio);
+        return portfolio.getPortfolioId();
     }
 
     // 포트폴리오 전체 조회
