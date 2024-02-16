@@ -84,7 +84,7 @@ public class ModelController {
 
     @Operation(summary = "메이크업 검색", description = "메이크업을 검색/최근 검색어로 검색하는 API입니다.")
     @GetMapping("/search")
-    public ApiResponse search(@Parameter String query,
+    public ApiResponse search(@RequestParam(value = "query") String query,
                               @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                               @RequestParam(value = "sort", defaultValue = "desc") String sort){
         return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.search(query, page, sort));
@@ -92,7 +92,7 @@ public class ModelController {
 
     @Operation(summary = "메이크업 검색 - 관심 아티스트", description = "관심 아티스트로 검색하는 API입니다.")
     @GetMapping("/search/artist")
-    public ApiResponse searchArtist(@Parameter Long artistId,
+    public ApiResponse searchArtist(@RequestParam(value = "artistId") Long artistId,
                                     @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                     @RequestParam(value = "sort", defaultValue = "desc") String sort
                                     ){
@@ -101,7 +101,7 @@ public class ModelController {
 
     @Operation(summary = "메이크업 검색 - 카테고리", description = "메이크업 카테고리로 검색하는 API입니다.")
     @GetMapping("/search/category")
-    public ApiResponse searchCategory(@Parameter Category category,
+    public ApiResponse searchCategory(@RequestParam(value = "category") Category category,
                                       @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                       @RequestParam(value = "sort", defaultValue = "desc") String sort
                                       ){
