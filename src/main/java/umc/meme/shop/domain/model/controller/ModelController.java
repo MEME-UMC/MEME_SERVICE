@@ -34,6 +34,13 @@ public class ModelController {
         return ApiResponse.SuccessResponse(SuccessStatus.MODEL_PROFILE_UPDATE);
     }
 
+    @Operation(summary = "모델 프로필 관리 조회(수정 전 정보 불러오기 용)")
+    @GetMapping("/mypage/profile/model/{userId}")
+    public ApiResponse getModelProfile (@PathVariable Long userId){
+        modelService.getModelProfile(userId);
+        return ApiResponse.SuccessResponse(SuccessStatus.MODEL_PROFILE_UPDATE);
+    }
+
     /**favorite**/
 
     @Operation(summary = "관심 아티스트 조회", description = "관심 아티스트를 조회하는 API입니다.")

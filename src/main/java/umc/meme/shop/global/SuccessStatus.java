@@ -19,6 +19,7 @@ public enum SuccessStatus {
 
     /**model**/
     MODEL_PROFILE_UPDATE(200, "모델 프로필 수정이 완료되었습니다"),
+    MODEL_PROFILE_GET(200, "모델 프로필 조회가 완료되었습니다."),
 
     FAVORITE_ARTIST_GET(200, "관심 아티스트 조회가 완료되었습니다"),
     FAVORITE_PORTFOLIO_GET(200, "관심 메이크업 조회가 완료되었습니다"),

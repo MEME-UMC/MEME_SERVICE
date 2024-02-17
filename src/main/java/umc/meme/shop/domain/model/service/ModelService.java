@@ -55,6 +55,13 @@ public class ModelService {
         model.updateModel(request);
     }
 
+    //모델 프로필 관리 조회
+    public ModelProfileDto getModelProfile(Long userId){
+        Model model = modelRepository.findById(userId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+        return ModelProfileDto.from(model);
+    }
+
 
     //관심 아티스트 조회
     @Transactional
