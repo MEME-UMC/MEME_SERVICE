@@ -23,6 +23,8 @@ public class PortfolioDetailDto {
 
     private Category category;
 
+    private String artistProfileImg;
+
     private String artistNickName;
 
     private String makeupName;
@@ -58,6 +60,7 @@ public class PortfolioDetailDto {
                 .portfolioId(portfolio.getPortfolioId())
                 .isFavorite(isFavorite)
                 .category(portfolio.getCategory())
+                .artistProfileImg(artist.getProfileImg())
                 .artistNickName(artist.getNickname())
                 .makeupName(portfolio.getMakeupName())
                 .price(portfolio.getPrice())
