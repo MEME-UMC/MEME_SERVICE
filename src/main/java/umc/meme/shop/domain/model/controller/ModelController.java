@@ -37,8 +37,7 @@ public class ModelController {
     @Operation(summary = "모델 프로필 관리 조회(수정 전 정보 불러오기 용)")
     @GetMapping("/mypage/profile/model/{userId}")
     public ApiResponse getModelProfile (@PathVariable Long userId){
-        modelService.getModelProfile(userId);
-        return ApiResponse.SuccessResponse(SuccessStatus.MODEL_PROFILE_UPDATE);
+        return ApiResponse.SuccessResponse(SuccessStatus.MODEL_PROFILE_GET, modelService.getModelProfile(userId));
     }
 
     /**favorite**/
