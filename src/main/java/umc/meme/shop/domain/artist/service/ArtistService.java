@@ -34,10 +34,7 @@ public class ArtistService {
     }
 
     //아티스트 프로필 조회
-    public ArtistDto getArtistProfile(ArtistProfileDetailDto profileDetailDto){
-        Long userId = profileDetailDto.getUserId();
-        Long artistId = profileDetailDto.getArtistId();
-
+    public ArtistDto getArtistProfile(Long userId, Long artistId){
         Model model = modelRepository.findById(userId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         Artist artist = artistRepository.findById(artistId)

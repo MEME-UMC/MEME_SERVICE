@@ -79,10 +79,7 @@ public class PortfolioService {
     }
 
     // 포트폴리오 하나만 조회
-    public PortfolioDetailDto getPortfolioDetails(PortfolioDetailRequestDto dto) {
-        Long userId = dto.getUserId();
-        Long portfolioId = dto.getPortfolioId();
-
+    public PortfolioDetailDto getPortfolioDetails(Long userId, Long portfolioId) {
         Model model = modelRepository.findById(userId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         Portfolio portfolio = portfolioRepository.findById(portfolioId)

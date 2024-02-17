@@ -23,9 +23,9 @@ public class ArtistController {
     }
 
     @Operation(summary = "아티스트 프로필 조회")
-    @GetMapping("/profile")
-    public ApiResponse getArtistProfile(@RequestBody ArtistProfileDetailDto profileDetailDto){
-        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfile(profileDetailDto));
+    @GetMapping("/profile/{userId}/{artistId}")
+    public ApiResponse getArtistProfile(@PathVariable Long userId, @PathVariable Long artistId){
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfile(userId, artistId));
     }
 
     //temp method for Artist create

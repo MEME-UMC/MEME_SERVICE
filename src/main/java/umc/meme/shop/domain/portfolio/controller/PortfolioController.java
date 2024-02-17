@@ -31,9 +31,9 @@ public class PortfolioController {
     }
 
     @Operation(summary = "포트폴리오 조회", description = "특정 포트폴리오를 조회하는 API입니다.")
-    @GetMapping("/details")
-    public ApiResponse getPortfolioDetails(@RequestBody PortfolioDetailRequestDto detailDto) {
-        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolioDetails(detailDto));
+    @GetMapping("/details/{userId}/{portfolioId}")
+    public ApiResponse getPortfolioDetails(@PathVariable Long userId, @PathVariable Long portfolioId) {
+        return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolioDetails(userId, portfolioId));
     }
 
     @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 수정/삭제하는 API입니다.")
