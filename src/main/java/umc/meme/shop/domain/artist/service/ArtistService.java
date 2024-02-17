@@ -32,6 +32,13 @@ public class ArtistService {
         artist.updateArtist(profileDto);
     }
 
+    //아티스트 프로필 조회 (관리 조회 용)
+    public ArtistProfileDto getProfile(Long userId){
+        Artist artist = artistRepository.findById(userId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+        return ArtistProfileDto.from(artist);
+    }
+
     //아티스트 프로필 조회
     public ArtistDto getArtistProfile(Long userId, Long artistId){
         Model model = modelRepository.findById(userId)

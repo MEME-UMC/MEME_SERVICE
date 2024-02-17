@@ -3,7 +3,6 @@ package umc.meme.shop.domain.artist.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import umc.meme.shop.domain.artist.dto.request.ArtistProfileDetailDto;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.artist.service.ArtistService;
 import umc.meme.shop.global.SuccessStatus;
@@ -20,6 +19,12 @@ public class ArtistController {
     public ApiResponse updateProfile(@RequestBody ArtistProfileDto profileDto){
         artistService.updateArtistProfile(profileDto);
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_UPDATE);
+    }
+
+    @Operation(summary = "아티스트 프로필 관리 조회(수정 전 정보 불러오기 용)")
+    @GetMapping("/mypage/profile/artist/{userId}")
+    public ApiResponse getProfile (@PathVariable Long userId){
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getProfile(userId));
     }
 
     @Operation(summary = "아티스트 프로필 조회")
