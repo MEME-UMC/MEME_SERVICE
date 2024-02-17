@@ -3,7 +3,6 @@ package umc.meme.shop.domain.artist.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import umc.meme.shop.domain.artist.dto.request.ArtistProfileDetailDto;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;

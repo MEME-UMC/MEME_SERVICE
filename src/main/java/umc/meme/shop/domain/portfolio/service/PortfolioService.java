@@ -14,7 +14,6 @@ import umc.meme.shop.domain.favorite.repository.FavoritePortfolioRepository;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
-import umc.meme.shop.domain.portfolio.dto.request.PortfolioDetailRequestDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDetailDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioImgDto;
@@ -93,7 +92,7 @@ public class PortfolioService {
         if(favoritePortfolio.isPresent())
             isFavorite = true;
 
-        return PortfolioDetailDto.from(portfolio, false);
+        return PortfolioDetailDto.from(portfolio, isFavorite);
     }
 
     // 포트폴리오 수정/삭제
