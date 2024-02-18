@@ -17,7 +17,6 @@ import java.util.List;
 @Builder
 public class PortfolioPageDto {
     private List<PortfolioDto> content;
-    private Long userId; // 유저 아이디
     private int currentPage; //현재 페이지 번호
     private int pageSize; //페이지 크기
     private int totalNumber; //전체 메이크업 개수
