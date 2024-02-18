@@ -19,6 +19,8 @@ import java.util.List;
 public class PortfolioDetailDto {
     private Long portfolioId;
 
+    private Long userId;
+
     private Boolean isFavorite;
 
     private Category category;
@@ -58,6 +60,7 @@ public class PortfolioDetailDto {
 
         return PortfolioDetailDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
+                .userId(portfolio.getArtist().getUserId())
                 .isFavorite(isFavorite)
                 .category(portfolio.getCategory())
                 .artistProfileImg(artist.getProfileImg())
