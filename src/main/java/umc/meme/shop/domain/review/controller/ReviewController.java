@@ -40,7 +40,7 @@ public class ReviewController {
     }
 
     @Operation(summary = "리뷰 삭제", description = "모델이 작성한 리뷰를 삭제하는 API입니다.")
-    @DeleteMapping("/")
+    @DeleteMapping()
     public ApiResponse updateReview(@RequestBody DeleteReviewDto reviewDto){
         reviewService.deleteReview(reviewDto);
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_DELETE);
