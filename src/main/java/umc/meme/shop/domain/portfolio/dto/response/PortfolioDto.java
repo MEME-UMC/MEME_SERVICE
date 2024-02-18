@@ -23,6 +23,7 @@ public class PortfolioDto {
     private Category category;
 
     private String artistNickName;
+    private Long userId;
 
     private String makeupName;
 
@@ -54,6 +55,7 @@ public class PortfolioDto {
 
         return PortfolioDto.builder()
                 .portfolioId(portfolio.getPortfolioId())
+                .userId(portfolio.getArtist().getUserId())
                 .category(portfolio.getCategory())
                 .artistNickName(artist.getNickname())
                 .makeupName(portfolio.getMakeupName())
