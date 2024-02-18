@@ -102,14 +102,15 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.findById(dto.getPortfolioId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
-        if(portfolio.isBlock() && !dto.getIsBlock())
+        if(portfolio.isBlock() && dto.getIsBlock())
             throw new GlobalException(ErrorStatus.BLOCKED_PORTFOLIO);
 
         if (!portfolio.getArtist().equals(artist)) {
             throw new GlobalException(ErrorStatus.NOT_AUTHORIZED_PORTFOLIO);
         }
 
-        updatePortfolioImg(portfolio, dto.getPortfolioImgList()); // 수정
+        if(!dto.getPortfolioImgList().isEmpty())
+            updatePortfolioImg(portfolio, dto.getPortfolioImgList()); // 수정
 
         portfolio.updatePortfolio(dto);
     }
