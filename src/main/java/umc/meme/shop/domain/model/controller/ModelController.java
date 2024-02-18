@@ -7,7 +7,6 @@ import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
 import umc.meme.shop.domain.favorite.dto.request.FavoritePortfolioDto;
 import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.service.ModelService;
-import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
 
@@ -83,43 +82,5 @@ public class ModelController {
         modelService.deleteFavoritePortfolio(favoritePortfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_DELETE);
     }
-
-
-    /**search**/
-
-    @Operation(summary = "메이크업 검색", description = "메이크업을 검색/최근 검색어로 검색하는 API입니다.")
-    @GetMapping("/search")
-    public ApiResponse search(@RequestParam(value = "query") String query,
-                              @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                              @RequestParam(value = "sort", defaultValue = "desc") String sort){
-        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.search(query, page, sort));
-    }
-
-    @Operation(summary = "메이크업 검색 - 관심 아티스트", description = "관심 아티스트로 검색하는 API입니다.")
-    @GetMapping("/search/artist")
-    public ApiResponse searchArtist(@RequestParam(value = "artistId") Long artistId,
-                                    @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                    @RequestParam(value = "sort", defaultValue = "desc") String sort
-                                    ){
-        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchArtist(artistId, page, sort));
-    }
-
-    @Operation(summary = "메이크업 검색 - 카테고리", description = "메이크업 카테고리로 검색하는 API입니다.")
-    @GetMapping("/search/category")
-    public ApiResponse searchCategory(@RequestParam(value = "category") Category category,
-                                      @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                      @RequestParam(value = "sort", defaultValue = "desc") String sort
-                                      ){
-        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchCategory(category, page, sort));
-    }
-
-    @Operation(summary = "메이크업 검색 - 전체", description = "메이크업 전체를 검색하는 API입니다.")
-    @GetMapping("/search/all")
-    public ApiResponse searchAll( @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                      @RequestParam(value = "sort", defaultValue = "desc") String sort
-                                ){
-        return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchAll(page, sort));
-    }
-
 
 }
