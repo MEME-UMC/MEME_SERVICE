@@ -27,7 +27,7 @@ public class ReviewController {
     }
 
     @Operation(summary = "리뷰 작성", description = "리뷰를 작성하는 API입니다.")
-    @PostMapping("/")
+    @PostMapping()
     public ApiResponse createReview(@RequestBody ReviewDto reviewDto){
         reviewService.createReview(reviewDto);
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
