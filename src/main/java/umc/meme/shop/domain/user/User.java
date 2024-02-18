@@ -75,7 +75,7 @@ public class User {
     protected List<Inquiry> inquiryList;
 
     @NotNull
-    private boolean details;
+    protected boolean details;
 
     public void updateInquiryList(Inquiry inquiry) {
         this.inquiryList.add(inquiry);

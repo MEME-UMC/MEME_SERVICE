@@ -91,5 +91,6 @@ public class Artist extends User {
         this.role="ARTIST";
         this.userStatus = UserStatus.ACTIVE;
         this.provider = Provider.KAKAO;
+        this.details = false;
     }
 }
