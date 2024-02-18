@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioDto;
 
 import java.util.List;
 
