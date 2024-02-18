@@ -30,6 +30,8 @@ public class ArtistDto {
 
     private WorkExperience workExperience;
 
+    private String shopLocation; //샵 위치
+
     private List<Region> region;
 
     private List<Category> specialization;
