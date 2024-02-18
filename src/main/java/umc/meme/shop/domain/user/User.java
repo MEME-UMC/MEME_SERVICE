@@ -74,6 +74,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     protected List<Inquiry> inquiryList;
 
+    @NotNull
+    private boolean details;
+
     public void updateInquiryList(Inquiry inquiry) {
         this.inquiryList.add(inquiry);
     }
