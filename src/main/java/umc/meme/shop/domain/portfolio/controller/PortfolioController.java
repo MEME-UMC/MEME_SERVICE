@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.portfolio.dto.request.CreatePortfolioDto;
-import umc.meme.shop.domain.portfolio.dto.request.PortfolioDetailRequestDto;
 import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.service.PortfolioService;
 import umc.meme.shop.global.SuccessStatus;
@@ -42,5 +41,18 @@ public class PortfolioController {
         // TODO: PortfolioImg 추가
         portfolioService.updatePortfolio(portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_UPDATE);
+    }
+
+    /**recommend**/
+    @Operation(summary = "포트폴리오 추천 - 리뷰 순", description = "리뷰가 많은 순으로 포트폴리오를 추천하는 API입니다.")
+    @GetMapping("/recommend/review")
+    public ApiResponse recommendReview(){
+        return ApiResponse.SuccessResponse(SuccessStatus.RECOMMEND_REVIEW_GET, portfolioService.recommendReview());
+    }
+
+    @Operation(summary = "포트폴리오 추천 - 최신 순", description = "최근 등록된 순으로 포트폴리오를 추천하는 API입니다.")
+    @GetMapping("/recommend/recent")
+    public ApiResponse recommendRecent(){
+        return ApiResponse.SuccessResponse(SuccessStatus.RECOMMEND_RECENT_GET, portfolioService.recommendRecent());
     }
 }

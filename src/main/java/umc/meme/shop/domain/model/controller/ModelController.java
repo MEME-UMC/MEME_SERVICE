@@ -1,7 +1,6 @@
 package umc.meme.shop.domain.model.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.favorite.dto.request.FavoriteArtistDto;
@@ -122,16 +121,5 @@ public class ModelController {
         return ApiResponse.SuccessResponse(SuccessStatus.SEARCH_GET, modelService.searchAll(page, sort));
     }
 
-    /**recommend**/
-    @Operation(summary = "포트폴리오 추천 - 리뷰 순", description = "리뷰가 많은 순으로 포트폴리오를 추천하는 API입니다.")
-    @GetMapping("/recommend/review")
-    public ApiResponse recommendReview(){
-        return ApiResponse.SuccessResponse(SuccessStatus.RECOMMEND_REVIEW_GET, modelService.recommendReview());
-    }
 
-    @Operation(summary = "포트폴리오 추천 - 최신 순", description = "최근 등록된 순으로 포트폴리오를 추천하는 API입니다.")
-    @GetMapping("/recommend/recent")
-    public ApiResponse recommendRecent(){
-        return ApiResponse.SuccessResponse(SuccessStatus.RECOMMEND_RECENT_GET, modelService.recommendRecent());
-    }
 }

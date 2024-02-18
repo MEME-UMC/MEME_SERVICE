@@ -2,10 +2,7 @@ package umc.meme.shop.domain.portfolio.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
@@ -18,6 +15,7 @@ import umc.meme.shop.domain.portfolio.dto.request.UpdatePortfolioDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioDetailDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioImgDto;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
+import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.entity.PortfolioImg;
 import umc.meme.shop.domain.portfolio.repository.PortfolioImgRepository;
@@ -146,6 +144,41 @@ public class PortfolioService {
         portfolio.getPortfolioImgList().addAll(updatedPortfolioImgs);
     }
 
+    /**recommend**/
+    //리뷰 많은 순 포트폴리오 추천
+    public List<SimplePortfolioDto> recommendReview(){
+        Pageable pageable = setPageRequest(0, "review");
+        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
+
+        return portfolioList.getContent().stream()
+                .map(SimplePortfolioDto::from)
+                .toList();
+    }
+
+    //최신 등록 순 포트폴리오 추천
+    public List<SimplePortfolioDto> recommendRecent(){
+        Pageable pageable = setPageRequest(0, "recent");
+        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
+
+        return portfolioList.getContent().stream()
+                .map(SimplePortfolioDto::from)
+                .toList();
+    }
+
+    private Pageable setPageRequest(int page, String sortBy){
+
+        Sort sort = switch (sortBy) {
+            case "desc" -> Sort.by("price").descending();
+            case "asc" -> Sort.by("price").ascending();
+            case "review" -> Sort.by("averageStars").descending();
+            case "recent" -> Sort.by("createdAt").descending();
+            default -> throw new GlobalException(ErrorStatus.INVALID_SORT_CRITERIA);
+        };
+
+        //별점 높은 순 정렬 추가
+        Sort finalSort = sort.and(Sort.by("averageStars").descending());
+        return PageRequest.of(page, 30, finalSort);
+    }
 
     private Page<Portfolio> getPage(int page, List<Portfolio> list){
         Pageable pageable = PageRequest.of(page, 30);

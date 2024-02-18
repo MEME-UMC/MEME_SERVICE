@@ -19,7 +19,6 @@ import umc.meme.shop.domain.model.dto.request.ModelProfileDto;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.dto.response.PortfolioPageDto;
-import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.global.enums.Category;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
@@ -191,31 +190,10 @@ public class ModelService {
     }
 
     //전체 조회
-    public PortfolioPageDto searchAll(int page, String sortBy){
+    public PortfolioPageDto searchAll(int page, String sortBy) {
         Pageable pageable = setPageRequest(page, sortBy);
         Page<Portfolio> portfolioPage = portfolioRepository.findAllNotBlocked(pageable);
         return PortfolioPageDto.from(portfolioPage);
-    }
-
-    /**recommend**/
-    //리뷰 많은 순 포트폴리오 추천
-    public List<SimplePortfolioDto> recommendReview(){
-        Pageable pageable = setPageRequest(0, "review");
-        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
-
-        return portfolioList.getContent().stream()
-                .map(SimplePortfolioDto::from)
-                .toList();
-    }
-
-    //최신 등록 순 포트폴리오 추천
-    public List<SimplePortfolioDto> recommendRecent(){
-        Pageable pageable = setPageRequest(0, "recent");
-        Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
-
-        return portfolioList.getContent().stream()
-                .map(SimplePortfolioDto::from)
-                .toList();
     }
 
     //검색하기 정렬 기준 설정
