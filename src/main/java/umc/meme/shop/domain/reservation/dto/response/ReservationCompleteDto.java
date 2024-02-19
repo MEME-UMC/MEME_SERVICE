@@ -18,6 +18,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationCompleteDto {
+    private Long reservationId;
     private String makeupName;
     private String artistNickName;
     private String location; //장소
@@ -26,6 +27,7 @@ public class ReservationCompleteDto {
 
     public static ReservationCompleteDto from(Portfolio portfolio, Reservation reservation){
         return ReservationCompleteDto.builder()
+                .reservationId(reservation.getReservationId())
                 .makeupName(portfolio.getMakeupName())
                 .artistNickName(portfolio.getArtist().getNickname())
                 .location(reservation.getLocation())
