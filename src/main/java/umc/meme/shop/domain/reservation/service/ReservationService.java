@@ -24,6 +24,7 @@ import umc.meme.shop.global.enums.Times;
 import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -75,7 +76,7 @@ public class ReservationService {
         for(int i=0; i<reservationList.size(); i++){
             Reservation reservation = reservationList.get(i);
             if(reservation.getReservationDayOfWeekAndTime().equals(reservationDto.getReservationDayOfWeekAndTime())
-                && reservation.getReservationDate().equals(reservationDto.getReservationDate())){
+                && checkDuplicateReservation(reservation.getReservationDate(), reservationDto.getReservationDate())){
                 throw new GlobalException(ErrorStatus.NOT_ALLOW_DUPLICATED_RESERVATION);
             }
         }
@@ -124,6 +125,16 @@ public class ReservationService {
         return reservationList.stream()
                 .map(ReservationResponseDto::from)
                 .collect(Collectors.toList());
+    }
+
+    private boolean checkDuplicateReservation(Date date1, Date date2){
+        //두 date가 동일하면 false
+        if(date1.getYear() == date2.getYear()){
+            if(date1.getMonth() == date2.getMonth())
+                if(date1.getDay() == date2.getDay())
+                    return true;
+        }
+        return false;
     }
 
 
