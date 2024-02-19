@@ -73,7 +73,9 @@ public class ReservationService {
         //예약 중복 처리
         List<Reservation> reservationList = reservationRepository.findByModelAndPortfolio(model, portfolio);
         for(int i=0; i<reservationList.size(); i++){
-            if(reservationList.get(i).getReservationDayOfWeekAndTime().equals(reservationDto.getReservationDayOfWeekAndTime())){
+            Reservation reservation = reservationList.get(i);
+            if(reservation.getReservationDayOfWeekAndTime().equals(reservationDto.getReservationDayOfWeekAndTime())
+                && reservation.getReservationDate().equals(reservationDto.getReservationDate())){
                 throw new GlobalException(ErrorStatus.NOT_ALLOW_DUPLICATED_RESERVATION);
             }
         }
