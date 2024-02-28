@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FavoritePortfolioResponsePageDto {
+public class xFavoritePortfolioResponsePageDto {
     private List<SimplePortfolioDto> content;
     private int currentPage; //현재 페이지 번호
     private int pageSize; //페이지 크기
