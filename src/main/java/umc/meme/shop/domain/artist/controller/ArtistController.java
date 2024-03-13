@@ -23,13 +23,13 @@ public class ArtistController {
 
     @Operation(summary = "아티스트 프로필 관리 조회(수정 전 정보 불러오기 용)")
     @GetMapping("/mypage/profile/artist/{userId}")
-    public ApiResponse getProfile (@PathVariable Long userId){
+    public ApiResponse getProfile (@PathVariable(name = "userId") Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getProfile(userId));
     }
 
     @Operation(summary = "아티스트 프로필 조회")
     @GetMapping("/profile/{userId}/{artistId}")
-    public ApiResponse getArtistProfile(@PathVariable Long userId, @PathVariable Long artistId){
+    public ApiResponse getArtistProfile(@PathVariable(name = "userId") Long userId, @PathVariable(name = "artistId") Long artistId){
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfile(userId, artistId));
     }
 
