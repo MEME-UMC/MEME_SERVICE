@@ -36,6 +36,7 @@ public enum SuccessStatus {
     /**review**/
     REVIEW_CREATE(200, "리뷰 작성이 완료되었습니다"),
     REVIEW_GET(200, "리뷰 조회가 완료되었습니다"),
+    REVIEW_AVAILABLE_GET(200, "리뷰 작성 가능 예약 리스트 조회가 완료되었습니다"),
     REVIEW_DELETE(200, "리뷰 삭제가 완료되었습니다"),
 
     /**reservation**/
