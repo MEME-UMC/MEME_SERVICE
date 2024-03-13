@@ -40,25 +40,53 @@ public class PortfolioRepositoryCustomImpl implements PortfolioRepositoryCustom{
 
     @Override
     public Page<Portfolio> findByCategory(Category category, Pageable pageable) {
-        return null;
-
-//        @Query("SELECT p FROM Portfolio p " +
-//                "WHERE p.category = :category " +
-//                "AND p.isBlock = false ")
+        List<Portfolio> content = queryFactory
+                .selectFrom(portfolio)
+                .where(portfolio.category.eq(category),
+                        portfolio.isBlock.eq(false))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        long total = queryFactory
+                .selectFrom(portfolio)
+                .where(portfolio.category.eq(category),
+                        portfolio.isBlock.eq(false))
+                .fetchCount();
+        return new PageImpl<>(content, pageable, total);
     }
 
     @Override
     public Page<Portfolio> search(String query, Pageable pageable) {
-        return null;
-//        @Query("SELECT p FROM Portfolio p " +
-//                "WHERE (p.makeupName LIKE %:query% OR p.info LIKE %:query%) " +
-//                "AND p.isBlock = false" )
+        List<Portfolio> content = queryFactory
+                .selectFrom(portfolio)
+                .where(portfolio.makeupName.like(query),
+                        portfolio.info.like(query),
+                        portfolio.isBlock.eq(false))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        long total = queryFactory
+                .selectFrom(portfolio)
+                .where(portfolio.makeupName.like(query),
+                        portfolio.info.like(query),
+                        portfolio.isBlock.eq(false))
+                .fetchCount();
+        return new PageImpl<>(content, pageable, total);
     }
 
     @Override
     public Page<Portfolio> findAllNotBlocked(Pageable pageable) {
-        return null;
-//        @Query("SELECT p FROM Portfolio p WHERE p.isBlock = false")
+        List<Portfolio> content = queryFactory
+                .selectFrom(portfolio)
+                .where(portfolio.isBlock.eq(false))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        long total = queryFactory
+                .selectFrom(portfolio)
+                .where(portfolio.isBlock.eq(false))
+                .fetchCount();
+        return new PageImpl<>(content, pageable, total);
     }
 
 }
