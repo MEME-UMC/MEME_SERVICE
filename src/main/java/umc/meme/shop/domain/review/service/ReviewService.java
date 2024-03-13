@@ -12,6 +12,7 @@ import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
+import umc.meme.shop.domain.review.dto.response.ReviewAvailableListResponseDto;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
@@ -20,14 +21,11 @@ import umc.meme.shop.domain.review.dto.response.ReviewListPageDto;
 import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 import umc.meme.shop.domain.review.entity.Review;
 import umc.meme.shop.domain.review.entity.ReviewImg;
-import umc.meme.shop.domain.review.repository.ReviewImgRepository;
 import umc.meme.shop.domain.review.repository.ReviewRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -92,6 +90,23 @@ public class ReviewService {
         Page<Review> reviewPage = getPage(page, reviewList);
 
         return ReviewListPageDto.from(reviewPage);
+    }
+
+    //리뷰 작성 가능 예약 리스트 조회
+    public List<ReviewAvailableListResponseDto> getReviewReservationList(Long modelId){
+        Model model = modelRepository.findById(modelId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+        List<Reservation> reservationList = model.getReservationList();
+
+        //status != COMPLETE 이면 리스트에서 제거
+        reservationList.removeIf(Reservation::isAvailableReview);
+
+        //리뷰 작성 완료시 리스트에서 제거
+        reservationList.removeIf(Reservation::isReview);
+
+        return reservationList.stream()
+                .map(ReviewAvailableListResponseDto::from)
+                .toList();
     }
 
     //리뷰 삭제

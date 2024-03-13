@@ -65,6 +65,10 @@ public class Reservation extends BaseEntity {
         this.isReview = bool;
     }
 
+    public boolean isAvailableReview(){
+        return !status.equals(Status.COMPLETE);
+    }
+
     public static Reservation from(Model model, Portfolio portfolio, ReservationRequestDto dto){
         return Reservation.builder()
                 .model(model)
