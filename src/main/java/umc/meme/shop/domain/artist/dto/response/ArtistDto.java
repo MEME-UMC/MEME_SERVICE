@@ -9,7 +9,6 @@ import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.global.enums.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Builder
@@ -38,13 +37,17 @@ public class ArtistDto {
 
     private MakeupLocation makeupLocation;
 
-    private Map<DayOfWeek, Times> availableDayOfWeekAndTime;
+    private List<AvailableTimeDto> availableTimeList;
 
     private List<SimplePortfolioDto> simplePortfolioDtoList;
 
 
 
     public static ArtistDto from(Artist artist, boolean isFavorite){
+        List<AvailableTimeDto> availableTimeDtoList = artist.getAvailableTimeList()
+                .stream().map(AvailableTimeDto::from)
+                .toList();
+
         List<SimplePortfolioDto> portfolioDtoList = artist.getPortfolioList()
                 .stream()
                 .map(SimplePortfolioDto::from)
@@ -61,7 +64,7 @@ public class ArtistDto {
                 .region(artist.getRegion())
                 .specialization(artist.getSpecialization())
                 .makeupLocation(artist.getMakeupLocation())
-                .availableDayOfWeekAndTime(artist.getAvailableDayOfWeekAndTime())
+                .availableTimeList(availableTimeDtoList)
                 .simplePortfolioDtoList(portfolioDtoList)
                 .build();
     }
