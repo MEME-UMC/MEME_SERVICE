@@ -33,10 +33,14 @@ public class AvailableTime {
     private Times times; //시간
 
     @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
-    private Boolean isReservated; //해당 시간대 예약 여부
+    private boolean isReservated; //해당 시간대 예약 여부
 
     @ManyToOne
-    @JoinColumn(name = "artist_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private Artist artist;
+
+    public void updateIsReservated(boolean isReservated){
+        this.isReservated = isReservated;
+    }
 
 }
