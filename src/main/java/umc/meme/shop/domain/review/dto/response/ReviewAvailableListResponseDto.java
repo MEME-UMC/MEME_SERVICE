@@ -22,7 +22,8 @@ public class ReviewAvailableListResponseDto {
     private String artistNickName;
     private String makeupName;
     private Date reservationDate;
-    private Map<DayOfWeek, Times> reservationDayOfWeekAndTime;
+    private DayOfWeek dayOfWeek;
+    private Times times;
     private String shopLocation; //샵 위치
 
     public static ReviewAvailableListResponseDto from(Reservation reservation){
@@ -32,7 +33,8 @@ public class ReviewAvailableListResponseDto {
                 .artistNickName(reservation.getPortfolio().getArtist().getNickname())
                 .makeupName(reservation.getPortfolio().getMakeupName())
                 .reservationDate(reservation.getReservationDate())
-                .reservationDayOfWeekAndTime(reservation.getReservationDayOfWeekAndTime())
+                .dayOfWeek(reservation.getDayOfWeek())
+                .times(reservation.getTimes())
                 .shopLocation(reservation.getLocation())
                 .build();
     }

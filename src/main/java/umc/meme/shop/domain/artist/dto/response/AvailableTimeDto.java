@@ -15,12 +15,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailableTimeDto {
+    private Long availableTimeId;
     private LocalDate date; //날짜
     private DayOfWeek dayOfWeek; //요일
     private Times times;
 
     static public AvailableTimeDto from(AvailableTime availableTime){
         return AvailableTimeDto.builder()
+                .availableTimeId(availableTime.getAvailableTimeId())
                 .date(availableTime.getDate())
                 .dayOfWeek(availableTime.getDayOfWeek())
                 .times(availableTime.getTimes())

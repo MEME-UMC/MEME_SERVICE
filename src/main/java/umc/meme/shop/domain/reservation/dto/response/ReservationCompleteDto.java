@@ -23,7 +23,8 @@ public class ReservationCompleteDto {
     private String artistNickName;
     private String location; //장소
     private Date reservationDate; //날짜
-    private Map<DayOfWeek, Times> reservationDayOfWeekAndTime; //요일과 시간
+    private DayOfWeek dayOfWeek; //요일
+    private Times times; //시간
 
     public static ReservationCompleteDto from(Portfolio portfolio, Reservation reservation){
         return ReservationCompleteDto.builder()
@@ -32,7 +33,8 @@ public class ReservationCompleteDto {
                 .artistNickName(portfolio.getArtist().getNickname())
                 .location(reservation.getLocation())
                 .reservationDate(reservation.getReservationDate())
-                .reservationDayOfWeekAndTime(reservation.getReservationDayOfWeekAndTime())
+                .dayOfWeek(reservation.getDayOfWeek())
+                .times(reservation.getTimes())
                 .build();
     }
 

@@ -43,15 +43,14 @@ public class Reservation extends BaseEntity {
     @Column(nullable = false)
     private boolean isReview = false;
 
-    @ElementCollection
-    @CollectionTable(name = "reservation_time_mapping",
-            joinColumns = {@JoinColumn(name = "reservation_id", referencedColumnName = "reservationId")})
-    @MapKeyColumn(name = "day_of_week")
-    @Enumerated(EnumType.STRING)
-    private Map<DayOfWeek, Times> reservationDayOfWeekAndTime;
+    @Column(nullable = false)
+    private Date reservationDate; //예약 날짜
 
     @Column(nullable = false)
-    private Date reservationDate;
+    private DayOfWeek dayOfWeek; //예약 요일
+
+    @Column(nullable = false)
+    private Times times; //예약 시간
 
     @Column(nullable = false)
     private String location; //예약 장소
@@ -74,8 +73,9 @@ public class Reservation extends BaseEntity {
                 .model(model)
                 .portfolio(portfolio)
                 .status(Status.EXPECTED)
-                .reservationDayOfWeekAndTime(dto.getReservationDayOfWeekAndTime())
                 .reservationDate(dto.getReservationDate())
+                .dayOfWeek(dto.getDayOfWeek())
+                .times(dto.getTimes())
                 .location(dto.getLocation())
                 .build();
     }
