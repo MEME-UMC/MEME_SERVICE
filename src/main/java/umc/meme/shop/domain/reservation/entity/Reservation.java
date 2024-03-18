@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.artist.entity.AvailableTime;
 import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
@@ -68,15 +69,15 @@ public class Reservation extends BaseEntity {
         return !status.equals(Status.COMPLETE);
     }
 
-    public static Reservation from(Model model, Portfolio portfolio, ReservationRequestDto dto){
+    public static Reservation from(Model model, Portfolio portfolio, AvailableTime availableTime, String location){
         return Reservation.builder()
                 .model(model)
                 .portfolio(portfolio)
                 .status(Status.EXPECTED)
-                .reservationDate(dto.getReservationDate())
-                .dayOfWeek(dto.getDayOfWeek())
-                .times(dto.getTimes())
-                .location(dto.getLocation())
+                .reservationDate(availableTime.getDate())
+                .dayOfWeek(availableTime.getDayOfWeek())
+                .times(availableTime.getTimes())
+                .location(location)
                 .build();
     }
 }

@@ -23,7 +23,6 @@ import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,20 +68,15 @@ public class ReservationService {
         AvailableTime availableTime = availableTimeRepository.findById(reservationDto.getAvailableTimeId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.INVAILD_AVAILABLE_TIME));
 
+        //예약 가능 시간 확인, 중복 확인
+        if(availableTime.isReservated())
+            throw new GlobalException(ErrorStatus.INVAILD_AVAILABLE_TIME);
 
-        //예약 중복 처리
-        List<Reservation> reservationList = reservationRepository.findByModelAndPortfolio(model, portfolio);
-        for(int i=0; i<reservationList.size(); i++){
-            Reservation reservation = reservationList.get(i);
-            if(reservation.getDayOfWeek().equals(reservationDto.getDayOfWeek())
-                    && reservation.getTimes().equals(reservationDto.getTimes())
-                && checkDuplicateReservation(reservation.getReservationDate(), reservationDto.getReservationDate())){
-                throw new GlobalException(ErrorStatus.NOT_ALLOW_DUPLICATED_RESERVATION);
-            }
-        }
+        if(!portfolio.getArtist().equals(availableTime.getArtist()))
+            throw new GlobalException(ErrorStatus.INVAILD_AVAILABLE_TIME);
 
         //reservation 생성
-        Reservation reservation = Reservation.from(model, portfolio, reservationDto);
+        Reservation reservation = Reservation.from(model, portfolio, availableTime, reservationDto.getLocation());
         model.updateReservationList(reservation);
         reservationRepository.save(reservation);
 
@@ -107,6 +101,8 @@ public class ReservationService {
             throw new GlobalException(ErrorStatus.INVALID_CHANGE_COMPLETE);
 
         reservation.updateReservation(status);
+
+        //TODO : reservation : availableTime 연관관계 설정
         // TODO : 아티스트 예약 가능 시간 값 변경
     }
 
@@ -131,16 +127,5 @@ public class ReservationService {
                 .map(ReservationResponseDto::from)
                 .collect(Collectors.toList());
     }
-
-    private boolean checkDuplicateReservation(Date date1, Date date2){
-        //두 date가 동일하면 false
-        if(date1.getYear() == date2.getYear()){
-            if(date1.getMonth() == date2.getMonth())
-                if(date1.getDay() == date2.getDay())
-                    return true;
-        }
-        return false;
-    }
-
 
 }
