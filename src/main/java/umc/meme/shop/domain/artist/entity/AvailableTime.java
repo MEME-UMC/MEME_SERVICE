@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Builder
 @Getter
@@ -22,7 +22,7 @@ public class AvailableTime {
     private Long availableTimeId;
 
     @Column(nullable = false)
-    private LocalDate date; //날짜
+    private Date date; //날짜
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -41,6 +41,15 @@ public class AvailableTime {
 
     public void updateIsReservated(boolean isReservated){
         this.isReservated = isReservated;
+    }
+
+    public static AvailableTime from(Date date, DayOfWeek dayOfWeek, Times times, Artist artist){
+        return AvailableTime.builder()
+                .date(date)
+                .dayOfWeek(dayOfWeek)
+                .times(times)
+                .artist(artist)
+                .build();
     }
 
 }

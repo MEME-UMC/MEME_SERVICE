@@ -9,7 +9,6 @@ import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.global.enums.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -26,11 +25,11 @@ public class ArtistProfileDto {
     private List<Category> specialization;
     private MakeupLocation makeupLocation;
     private String shopLocation;
-    private List<AvailableTimeDto> availableTimeDtoList;
+    private List<AvailableTimeRequestDto> availableTimeDtoList;
 
     public static ArtistProfileDto from(Artist artist){
-        List<AvailableTimeDto> availableTimeDtoList = artist.getAvailableTimeList()
-                .stream().map(AvailableTimeDto::from)
+        List<AvailableTimeRequestDto> availableTimeDtoList = artist.getAvailableTimeList()
+                .stream().map(AvailableTimeRequestDto::from)
                 .toList();
 
         return ArtistProfileDto.builder()

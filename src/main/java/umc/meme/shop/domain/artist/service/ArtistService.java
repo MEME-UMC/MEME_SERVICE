@@ -6,14 +6,20 @@ import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
+import umc.meme.shop.domain.artist.entity.AvailableTime;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
+import umc.meme.shop.domain.artist.repository.AvailableTimeRepository;
 import umc.meme.shop.domain.favorite.entity.FavoriteArtist;
 import umc.meme.shop.domain.favorite.repository.FavoriteArtistRepository;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.global.ErrorStatus;
+import umc.meme.shop.global.enums.DayOfWeek;
+import umc.meme.shop.global.enums.Times;
 import umc.meme.shop.global.exception.GlobalException;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -23,6 +29,7 @@ public class ArtistService {
     private final ArtistRepository artistRepository;
     private final ModelRepository modelRepository;
     private final FavoriteArtistRepository favoriteArtistRepository;
+    private final AvailableTimeRepository availableTimeRepository;
 
     //아티스트 프로필 관리/수정
     @Transactional
@@ -60,7 +67,18 @@ public class ArtistService {
         Artist artist = new Artist();
         artist.updateArtist(dto);
         artist.tempMethod();
+
         artistRepository.save(artist);
+        AvailableTime availableTime1 = AvailableTime.from(new Date(),
+                DayOfWeek.MON, Times._12_00, artist);
+        AvailableTime availableTime2 = AvailableTime.from(new Date(),
+                DayOfWeek.MON, Times._13_00, artist);
+        AvailableTime availableTime3 = AvailableTime.from(new Date(),
+                DayOfWeek.MON, Times._15_00, artist);
+        availableTimeRepository.save(availableTime1);
+        availableTimeRepository.save(availableTime2);
+        availableTimeRepository.save(availableTime3);
+
     }
 
 }
