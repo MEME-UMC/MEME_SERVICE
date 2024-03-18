@@ -29,7 +29,8 @@ public class ReservationResponseDto {
     private int price;
 
     private Date reservationDate;
-    private Map<DayOfWeek, Times> reservationDayOfWeekAndTime;
+    private DayOfWeek dayOfWeek;
+    private Times times;
     private String shopLocation; //샵 위치
     private Status status;
 
@@ -47,8 +48,9 @@ public class ReservationResponseDto {
                 .artistNickName(artist.getNickname())
                 .makeupName(portfolio.getMakeupName())
                 .price(portfolio.getPrice())
-                .reservationDayOfWeekAndTime(reservation.getReservationDayOfWeekAndTime())
                 .reservationDate(reservation.getReservationDate())
+                .dayOfWeek(reservation.getDayOfWeek())
+                .times(reservation.getTimes())
                 .shopLocation(artist.getShopLocation())
                 .status(reservation.getStatus())
                 .build();

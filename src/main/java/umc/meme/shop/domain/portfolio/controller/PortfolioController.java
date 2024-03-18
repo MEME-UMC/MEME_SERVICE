@@ -38,7 +38,6 @@ public class PortfolioController {
     @Operation(summary = "포트폴리오 수정/삭제", description = "포트폴리오를 수정/삭제하는 API입니다.")
     @PatchMapping()
     public ApiResponse updatePortfolio(@RequestBody UpdatePortfolioDto portfolioDto){
-        // TODO: PortfolioImg 추가
         portfolioService.updatePortfolio(portfolioDto);
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_UPDATE);
     }

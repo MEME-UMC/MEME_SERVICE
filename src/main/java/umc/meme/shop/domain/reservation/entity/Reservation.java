@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.artist.entity.AvailableTime;
 import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
@@ -43,15 +44,14 @@ public class Reservation extends BaseEntity {
     @Column(nullable = false)
     private boolean isReview = false;
 
-    @ElementCollection
-    @CollectionTable(name = "reservation_time_mapping",
-            joinColumns = {@JoinColumn(name = "reservation_id", referencedColumnName = "reservationId")})
-    @MapKeyColumn(name = "day_of_week")
-    @Enumerated(EnumType.STRING)
-    private Map<DayOfWeek, Times> reservationDayOfWeekAndTime;
+    @Column(nullable = false)
+    private Date reservationDate; //예약 날짜
 
     @Column(nullable = false)
-    private Date reservationDate;
+    private DayOfWeek dayOfWeek; //예약 요일
+
+    @Column(nullable = false)
+    private Times times; //예약 시간
 
     @Column(nullable = false)
     private String location; //예약 장소
@@ -69,14 +69,15 @@ public class Reservation extends BaseEntity {
         return !status.equals(Status.COMPLETE);
     }
 
-    public static Reservation from(Model model, Portfolio portfolio, ReservationRequestDto dto){
+    public static Reservation from(Model model, Portfolio portfolio, AvailableTime availableTime, String location){
         return Reservation.builder()
                 .model(model)
                 .portfolio(portfolio)
                 .status(Status.EXPECTED)
-                .reservationDayOfWeekAndTime(dto.getReservationDayOfWeekAndTime())
-                .reservationDate(dto.getReservationDate())
-                .location(dto.getLocation())
+                .reservationDate(availableTime.getDate())
+                .dayOfWeek(availableTime.getDayOfWeek())
+                .times(availableTime.getTimes())
+                .location(location)
                 .build();
     }
 }

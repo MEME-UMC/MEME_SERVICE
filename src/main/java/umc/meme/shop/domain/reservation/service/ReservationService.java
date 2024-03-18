@@ -3,8 +3,11 @@ package umc.meme.shop.domain.reservation.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import umc.meme.shop.domain.artist.dto.response.AvailableTimeDto;
 import umc.meme.shop.domain.artist.entity.Artist;
+import umc.meme.shop.domain.artist.entity.AvailableTime;
 import umc.meme.shop.domain.artist.repository.ArtistRepository;
+import umc.meme.shop.domain.artist.repository.AvailableTimeRepository;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
@@ -12,21 +15,15 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.dto.request.AlterReservationDto;
 import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
 import umc.meme.shop.domain.reservation.dto.response.ArtistLocationDto;
-import umc.meme.shop.domain.reservation.dto.response.ArtistTimeDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationCompleteDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationResponseDto;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.global.ErrorStatus;
-import umc.meme.shop.global.enums.DayOfWeek;
-import umc.meme.shop.global.enums.Times;
 import umc.meme.shop.global.exception.GlobalException;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +33,7 @@ public class ReservationService {
     private final ModelRepository modelRepository;
     private final PortfolioRepository portfolioRepository;
     private final ReservationRepository reservationRepository;
+    private final AvailableTimeRepository availableTimeRepository;
 
     //아티스트 예약 가능 장소 조회
     public ArtistLocationDto getArtistLocation(Long artistId){
@@ -46,15 +44,16 @@ public class ReservationService {
     }
 
     //아티스트 예약 가능 시간 조회
-    public List<ArtistTimeDto> getArtistTime(Long artistId) {
+    public List<AvailableTimeDto> getArtistTime(Long artistId) {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        Map<DayOfWeek, Times> availableDayOfWeekAndTime = artist.getAvailableDayOfWeekAndTime();
+        List<AvailableTime> availableTimeList = artist.getAvailableTimeList();
+        availableTimeList.removeIf(AvailableTime::isReservated);
 
-        return availableDayOfWeekAndTime.entrySet().stream()
-                .map(entry -> ArtistTimeDto.from(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+        return availableTimeList.stream()
+                .map(AvailableTimeDto::from)
+                .toList();
     }
 
     //예약하기
@@ -66,24 +65,23 @@ public class ReservationService {
         Portfolio portfolio = portfolioRepository.findById(reservationDto.getPortfolioId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
-        // 두 개 이상의 예약을 한번에 요청한 경우
-        if (reservationDto.getReservationDayOfWeekAndTime().size() != 1) {
-            throw new GlobalException(ErrorStatus.NOT_ALLOW_OVER_ONE_RESERVATION);
-        }
+        AvailableTime availableTime = availableTimeRepository.findById(reservationDto.getAvailableTimeId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.INVAILD_AVAILABLE_TIME));
 
-        //예약 중복 처리
-        List<Reservation> reservationList = reservationRepository.findByModelAndPortfolio(model, portfolio);
-        for(int i=0; i<reservationList.size(); i++){
-            Reservation reservation = reservationList.get(i);
-            if(reservation.getReservationDayOfWeekAndTime().equals(reservationDto.getReservationDayOfWeekAndTime())
-                && checkDuplicateReservation(reservation.getReservationDate(), reservationDto.getReservationDate())){
-                throw new GlobalException(ErrorStatus.NOT_ALLOW_DUPLICATED_RESERVATION);
-            }
-        }
+        //예약 가능 시간 확인, 중복 확인
+        if(availableTime.isReservated())
+            throw new GlobalException(ErrorStatus.INVAILD_AVAILABLE_TIME);
 
-        Reservation reservation = Reservation.from(model, portfolio, reservationDto);
+        if(!portfolio.getArtist().equals(availableTime.getArtist()))
+            throw new GlobalException(ErrorStatus.INVAILD_AVAILABLE_TIME);
+
+        //reservation 생성
+        Reservation reservation = Reservation.from(model, portfolio, availableTime, reservationDto.getLocation());
         model.updateReservationList(reservation);
         reservationRepository.save(reservation);
+
+        //예약 가능 시간 테이블 상태 변경
+        availableTime.updateIsReservated(true);
 
         return ReservationCompleteDto.from(portfolio, reservation);
     }
@@ -103,6 +101,9 @@ public class ReservationService {
             throw new GlobalException(ErrorStatus.INVALID_CHANGE_COMPLETE);
 
         reservation.updateReservation(status);
+
+        //TODO : reservation : availableTime 연관관계 설정
+        // TODO : 아티스트 예약 가능 시간 값 변경
     }
 
     //아티스트 예약 조회
@@ -126,16 +127,5 @@ public class ReservationService {
                 .map(ReservationResponseDto::from)
                 .collect(Collectors.toList());
     }
-
-    private boolean checkDuplicateReservation(Date date1, Date date2){
-        //두 date가 동일하면 false
-        if(date1.getYear() == date2.getYear()){
-            if(date1.getMonth() == date2.getMonth())
-                if(date1.getDay() == date2.getDay())
-                    return true;
-        }
-        return false;
-    }
-
 
 }

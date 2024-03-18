@@ -49,6 +49,7 @@ public enum ErrorStatus {
     INVALID_MODEL_FOR_REVIEW(400,  "사용자가 작성하지 않은 리뷰입니다."),
 
     //reservation
+    INVAILD_AVAILABLE_TIME(400, "잘못된 예약 시간입니다."),
     ALREADY_CHANGE_STATUS(400, "이미 예약 상태가 변경되었습니다."),
     INVALID_CHANGE_STATUS(400, "이미 완료된 예약은 취소할 수 없습니다."),
     NOT_ALLOW_DUPLICATED_RESERVATION(400, "중복된 예약 시간입니다."),

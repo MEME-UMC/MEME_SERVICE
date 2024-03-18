@@ -44,14 +44,8 @@ public class Artist extends User {
     @Column(nullable = true)
     private String shopLocation; //샵의 위치
 
-    @ElementCollection
-    @CollectionTable(name = "available_time_mapping",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")})
-    @MapKeyColumn(name = "day_of_week")
-    @MapKeyEnumerated(EnumType.STRING)
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
-    private Map<DayOfWeek, Times> availableDayOfWeekAndTime;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "artist")
+    private List<AvailableTime> availableTimeList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "artist")
     private List<Portfolio> portfolioList;
@@ -76,8 +70,7 @@ public class Artist extends User {
             this.makeupLocation = request.getMakeupLocation();
         if (request.getShopLocation() != null)
             this.shopLocation = request.getShopLocation();
-        if (request.getAvailableDayOfWeek() != null)
-            this.availableDayOfWeekAndTime = request.getAvailableDayOfWeek();
+        // TODO: request.availableTimeList
     }
 
     public void updatePortfolioList(Portfolio portfolio){

@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.artist.dto.request.AvailableTimeRequestDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.portfolio.dto.response.SimplePortfolioDto;
 import umc.meme.shop.global.enums.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Builder
@@ -38,13 +38,17 @@ public class ArtistDto {
 
     private MakeupLocation makeupLocation;
 
-    private Map<DayOfWeek, Times> availableDayOfWeekAndTime;
+    private List<AvailableTimeRequestDto> availableTimeList;
 
     private List<SimplePortfolioDto> simplePortfolioDtoList;
 
 
 
     public static ArtistDto from(Artist artist, boolean isFavorite){
+        List<AvailableTimeRequestDto> availableTimeDtoList = artist.getAvailableTimeList()
+                .stream().map(AvailableTimeRequestDto::from)
+                .toList();
+
         List<SimplePortfolioDto> portfolioDtoList = artist.getPortfolioList()
                 .stream()
                 .map(SimplePortfolioDto::from)
@@ -61,7 +65,7 @@ public class ArtistDto {
                 .region(artist.getRegion())
                 .specialization(artist.getSpecialization())
                 .makeupLocation(artist.getMakeupLocation())
-                .availableDayOfWeekAndTime(artist.getAvailableDayOfWeekAndTime())
+                .availableTimeList(availableTimeDtoList)
                 .simplePortfolioDtoList(portfolioDtoList)
                 .build();
     }
