@@ -78,6 +78,7 @@ public class ReservationService {
         //reservation 생성
         Reservation reservation = Reservation.from(model, portfolio, availableTime, reservationDto.getLocation());
         model.updateReservationList(reservation);
+        availableTime.updateReservation(reservation);
         reservationRepository.save(reservation);
 
         //예약 가능 시간 테이블 상태 변경
@@ -95,15 +96,17 @@ public class ReservationService {
 
         if(reservation.getStatus() == status)
             throw new GlobalException(ErrorStatus.ALREADY_CHANGE_STATUS);
-        if(reservation.getStatus() == Status.COMPLETE && status == Status.CANCEL)
+        if(reservation.getStatus() == Status.COMPLETE)
             throw new GlobalException(ErrorStatus.INVALID_CHANGE_STATUS);
         if(reservation.getStatus() == Status.CANCEL && status == Status.COMPLETE)
             throw new GlobalException(ErrorStatus.INVALID_CHANGE_COMPLETE);
 
+        AvailableTime availableTime = reservation.getAvailableTime();
+        if(reservation.getStatus() == Status.EXPECTED
+                && (status == Status.COMPLETE || status == Status.CANCEL)){
+            availableTime.updateIsReservated(false);
+        }//TODO: complete -> availableTime delete 논의 필요
         reservation.updateReservation(status);
-
-        //TODO : reservation : availableTime 연관관계 설정
-        // TODO : 아티스트 예약 가능 시간 값 변경
     }
 
     //아티스트 예약 조회

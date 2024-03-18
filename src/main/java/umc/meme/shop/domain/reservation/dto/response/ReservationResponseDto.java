@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.Artist;
+import umc.meme.shop.domain.artist.entity.AvailableTime;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.Status;
@@ -40,6 +41,7 @@ public class ReservationResponseDto {
             throw new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO);
 
         Artist artist = reservation.getPortfolio().getArtist();
+        AvailableTime availableTime = reservation.getAvailableTime();
 
         return ReservationResponseDto.builder()
                 .reservationId(reservation.getReservationId())
@@ -48,9 +50,9 @@ public class ReservationResponseDto {
                 .artistNickName(artist.getNickname())
                 .makeupName(portfolio.getMakeupName())
                 .price(portfolio.getPrice())
-                .reservationDate(reservation.getReservationDate())
-                .dayOfWeek(reservation.getDayOfWeek())
-                .times(reservation.getTimes())
+                .reservationDate(availableTime.getDate())
+                .dayOfWeek(availableTime.getDayOfWeek())
+                .times(availableTime.getTimes())
                 .shopLocation(artist.getShopLocation())
                 .status(reservation.getStatus())
                 .build();
