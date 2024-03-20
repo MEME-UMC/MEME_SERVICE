@@ -89,24 +89,27 @@ public class ReservationService {
 
     //예약하기 상태 변경
     @Transactional
-    public void updateReservationStatus(AlterReservationDto reservationDto){
+    public void updateReservationStatus(AlterReservationDto reservationDto) {
         Reservation reservation = reservationRepository.findById(reservationDto.getReservationId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
         Status status = reservationDto.getStatus();
 
-        if(reservation.getStatus() == status)
+        if (reservation.getStatus() == status)
             throw new GlobalException(ErrorStatus.ALREADY_CHANGE_STATUS);
-        if(reservation.getStatus() == Status.COMPLETE)
+        if (reservation.getStatus() == Status.COMPLETE)
             throw new GlobalException(ErrorStatus.INVALID_CHANGE_STATUS);
-        if(reservation.getStatus() == Status.CANCEL && status == Status.COMPLETE)
+        if (reservation.getStatus() == Status.CANCEL && status == Status.COMPLETE)
             throw new GlobalException(ErrorStatus.INVALID_CHANGE_COMPLETE);
 
         AvailableTime availableTime = reservation.getAvailableTime();
-        if(reservation.getStatus() == Status.EXPECTED
-                && (status == Status.COMPLETE || status == Status.CANCEL)){
-            availableTime.updateIsReservated(false);
-        }//TODO: complete -> availableTime delete 논의 필요
-        reservation.updateReservation(status);
+        if (reservation.getStatus() == Status.EXPECTED) {
+            if (status == Status.COMPLETE) //예약 완료 시
+                reservation.updateReservation(status);
+            else if (status == Status.CANCEL) { //예약 취소 시
+                availableTime.updateIsReservated(false);
+                reservationRepository.delete(reservation);
+            }
+        }
     }
 
     //아티스트 예약 조회
