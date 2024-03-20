@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 
@@ -39,9 +40,14 @@ public class AvailableTime {
     @JoinColumn(name = "user_id", nullable = false)
     private Artist artist;
 
+    @OneToOne(mappedBy = "availableTime", fetch = FetchType.LAZY)
+    private Reservation reservation;
+
     public void updateIsReservated(boolean isReservated){
         this.isReservated = isReservated;
     }
+
+    public void updateReservation(Reservation reservation){this.reservation = reservation;}
 
     public static AvailableTime from(Date date, DayOfWeek dayOfWeek, Times times, Artist artist){
         return AvailableTime.builder()

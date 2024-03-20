@@ -37,21 +37,16 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name="portfolio_id", nullable = false)
     private Portfolio portfolio;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "available_time_id")
+    private AvailableTime availableTime;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
 
     @Column(nullable = false)
     private boolean isReview = false;
-
-    @Column(nullable = false)
-    private Date reservationDate; //예약 날짜
-
-    @Column(nullable = false)
-    private DayOfWeek dayOfWeek; //예약 요일
-
-    @Column(nullable = false)
-    private Times times; //예약 시간
 
     @Column(nullable = false)
     private String location; //예약 장소
@@ -73,10 +68,8 @@ public class Reservation extends BaseEntity {
         return Reservation.builder()
                 .model(model)
                 .portfolio(portfolio)
+                .availableTime(availableTime)
                 .status(Status.EXPECTED)
-                .reservationDate(availableTime.getDate())
-                .dayOfWeek(availableTime.getDayOfWeek())
-                .times(availableTime.getTimes())
                 .location(location)
                 .build();
     }

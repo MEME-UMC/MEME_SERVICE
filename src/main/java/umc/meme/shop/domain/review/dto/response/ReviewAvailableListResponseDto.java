@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.artist.entity.AvailableTime;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Status;
@@ -27,14 +28,15 @@ public class ReviewAvailableListResponseDto {
     private String shopLocation; //샵 위치
 
     public static ReviewAvailableListResponseDto from(Reservation reservation){
+        AvailableTime availableTime = reservation.getAvailableTime();
         return ReviewAvailableListResponseDto.builder()
                 .reservationId(reservation.getReservationId())
                 .portfolioId(reservation.getReservationId())
                 .artistNickName(reservation.getPortfolio().getArtist().getNickname())
                 .makeupName(reservation.getPortfolio().getMakeupName())
-                .reservationDate(reservation.getReservationDate())
-                .dayOfWeek(reservation.getDayOfWeek())
-                .times(reservation.getTimes())
+                .reservationDate(availableTime.getDate())
+                .dayOfWeek(availableTime.getDayOfWeek())
+                .times(availableTime.getTimes())
                 .shopLocation(reservation.getLocation())
                 .build();
     }
