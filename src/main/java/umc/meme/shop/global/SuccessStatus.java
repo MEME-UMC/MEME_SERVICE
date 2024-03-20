@@ -42,6 +42,7 @@ public enum SuccessStatus {
     /**reservation**/
     RESERVATION_CREATE(200, "예약이 완료되었습니다"),
     RESERVATION_GET(200, "예약 조회가 완료되었습니다"),
+    RESERVATION_DETAILS_GET(200, "예약 상세 조회가 완료되었습니다"),
     RESERVATION_UPDATE(200, "예약 상태 변경이 완료되었습니다"),
     ARTIST_LOCATION_GET(200, "아티스트의 예약 가능 장소 조회가 완료되었습니다"),
     ARTIST_TIME_GET(200, "아티스트의 예약 가능 시간 조회가 완료되었습니다."),
