@@ -15,9 +15,11 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.dto.request.AlterReservationDto;
 import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
 import umc.meme.shop.domain.reservation.dto.response.ArtistLocationDto;
+import umc.meme.shop.domain.reservation.dto.response.ArtistReservationDetailDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationCompleteDto;
 import umc.meme.shop.domain.reservation.dto.response.ReservationResponseDto;
 import umc.meme.shop.domain.reservation.entity.Reservation;
+import umc.meme.shop.domain.user.User;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.global.ErrorStatus;
@@ -121,6 +123,17 @@ public class ReservationService {
         return reservationList.stream()
                 .map(ReservationResponseDto::from)
                 .collect(Collectors.toList());
+    }
+
+    //아티스트ver. 예약 상세 조회
+    public ArtistReservationDetailDto getArtistDetailsReservation(Long reservationId){
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
+
+        Model model = modelRepository.findById(reservation.getModel().getUserId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+
+        return ArtistReservationDetailDto.from(reservation, model);
     }
 
     //모델 예약 조회
