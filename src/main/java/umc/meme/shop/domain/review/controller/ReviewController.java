@@ -20,7 +20,7 @@ public class ReviewController {
 
     @Operation(summary = "리뷰 리스트 조회", description = "리뷰 리스트를 조회하는 API입니다.")
     @GetMapping("/{portfolioId}")
-    public ApiResponse getReviewList(@PathVariable Long portfolioId,
+    public ApiResponse getReviewList(@PathVariable(name = "portfolioId") Long portfolioId,
                                      @RequestParam(value = "page", defaultValue = "0", required = false) int page
     ){
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, reviewService.getReviewList(portfolioId, page));
@@ -47,7 +47,7 @@ public class ReviewController {
 
     @Operation(summary = "내가 쓴 리뷰 조회", description = "본인이 쓴 리뷰를 조회하는 API입니다.")
     @GetMapping("/me/{modelId}")
-    public ApiResponse getMyReview(@PathVariable Long modelId){
+    public ApiResponse getMyReview(@PathVariable(name = "modelId") Long modelId){
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, reviewService.getMyReview(modelId));
     }
 

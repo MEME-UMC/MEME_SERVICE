@@ -34,7 +34,7 @@ public class ModelController {
 
     @Operation(summary = "모델 프로필 관리 조회(수정 전 정보 불러오기 용)")
     @GetMapping("/mypage/profile/model/{userId}")
-    public ApiResponse getModelProfile (@PathVariable Long userId){
+    public ApiResponse getModelProfile (@PathVariable(name = "userId") Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.MODEL_PROFILE_GET, modelService.getModelProfile(userId));
     }
 
@@ -42,14 +42,14 @@ public class ModelController {
 
     @Operation(summary = "관심 아티스트 조회", description = "관심 아티스트를 조회하는 API입니다.")
     @GetMapping("/mypage/{modelId}/favorite/artist")
-    public ApiResponse getFavoriteArtist(@PathVariable Long modelId,
+    public ApiResponse getFavoriteArtist(@PathVariable(name = "modelId") Long modelId,
                                          @RequestParam(value = "page", defaultValue = "0", required = false)int page){
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_ARTIST_GET, modelService.getFavoriteArtist(modelId, page));
     }
 
     @Operation(summary = "관심 메이크업 조회", description = "관심 메이크업을 조회하는 API입니다.")
     @GetMapping("/mypage/{modelId}/favorite/portfolio")
-    public ApiResponse getFavoritePortfolio(@PathVariable Long modelId,
+    public ApiResponse getFavoritePortfolio(@PathVariable(name = "modelId") Long modelId,
                                             @RequestParam(value = "page", defaultValue = "0", required = false) int page
                                             ){
         return ApiResponse.SuccessResponse(SuccessStatus.FAVORITE_PORTFOLIO_GET, modelService.getFavoritePortfolio(modelId, page));
