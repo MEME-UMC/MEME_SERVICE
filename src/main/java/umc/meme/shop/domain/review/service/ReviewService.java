@@ -14,6 +14,7 @@ import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.review.dto.response.MyReviewResponseDto;
 import umc.meme.shop.domain.review.dto.response.ReviewAvailableListDto;
+import umc.meme.shop.domain.review.dto.response.ReviewDetailsDto;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
@@ -66,6 +67,13 @@ public class ReviewService {
 
         reviewRepository.save(review);
         reservation.updateIsReview(true);
+    }
+
+    //리뷰 상세 조회
+    public ReviewDetailsDto getReviewDetails(Long reviewId){
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_REVIEW));
+        return ReviewDetailsDto.from(review);
     }
 
     //내가 쓴 리뷰 조회
