@@ -7,17 +7,15 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.artist.entity.AvailableTime;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.DayOfWeek;
-import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.global.enums.Times;
 
 import java.util.Date;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReviewAvailableListResponseDto {
+public class ReviewAvailableListDto {
     private Long reservationId;
     private Long portfolioId;
     private String artistNickName;
@@ -27,9 +25,9 @@ public class ReviewAvailableListResponseDto {
     private Times times;
     private String shopLocation; //샵 위치
 
-    public static ReviewAvailableListResponseDto from(Reservation reservation){
+    public static ReviewAvailableListDto from(Reservation reservation){
         AvailableTime availableTime = reservation.getAvailableTime();
-        return ReviewAvailableListResponseDto.builder()
+        return ReviewAvailableListDto.builder()
                 .reservationId(reservation.getReservationId())
                 .portfolioId(reservation.getReservationId())
                 .artistNickName(reservation.getPortfolio().getArtist().getNickname())

@@ -12,13 +12,13 @@ import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
-import umc.meme.shop.domain.review.dto.response.ReviewAvailableListResponseDto;
+import umc.meme.shop.domain.review.dto.response.MyReviewResponseDto;
+import umc.meme.shop.domain.review.dto.response.ReviewAvailableListDto;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.review.dto.response.ReviewListPageDto;
-import umc.meme.shop.domain.review.dto.response.ReviewResponseDto;
 import umc.meme.shop.domain.review.entity.Review;
 import umc.meme.shop.domain.review.entity.ReviewImg;
 import umc.meme.shop.domain.review.repository.ReviewRepository;
@@ -69,14 +69,14 @@ public class ReviewService {
     }
 
     //내가 쓴 리뷰 조회
-    public List<ReviewResponseDto> getMyReview(Long modelId){
+    public List<MyReviewResponseDto> getMyReview(Long modelId){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
 
         //리뷰 리스트 조회
         List<Review> reviewList = reviewRepository.findByModel(model);
         return reviewList.stream()
-                .map(ReviewResponseDto::from)
+                .map(MyReviewResponseDto::from)
                 .toList();
     }
 
@@ -93,7 +93,7 @@ public class ReviewService {
     }
 
     //리뷰 작성 가능 예약 리스트 조회
-    public List<ReviewAvailableListResponseDto> getReviewReservationList(Long modelId){
+    public List<ReviewAvailableListDto> getReviewReservationList(Long modelId){
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         List<Reservation> reservationList = model.getReservationList();
@@ -105,7 +105,7 @@ public class ReviewService {
         reservationList.removeIf(Reservation::isReview);
 
         return reservationList.stream()
-                .map(ReviewAvailableListResponseDto::from)
+                .map(ReviewAvailableListDto::from)
                 .toList();
     }
 
