@@ -39,6 +39,12 @@ public class ReviewController {
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
     }
 
+    @Operation(summary = "리뷰 세부 조회", description = "리뷰를 세부 조회하는 API입니다.")
+    @GetMapping("/details/{reviewId}")
+    public ApiResponse getReviewDetails(@PathVariable(name = "reviewId") Long reviewId){
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_DETAILS_GET, reviewService.getReviewDetails(reviewId));
+    }
+
     @Operation(summary = "내가 쓴 리뷰 조회", description = "본인이 쓴 리뷰를 조회하는 API입니다.")
     @GetMapping("/me/{modelId}")
     public ApiResponse getMyReview(@PathVariable(name = "modelId") Long modelId){
