@@ -18,7 +18,7 @@ public class MyPageController {
 
     @Operation(summary = "마이페이지 조회")
     @GetMapping("/profile/{userId}")
-    public ApiResponse getProfile(@PathVariable Long userId) {
+    public ApiResponse getProfile(@PathVariable(name = "userId") Long userId) {
         return ApiResponse.SuccessResponse(SuccessStatus.MYPAGE_GET, mypageService.getProfile(userId));
     }
 
@@ -31,7 +31,7 @@ public class MyPageController {
 
     @Operation(summary = "문의 조회하기", description = "문의 조회하기 API입니다.")
     @GetMapping("/contact/{userId}")
-    public ApiResponse getContact(@PathVariable Long userId){
+    public ApiResponse getContact(@PathVariable(name = "userId") Long userId){
         return ApiResponse.SuccessResponse(SuccessStatus.CONTACT_GET, mypageService.getInquiry(userId));
     }
 }
