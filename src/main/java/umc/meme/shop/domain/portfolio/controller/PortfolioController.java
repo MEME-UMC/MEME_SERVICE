@@ -31,7 +31,7 @@ public class PortfolioController {
 
     @Operation(summary = "포트폴리오 조회", description = "특정 포트폴리오를 조회하는 API입니다.")
     @GetMapping("/details/{userId}/{portfolioId}")
-    public ApiResponse getPortfolioDetails(@PathVariable(name = "portfolioId") Long userId, @PathVariable Long portfolioId) {
+    public ApiResponse getPortfolioDetails(@PathVariable(name = "userId") Long userId, @PathVariable(name = "portfolioId") Long portfolioId) {
         return ApiResponse.SuccessResponse(SuccessStatus.PORTFOLIO_GET, portfolioService.getPortfolioDetails(userId, portfolioId));
     }
 
