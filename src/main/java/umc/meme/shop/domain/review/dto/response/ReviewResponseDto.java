@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ReviewResponseDto {
     private String modelNickName;
+    private String modelProfileImg;
     private int star;
     private String comment;
     private List<ReviewImgDto> reviewImgDtoList;
@@ -26,6 +27,7 @@ public class ReviewResponseDto {
 
         return ReviewResponseDto.builder()
                 .modelNickName(review.getModel().getNickname())
+                .modelProfileImg(review.getModel().getProfileImg())
                 .star(review.getStar())
                 .comment(review.getComment())
                 .reviewImgDtoList(reviewImgDtoList)
