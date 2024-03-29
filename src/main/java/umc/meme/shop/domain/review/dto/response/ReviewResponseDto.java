@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.review.entity.Review;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -13,10 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewResponseDto {
+    private Long reviewId;
     private String modelNickName;
     private String modelProfileImg;
     private int star;
     private String comment;
+    private LocalDateTime createdAt;
     private List<ReviewImgDto> reviewImgDtoList;
 
     public static ReviewResponseDto from(Review review){
@@ -26,10 +29,12 @@ public class ReviewResponseDto {
                 .toList();
 
         return ReviewResponseDto.builder()
+                .reviewId(review.getReviewId())
                 .modelNickName(review.getModel().getNickname())
                 .modelProfileImg(review.getModel().getProfileImg())
                 .star(review.getStar())
                 .comment(review.getComment())
+                .createdAt(review.getCreatedAt())
                 .reviewImgDtoList(reviewImgDtoList)
                 .build();
     }
