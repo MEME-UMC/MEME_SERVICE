@@ -27,10 +27,16 @@ public class ArtistController {
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getProfile(userId));
     }
 
-    @Operation(summary = "아티스트 프로필 조회")
+    @Operation(summary = "아티스트 프로필 조회(Model Ver.")
     @GetMapping("/profile/{userId}/{artistId}")
-    public ApiResponse getArtistProfile(@PathVariable(name = "userId") Long userId, @PathVariable Long artistId){
+    public ApiResponse getArtistProfile(@PathVariable(name = "userId") Long userId, @PathVariable(name = "artistId") Long artistId){
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfile(userId, artistId));
+    }
+
+    @Operation(summary = "아티스트 프로필 조회 (Artist Ver.)")
+    @GetMapping("/profile/{artistId}")
+    public ApiResponse getArtistProfile(@PathVariable(name = "artistId") Long artistId){
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfileFromArtist(artistId));
     }
 
     //temp method for Artist create

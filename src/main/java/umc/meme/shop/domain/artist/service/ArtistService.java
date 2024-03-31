@@ -39,7 +39,7 @@ public class ArtistService {
         return ArtistProfileDto.from(artist);
     }
 
-    //아티스트 프로필 조회
+    //아티스트 프로필 조회 (Model Ver.)
     public ArtistDto getArtistProfile(Long userId, Long artistId){
         Model model = modelRepository.findById(userId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
@@ -52,6 +52,13 @@ public class ArtistService {
             isFavorite = true;
 
         return ArtistDto.from(artist, isFavorite);
+    }
+
+    //아티스트 프로필 조회 (Artist Ver.)
+    public ArtistDto getArtistProfileFromArtist(Long artistId){
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+        return ArtistDto.from(artist, true);
     }
 
     //temp method for create Artist
