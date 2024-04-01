@@ -38,15 +38,15 @@ public class ArtistDto {
 
     private MakeupLocation makeupLocation;
 
-    private List<AvailableTimeRequestDto> availableTimeList;
+    private List<AvailableTimeDto> availableTimeList;
 
     private List<SimplePortfolioDto> simplePortfolioDtoList;
 
 
 
     public static ArtistDto from(Artist artist, boolean isFavorite){
-        List<AvailableTimeRequestDto> availableTimeDtoList = artist.getAvailableTimeList()
-                .stream().map(AvailableTimeRequestDto::from)
+        List<AvailableTimeDto> availableTimeDtoList = artist.getAvailableTimeList()
+                .stream().map(AvailableTimeDto::from)
                 .toList();
 
         List<SimplePortfolioDto> portfolioDtoList = artist.getPortfolioList()

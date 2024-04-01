@@ -70,12 +70,13 @@ public class Artist extends User {
             this.makeupLocation = request.getMakeupLocation();
         if (request.getShopLocation() != null)
             this.shopLocation = request.getShopLocation();
-        // TODO: request.availableTimeList
     }
 
     public void updatePortfolioList(Portfolio portfolio){
         this.portfolioList.add(portfolio);
     }
+
+    public void updateAvailableTimeList(List<AvailableTime> availableTimeList){this.availableTimeList = availableTimeList;}
 
     public void tempMethod(){
         this.username = "name";

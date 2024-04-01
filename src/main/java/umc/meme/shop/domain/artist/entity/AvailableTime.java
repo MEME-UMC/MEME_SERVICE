@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import umc.meme.shop.domain.artist.dto.request.AvailableTimeRequestDto;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
@@ -49,12 +50,13 @@ public class AvailableTime {
 
     public void updateReservation(Reservation reservation){this.reservation = reservation;}
 
-    public static AvailableTime from(Date date, DayOfWeek dayOfWeek, Times times, Artist artist){
+    public void updateArtist(Artist artist){this.artist = artist;}
+
+    public static AvailableTime from(AvailableTimeRequestDto.AvailableTimeDto request){
         return AvailableTime.builder()
-                .date(date)
-                .dayOfWeek(dayOfWeek)
-                .times(times)
-                .artist(artist)
+                .date(request.getDate())
+                .dayOfWeek(request.getDayOfWeek())
+                .times(request.getTimes())
                 .build();
     }
 

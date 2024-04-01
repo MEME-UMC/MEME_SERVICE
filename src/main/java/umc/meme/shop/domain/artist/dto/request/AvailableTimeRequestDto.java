@@ -19,12 +19,21 @@ public class AvailableTimeRequestDto {
     private List<AvailableTimeDto> availableTimeDtoList;
 
     @Builder
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
         public static class AvailableTimeDto {
             private Date date; //날짜
             private DayOfWeek dayOfWeek; //요일
             private Times times;
+
+            public static AvailableTimeDto from(Date date, DayOfWeek dayOfWeek, Times times){
+                return AvailableTimeDto.builder()
+                        .date(date)
+                        .dayOfWeek(dayOfWeek)
+                        .times(times)
+                        .build();
+            }
 
     }
 }

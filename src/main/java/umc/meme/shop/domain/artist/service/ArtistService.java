@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
+import umc.meme.shop.domain.artist.dto.request.AvailableTimeRequestDto;
 import umc.meme.shop.domain.artist.dto.response.ArtistDto;
 import umc.meme.shop.domain.artist.entity.Artist;
 import umc.meme.shop.domain.artist.entity.AvailableTime;
@@ -18,8 +19,8 @@ import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 import umc.meme.shop.global.exception.GlobalException;
 
-import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -61,6 +62,17 @@ public class ArtistService {
         return ArtistDto.from(artist, isFavorite);
     }
 
+    //아티스트 예약 가능 시간 편집
+    public void patchArtistAvailableTime(AvailableTimeRequestDto dto){
+        Artist artist = artistRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+        List<AvailableTime> availableTimeList = dto.getAvailableTimeDtoList().stream()
+                .map(AvailableTime::from)
+                .toList();
+
+        artist.updateAvailableTimeList(availableTimeList);
+    }
+
     //temp method for create Artist
     @Transactional
     public void createArtist(ArtistProfileDto dto){
@@ -69,16 +81,10 @@ public class ArtistService {
         artist.tempMethod();
 
         artistRepository.save(artist);
-        AvailableTime availableTime1 = AvailableTime.from(new Date(),
-                DayOfWeek.MON, Times._12_00, artist);
-        AvailableTime availableTime2 = AvailableTime.from(new Date(),
-                DayOfWeek.MON, Times._13_00, artist);
-        AvailableTime availableTime3 = AvailableTime.from(new Date(),
-                DayOfWeek.MON, Times._15_00, artist);
-        availableTimeRepository.save(availableTime1);
-        availableTimeRepository.save(availableTime2);
-        availableTimeRepository.save(availableTime3);
-
+        AvailableTimeRequestDto.AvailableTimeDto timeDto = AvailableTimeRequestDto.AvailableTimeDto.from(new Date(), DayOfWeek.MON, Times._15_00);
+        AvailableTime availableTime = AvailableTime.from(timeDto);
+        availableTime.updateArtist(artist);
+        availableTimeRepository.save(availableTime);
     }
 
 }
