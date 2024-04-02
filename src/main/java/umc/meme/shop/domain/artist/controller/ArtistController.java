@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.artist.dto.request.ArtistProfileDto;
+import umc.meme.shop.domain.artist.dto.request.AvailableTimeRequestDto;
 import umc.meme.shop.domain.artist.service.ArtistService;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
@@ -31,6 +32,13 @@ public class ArtistController {
     @GetMapping("/profile/{userId}/{artistId}")
     public ApiResponse getArtistProfile(@PathVariable(name = "userId") Long userId, @PathVariable(name = "artistId") Long artistId){
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfile(userId, artistId));
+    }
+
+    @Operation(summary = "아티스트 예약 가능 시간 편집")
+    @PatchMapping("/availabletime")
+    public ApiResponse patchAvailableTime(@RequestBody AvailableTimeRequestDto timeRequestDto){
+        artistService.patchArtistAvailableTime(timeRequestDto);
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_AVAILABLE_TIME_PATCH);
     }
 
     //temp method for Artist create

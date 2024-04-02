@@ -25,13 +25,8 @@ public class ArtistProfileDto {
     private List<Category> specialization;
     private MakeupLocation makeupLocation;
     private String shopLocation;
-    private List<AvailableTimeRequestDto> availableTimeDtoList;
 
     public static ArtistProfileDto from(Artist artist){
-        List<AvailableTimeRequestDto> availableTimeDtoList = artist.getAvailableTimeList()
-                .stream().map(AvailableTimeRequestDto::from)
-                .toList();
-
         return ArtistProfileDto.builder()
                 .userId(artist.getUserId())
                 .profileImg(artist.getProfileImg())
@@ -43,7 +38,6 @@ public class ArtistProfileDto {
                 .specialization(artist.getSpecialization())
                 .makeupLocation(artist.getMakeupLocation())
                 .shopLocation(artist.getShopLocation())
-                .availableTimeDtoList(availableTimeDtoList)
                 .build();
     }
 }
