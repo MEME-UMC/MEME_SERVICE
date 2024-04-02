@@ -149,6 +149,7 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
         return ModelReservationDetailDto.from(reservation);
+
     }
 
 }
