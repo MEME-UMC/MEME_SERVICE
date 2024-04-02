@@ -107,9 +107,7 @@ public class ReviewService {
         List<Reservation> reservationList = model.getReservationList();
 
         //status != COMPLETE 이면 리스트에서 제거
-        //TODO: DevCon 이후 수정
-//        reservationList.removeIf(Reservation::isAvailableReview);
-        reservationList.removeIf(Reservation::isReview);
+        reservationList.removeIf(Reservation::isAvailableReview);
 
         //리뷰 작성 완료시 리스트에서 제거
         reservationList.removeIf(Reservation::isReview);

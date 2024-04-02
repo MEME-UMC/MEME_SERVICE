@@ -9,7 +9,7 @@ import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.*;
 
 import java.util.Date;
-import java.util.Map;
+
 
 @Getter
 @Builder
@@ -31,10 +31,6 @@ public class ArtistReservationDetailDto {
     private String location;
 
     public static ArtistReservationDetailDto from(Reservation reservation, Model model){
-        //TODO AvailableTime entity fix
-        Map<DayOfWeek, Times> times = reservation.getReservationDayOfWeekAndTime();
-        DayOfWeek dayOfWeek = times.keySet().iterator().next();
-
         return ArtistReservationDetailDto.builder()
                 .reservationId(reservation.getReservationId())
                 .modelNickName(model.getNickname())
@@ -43,9 +39,9 @@ public class ArtistReservationDetailDto {
                 .skinType(model.getSkinType())
                 .personalColor(model.getPersonalColor())
                 .portfolioName(reservation.getPortfolio().getMakeupName())
-                .date(reservation.getReservationDate())
-                .dayOfWeek(dayOfWeek)
-                .times(times.get(dayOfWeek))
+                .date(reservation.getAvailableTime().getDate())
+                .dayOfWeek(reservation.getAvailableTime().getDayOfWeek())
+                .times(reservation.getAvailableTime().getTimes())
                 .location(reservation.getLocation())
                 .build();
     }

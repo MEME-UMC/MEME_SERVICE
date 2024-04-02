@@ -15,26 +15,32 @@ import umc.meme.shop.global.enums.Category;
 @AllArgsConstructor
 public class ModelReservationDetailDto {
     private Long reservationId;
+    private Long portfolioId;
     //아티스트 정보
     private String artistNickName;
     private String artistProfileImg;
     //예약 정보
     private String portfolioName;
+    private String portfolioImg;
     private Category category;
     private String location;
-    //TODO: Portfolio 관련 정보 추가논의
+    private int price;
 
     public static ModelReservationDetailDto from(Reservation reservation){
         Portfolio portfolio = reservation.getPortfolio();
         Artist artist = portfolio.getArtist();
         return ModelReservationDetailDto.builder()
                 .reservationId(reservation.getReservationId())
+                .portfolioId(portfolio.getPortfolioId())
                 .artistNickName(artist.getNickname())
                 .artistProfileImg(artist.getProfileImg())
                 .portfolioName(portfolio.getMakeupName())
+                .portfolioImg(portfolio.getPortfolioImgList().get(0).getSrc())
                 .category(portfolio.getCategory())
                 .location(reservation.getLocation())
+                .price(portfolio.getPrice())
                 .build();
     }
 
 }
+

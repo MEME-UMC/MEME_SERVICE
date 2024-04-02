@@ -12,6 +12,7 @@ public enum SuccessStatus {
     /**artist**/
     ARTIST_PROFILE_UPDATE(200, "아티스트 프로필 수정이 완료되었습니다"),
     ARTIST_PROFILE_GET(200, "아티스트 프로필 조회가 완료되었습니다"),
+    ARTIST_AVAILABLE_TIME_PATCH(200, "아티스트 예약 가능 시간 편집이 완료되었습니다"),
 
     PORTFOLIO_CREATE(200, "포트폴리오 생성이 완료되었습니다"),
     PORTFOLIO_GET(200, "포트폴리오 조회가 완료되었습니다"),
@@ -36,6 +37,8 @@ public enum SuccessStatus {
     /**review**/
     REVIEW_CREATE(200, "리뷰 작성이 완료되었습니다"),
     REVIEW_GET(200, "리뷰 조회가 완료되었습니다"),
+    REVIEW_DETAILS_GET(200, "리뷰 상세 조회가 완료되었습니다"),
+    REVIEW_AVAILABLE_GET(200, "리뷰 작성 가능 예약 리스트 조회가 완료되었습니다"),
     REVIEW_DELETE(200, "리뷰 삭제가 완료되었습니다"),
     REVIEW_DETAILS_GET(200, "리뷰 상세 조회가 완료되었습니다"),
     REVIEW_AVAILABLE_GET(200, "리뷰 작성 가능 예약 리스트 조회가 완료되었습니다"),
@@ -44,6 +47,7 @@ public enum SuccessStatus {
     RESERVATION_CREATE(200, "예약이 완료되었습니다"),
     RESERVATION_DETAILS_GET(200, "예약 상세 조회가 완료되었습니다"),
     RESERVATION_GET(200, "예약 조회가 완료되었습니다"),
+    RESERVATION_DETAILS_GET(200, "예약 상세 조회가 완료되었습니다"),
     RESERVATION_UPDATE(200, "예약 상태 변경이 완료되었습니다"),
     ARTIST_LOCATION_GET(200, "아티스트의 예약 가능 장소 조회가 완료되었습니다"),
     ARTIST_TIME_GET(200, "아티스트의 예약 가능 시간 조회가 완료되었습니다."),

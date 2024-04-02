@@ -21,14 +21,14 @@ public class ReviewAvailableListDto {
     private Date reservationDate;
     private String shopLocation; //샵 위치
 
-    public static ReviewAvailableListDto from(Reservation reservation) {
+    public static ReviewAvailableListDto from(Reservation reservation){
         return ReviewAvailableListDto.builder()
                 .reservationId(reservation.getReservationId())
                 .portfolioId(reservation.getReservationId())
                 .artistNickName(reservation.getPortfolio().getArtist().getNickname())
                 .makeupName(reservation.getPortfolio().getMakeupName())
                 .portfolioImg(reservation.getPortfolio().getPortfolioImgList().get(0).getSrc())
-                .reservationDate(reservation.getReservationDate())
+                .reservationDate(reservation.getAvailableTime().getDate())
                 .shopLocation(reservation.getLocation())
                 .build();
     }
