@@ -34,18 +34,17 @@ public class ArtistController {
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfile(userId, artistId));
     }
 
-
     @Operation(summary = "아티스트 예약 가능 시간 편집")
     @PatchMapping("/availabletime")
-    public ApiResponse patchAvailableTime(@RequestBody AvailableTimeRequestDto timeRequestDto){
+    public ApiResponse patchAvailableTime(@RequestBody AvailableTimeRequestDto timeRequestDto) {
         artistService.patchArtistAvailableTime(timeRequestDto);
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_AVAILABLE_TIME_PATCH);
+    }
 
     @Operation(summary = "아티스트 프로필 조회 (Artist Ver.)")
     @GetMapping("/profile/{artistId}")
     public ApiResponse getArtistProfile(@PathVariable(name = "artistId") Long artistId){
         return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_PROFILE_GET, artistService.getArtistProfileFromArtist(artistId));
-
     }
 
     //temp method for Artist create

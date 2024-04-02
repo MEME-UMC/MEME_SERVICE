@@ -62,10 +62,9 @@ public class ArtistService {
         return ArtistDto.from(artist, isFavorite);
     }
 
-
     //아티스트 예약 가능 시간 편집
     @Transactional
-    public void patchArtistAvailableTime(AvailableTimeRequestDto dto){
+    public void patchArtistAvailableTime(AvailableTimeRequestDto dto) {
         Artist artist = artistRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
@@ -77,13 +76,13 @@ public class ArtistService {
                 .peek(availableTime -> availableTime.updateArtist(artist))
                 .toList();
         artist.updateAvailableTimeList(availableTimeList);
+    }
 
     //아티스트 프로필 조회 (Artist Ver.)
     public ArtistDto getArtistProfileFromArtist(Long artistId){
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
         return ArtistDto.from(artist, true);
-
     }
 
     //temp method for create Artist
