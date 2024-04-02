@@ -26,6 +26,8 @@ public class ArtistDto {
 
     private String profileImg;
 
+    private String email;
+
     private String introduction;
 
     private WorkExperience workExperience;
@@ -60,6 +62,7 @@ public class ArtistDto {
                 .gender(artist.getGender())
                 .nickname(artist.getNickname())
                 .profileImg(artist.getProfileImg())
+                .email(artist.getEmail())
                 .introduction(artist.getIntroduction())
                 .workExperience(artist.getWorkExperience())
                 .region(artist.getRegion())
