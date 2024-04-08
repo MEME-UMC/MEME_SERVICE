@@ -124,6 +124,12 @@ public class ReviewService {
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         Review review = reviewRepository.findById(reviewDto.getReviewId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_REVIEW));
+
+        List<Reservation> reservations = reservationRepository.findByModelAndPortfolio(model, review.getPortfolio());
+        for (Reservation reservation : reservations) {
+            reservation.updateIsReview(false);
+        }
+
         if(!review.getModel().equals(model))
             throw new GlobalException(ErrorStatus.INVALID_MODEL_FOR_REVIEW);
 
