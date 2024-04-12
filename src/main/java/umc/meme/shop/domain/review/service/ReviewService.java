@@ -12,6 +12,7 @@ import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
+import umc.meme.shop.domain.review.dto.request.PatchReviewDto;
 import umc.meme.shop.domain.review.dto.response.MyReviewResponseDto;
 import umc.meme.shop.domain.review.dto.response.ReviewAvailableListDto;
 import umc.meme.shop.domain.review.dto.response.ReviewDetailsDto;
@@ -115,6 +116,21 @@ public class ReviewService {
         return reservationList.stream()
                 .map(ReviewAvailableListDto::from)
                 .toList();
+    }
+
+    //리뷰 수정
+    @Transactional
+    public ReviewDetailsDto patchReview(PatchReviewDto patchReviewDto){
+        Model model = modelRepository.findById(patchReviewDto.getModelId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+        Review review = reviewRepository.findById(patchReviewDto.getReviewId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_REVIEW));
+
+        if (!review.getModel().equals(model))
+            throw new GlobalException(ErrorStatus.INVALID_MODEL_FOR_REVIEW);
+
+        review.updateReview(patchReviewDto);
+        return ReviewDetailsDto.from(review);
     }
 
     //리뷰 삭제
