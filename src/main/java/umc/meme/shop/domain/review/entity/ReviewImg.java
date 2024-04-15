@@ -21,7 +21,9 @@ public class ReviewImg extends BaseEntity {
     @Column(nullable = false)
     private String src;
 
-    public ReviewImg(String src) {
-        this.src = src;
+    public static ReviewImg from(String src){
+        return ReviewImg.builder()
+                .src(src)
+                .build();
     }
 }

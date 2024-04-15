@@ -11,15 +11,13 @@ import umc.meme.shop.domain.review.entity.ReviewImg;
 @AllArgsConstructor
 @Builder
 public class ReviewImgDto {
-    private Long ReviewImgId;
+    private Long reviewImgId;
     private String reviewImgSrc;
-    private boolean isDelete = false;
 
     public static ReviewImgDto from(ReviewImg img){
         return ReviewImgDto.builder()
-                .ReviewImgId(img.getReviewImgId())
+                .reviewImgId(img.getReviewImgId())
                 .reviewImgSrc(img.getSrc())
-                .isDelete(false)
                 .build();
     }
 

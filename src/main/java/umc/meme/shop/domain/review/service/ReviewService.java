@@ -56,7 +56,7 @@ public class ReviewService {
         Portfolio portfolio = reservation.getPortfolio();
 
         List<ReviewImg> reviewImgList = reviewDto.getReviewImgSrc().stream()
-                .map(ReviewImg::new)
+                .map(ReviewImg::from)
                 .toList();
 
         Review review = Review.from(model, portfolio, reviewDto);
@@ -129,8 +129,18 @@ public class ReviewService {
         if (!review.getModel().equals(model))
             throw new GlobalException(ErrorStatus.INVALID_MODEL_FOR_REVIEW);
 
+        updateReviewList(review, patchReviewDto.getReviewImgSrc());
         review.updateReview(patchReviewDto);
         return ReviewDetailsDto.from(review);
+    }
+
+    private void updateReviewList(Review review, List<String> reviewImgSrc){
+        // TODO reviewImg 관리
+            List<ReviewImg> reviewImgList = reviewImgSrc.stream()
+                    .map(ReviewImg::from)
+                    .toList();
+            reviewImgList.forEach(reviewImg -> reviewImg.setReview(review));
+            review.updateReviewImgList(reviewImgList);
     }
 
     //리뷰 삭제

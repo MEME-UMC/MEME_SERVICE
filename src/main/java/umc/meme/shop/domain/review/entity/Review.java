@@ -47,14 +47,9 @@ public class Review extends BaseEntity {
             this.star = patchReviewDto.getStar();
         if(patchReviewDto.getComment() != null)
             this.comment = patchReviewDto.getComment();
-        if(patchReviewDto.getReviewImgSrc() != null){
-            List<ReviewImg> reviewImgList = patchReviewDto.getReviewImgSrc().stream()
-                    .map(ReviewImg::new)
-                    .toList();
-            this.reviewImgList = reviewImgList;
-            // TODO: ReviewImg
-        }
     }
+
+    public void updateReviewImgList(List<ReviewImg> reviewImgList){this.reviewImgList = reviewImgList;}
 
     public static Review from(Model model, Portfolio portfolio, ReviewDto dto){
         return Review.builder()
