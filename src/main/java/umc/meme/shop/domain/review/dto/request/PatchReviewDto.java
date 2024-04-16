@@ -2,6 +2,7 @@ package umc.meme.shop.domain.review.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import umc.meme.shop.domain.review.dto.response.ReviewImgDto;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public class PatchReviewDto {
     private Long reviewId;
     private int star;
     private String comment;
-    private List<String> reviewImgSrc;
+    private List<ReviewImgDto> reviewImgList;
 }

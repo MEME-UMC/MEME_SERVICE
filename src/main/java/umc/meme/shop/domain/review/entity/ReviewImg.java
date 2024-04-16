@@ -26,4 +26,6 @@ public class ReviewImg extends BaseEntity {
                 .src(src)
                 .build();
     }
+
+    public void updateSrc(String src){this.src = src;}
 }

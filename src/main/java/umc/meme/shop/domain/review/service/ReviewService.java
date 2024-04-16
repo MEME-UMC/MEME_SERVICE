@@ -13,20 +13,19 @@ import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.domain.review.dto.request.PatchReviewDto;
-import umc.meme.shop.domain.review.dto.response.MyReviewResponseDto;
-import umc.meme.shop.domain.review.dto.response.ReviewAvailableListDto;
-import umc.meme.shop.domain.review.dto.response.ReviewDetailsDto;
+import umc.meme.shop.domain.review.dto.response.*;
+import umc.meme.shop.domain.review.repository.ReviewImgRepository;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
-import umc.meme.shop.domain.review.dto.response.ReviewListPageDto;
 import umc.meme.shop.domain.review.entity.Review;
 import umc.meme.shop.domain.review.entity.ReviewImg;
 import umc.meme.shop.domain.review.repository.ReviewRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,6 +33,7 @@ import java.util.List;
 public class ReviewService {
     private final ModelRepository modelRepository;
     private final ReviewRepository reviewRepository;
+    private final ReviewImgRepository reviewImgRepository;
     private final ReservationRepository reservationRepository;
     private final PortfolioRepository portfolioRepository;
 
@@ -129,18 +129,37 @@ public class ReviewService {
         if (!review.getModel().equals(model))
             throw new GlobalException(ErrorStatus.INVALID_MODEL_FOR_REVIEW);
 
-        updateReviewList(review, patchReviewDto.getReviewImgSrc());
+        updateReviewList(review, patchReviewDto.getReviewImgList());
         review.updateReview(patchReviewDto);
         return ReviewDetailsDto.from(review);
     }
 
-    private void updateReviewList(Review review, List<String> reviewImgSrc){
-        // TODO reviewImg 관리
-            List<ReviewImg> reviewImgList = reviewImgSrc.stream()
-                    .map(ReviewImg::from)
-                    .toList();
-            reviewImgList.forEach(reviewImg -> reviewImg.setReview(review));
-            review.updateReviewImgList(reviewImgList);
+    private void updateReviewList(Review review, List<ReviewImgDto> reviewImgDtoList){
+        List<ReviewImg> updatedReviewImgs = new ArrayList<>();
+
+        for(ReviewImgDto reviewImgDto : reviewImgDtoList){
+            ReviewImg reviewImg = reviewImgRepository.findById(reviewImgDto.getReviewImgId())
+                    .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_REVIEW_IMG));
+
+            if (!review.getReviewImgList().contains(reviewImg))
+                throw new GlobalException(ErrorStatus.NOT_EXIST_REVIEW_IMG);
+
+            if(reviewImgDto.isDelete()){
+                review.getReviewImgList().remove(reviewImg);
+                reviewImgRepository.delete(reviewImg);
+            }
+            else if(reviewImgDto.getReviewImgSrc() != null){
+                // update src
+                reviewImg.updateSrc(reviewImgDto.getReviewImgSrc());
+                reviewImgRepository.save(reviewImg);
+
+                updatedReviewImgs.add(reviewImg);
+            }
+// TODO: delete 로직 수정
+        }
+
+        review.getReviewImgList().removeAll(updatedReviewImgs);
+        review.getReviewImgList().addAll(updatedReviewImgs);
     }
 
     //리뷰 삭제
