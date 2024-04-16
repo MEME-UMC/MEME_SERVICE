@@ -47,11 +47,11 @@ public class AvailableTime {
     @OneToOne(mappedBy = "availableTime", fetch = FetchType.LAZY)
     private Reservation reservation;
 
-    public void updateIsReservated(boolean isReservated){
+    public void updateIsReservated (boolean isReservated){
         this.isReservated = isReservated;
     }
 
-    public void updateIsPending(boolean isPending) {this.isPending = isPending}
+    public void updateIsPending(boolean isPending) {this.isPending = isPending;}
 
     public void updateReservation(Reservation reservation){this.reservation = reservation;}
 

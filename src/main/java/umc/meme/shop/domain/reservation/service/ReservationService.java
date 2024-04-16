@@ -80,8 +80,8 @@ public class ReservationService {
         availableTime.updateReservation(reservation);
         reservationRepository.save(reservation);
 
-        //예약 가능 시간 테이블 상태 변경
-        availableTime.updateIsReservated(true);
+        //예약 가능 시간 테이블 상태 변경 - Pending
+        availableTime.updateIsPending(true);
 
         return ReservationCompleteDto.from(portfolio, reservation);
     }

@@ -69,7 +69,7 @@ public class Reservation extends BaseEntity {
                 .model(model)
                 .portfolio(portfolio)
                 .availableTime(availableTime)
-                .status(Status.EXPECTED)
+                .status(Status.PENDING)
                 .location(location)
                 .build();
     }
