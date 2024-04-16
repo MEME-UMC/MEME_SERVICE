@@ -37,6 +37,9 @@ public class AvailableTime {
     @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
     private boolean isReservated; //해당 시간대 예약 여부
 
+    @Column(nullable = false, columnDefinition = "TINYINT(1) default 0")
+    private boolean isPending; // Pending 여부
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Artist artist;
@@ -47,6 +50,8 @@ public class AvailableTime {
     public void updateIsReservated(boolean isReservated){
         this.isReservated = isReservated;
     }
+
+    public void updateIsPending(boolean isPending) {this.isPending = isPending}
 
     public void updateReservation(Reservation reservation){this.reservation = reservation;}
 

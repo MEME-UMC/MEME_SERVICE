@@ -56,6 +56,7 @@ public enum ErrorStatus {
 
     NOT_ALLOW_OVER_ONE_RESERVATION(400,"한 번에 하나의 예약만 가능합니다." ),
     INVALID_CHANGE_COMPLETE(400,"취소된 예약을 완료 상태로 변경할 수 없습니다." ),
+    INVALID_CHANGE_PENDING_TO_COMPLETE(400, "Pending 상태의 예약을 완료 상태로 변경할 수 없습니다."),
 
 
     /**

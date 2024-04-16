@@ -100,6 +100,11 @@ public class ReservationService {
         if (reservation.getStatus() == Status.CANCEL && status == Status.COMPLETE)
             throw new GlobalException(ErrorStatus.INVALID_CHANGE_COMPLETE);
 
+        // Pending 상태 추가에 따른 로직 추가
+        if (reservation.getStatus() == Status.PENDING && status == Status.COMPLETE)
+            throw new GlobalException(ErrorStatus.INVALID_CHANGE_PENDING_TO_COMPLETE);
+
+
         AvailableTime availableTime = reservation.getAvailableTime();
         if (reservation.getStatus() == Status.EXPECTED) {
             if (status == Status.COMPLETE) //예약 완료 시
