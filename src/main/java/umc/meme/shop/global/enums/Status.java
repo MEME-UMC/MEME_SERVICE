@@ -1,5 +1,5 @@
 package umc.meme.shop.global.enums;
 
 public enum Status {
-    EXPECTED, COMPLETE, CANCEL, PENDING
+    EXPECTED, COMPLETE, CANCEL
 }

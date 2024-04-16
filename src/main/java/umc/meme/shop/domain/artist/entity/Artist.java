@@ -82,7 +82,6 @@ public class Artist extends User {
         this.username = "name";
         this.email="";
         this.password="";
-        this.workExperience=WorkExperience.FIVE;
         this.role="ARTIST";
         this.userStatus = UserStatus.ACTIVE;
         this.provider = Provider.KAKAO;
