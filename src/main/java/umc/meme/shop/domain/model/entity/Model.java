@@ -95,7 +95,7 @@ public class Model extends User {
         this.username = "name";
         this.email="";
         this.password="";
-        this.role="ARTIST";
+        this.role="MODEL";
         this.userStatus = UserStatus.ACTIVE;
         this.provider = Provider.KAKAO;
     }

@@ -72,9 +72,13 @@ public class ModelService {
 
         //관심 아티스트 리스트
         List<SimpleArtistDto> content = favoriteArtistPage.getContent().stream()
-                .map(favoriteArtist -> artistRepository.findById(favoriteArtist.getArtistId())
-                        .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST)))
-                .map(SimpleArtistDto::from)
+                .map(favoriteArtist -> {
+                    Artist artist = artistRepository.findById(favoriteArtist.getArtistId())
+                            .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
+                    //해당 아티스트를 관심 아티스트로 설정한 모델 수 카운트
+                    Long modelCount = favoriteArtistRepository.countByArtistId(artist.getUserId());
+                    return SimpleArtistDto.from(artist, modelCount);
+                })
                 .collect(Collectors.toList());
 
         return FavoriteArtistPageResponseDto.from(favoriteArtistPage, content);

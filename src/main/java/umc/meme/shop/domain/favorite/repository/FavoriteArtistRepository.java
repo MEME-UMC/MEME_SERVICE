@@ -12,4 +12,5 @@ public interface FavoriteArtistRepository extends JpaRepository<FavoriteArtist, 
     List<FavoriteArtist> findByModel(Model model);
     boolean existsByModelAndArtistId(Model model, Long userId);
     Optional<FavoriteArtist> findByModelAndArtistId(Model model, Long userId);
+    Long countByArtistId(Long artistId);
 }
