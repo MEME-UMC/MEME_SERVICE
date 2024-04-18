@@ -20,8 +20,10 @@ public class SimplePortfolioDto {
     private Category category;
     private String makeupName;
     private String artistName;
+    private String artistEmail;
     private int price;
     private MakeupLocation makeupLocation; //샵 재직 여부
+    private String averageStars; //별점
 
     public static SimplePortfolioDto from(FavoritePortfolio favoritePortfolio){
         Portfolio portfolio = favoritePortfolio.getPortfolio();
@@ -33,8 +35,10 @@ public class SimplePortfolioDto {
                 .category(portfolio.getCategory())
                 .makeupName(portfolio.getMakeupName())
                 .artistName(artist.getNickname())
+                .artistEmail(artist.getEmail())
                 .price(portfolio.getPrice())
                 .makeupLocation(artist.getMakeupLocation())
+                .averageStars(portfolio.getAverageStars())
                 .build();
     }
 
@@ -47,8 +51,10 @@ public class SimplePortfolioDto {
                 .category(portfolio.getCategory())
                 .makeupName(portfolio.getMakeupName())
                 .artistName(artist.getNickname())
+                .artistEmail(artist.getEmail())
                 .price(portfolio.getPrice())
                 .makeupLocation(artist.getMakeupLocation())
+                .averageStars(portfolio.getAverageStars())
                 .build();
     }
 
