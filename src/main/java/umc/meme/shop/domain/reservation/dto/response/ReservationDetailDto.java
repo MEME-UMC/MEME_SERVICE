@@ -22,6 +22,7 @@ public class ReservationDetailDto {
     //아티스트 정보
     private String artistNickName;
     private String artistProfileImg;
+    private String artistEmail;
     //예약 정보
     private String portfolioName;
     private Category category;
@@ -30,6 +31,8 @@ public class ReservationDetailDto {
     private String location;
     private int price;
     //모델 정보
+    private String modelName;
+    // TODO- ADD: model contact field
     private Gender gender;
     private SkinType skinType;
     private PersonalColor personalColor;
@@ -42,13 +45,15 @@ public class ReservationDetailDto {
                 .portfolioId(portfolio.getPortfolioId())
                 .artistNickName(artist.getNickname())
                 .artistProfileImg(artist.getProfileImg())
+                .artistEmail(artist.getEmail())
                 .portfolioName(portfolio.getMakeupName())
                 .category(portfolio.getCategory())
                 .reservationDate(reservation.getAvailableTime().getDate())
                 .reservationTime(reservation.getAvailableTime().getTimes())
                 .location(reservation.getLocation())
                 .price(portfolio.getPrice())
-                .gender(reservation.getModel().getGender())
+                .modelName(model.getUsername())
+                .gender(model.getGender())
                 .skinType(model.getSkinType())
                 .personalColor(model.getPersonalColor())
                 .build();
