@@ -122,17 +122,6 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    //아티스트ver. 예약 상세 조회
-    public ArtistReservationDetailDto getArtistDetailsReservation(Long reservationId){
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
-
-        Model model = modelRepository.findById(reservation.getModel().getUserId())
-                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
-
-        return ArtistReservationDetailDto.from(reservation, model);
-    }
-
     //모델 예약 조회
     public List<ReservationResponseDto> getModelReservation(Long modelId) {
         Model model = modelRepository.findById(modelId)
@@ -144,12 +133,13 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    //Modelver. 예약 상세 조회
-    public ModelReservationDetailDto getModelDetailsReservation(Long reservationId){
+    //예약 상세 조회
+    public ReservationDetailDto getReservationDetails(Long reservationId){
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_RESERVATION));
-        return ModelReservationDetailDto.from(reservation);
-
+        Model model = modelRepository.findById(reservation.getModel().getUserId())
+                .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
+        return ReservationDetailDto.from(reservation, model);
     }
 
 }

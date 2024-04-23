@@ -54,13 +54,6 @@ public class ReservationController {
         return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, reservationService.getArtistReservation(artistId));
     }
 
-    //아티스트 예약 상세 조회
-    @Operation(summary = "아티스트 예약 상세 조회", description = "Artist ver. 예약 정보를 상세조회하는 API입니다.")
-    @GetMapping("/{reservationId}/artist/details")
-    public ApiResponse getArtistReservationDetails(@PathVariable(name = "reservationId") Long reservationId){
-        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_DETAILS_GET, reservationService.getArtistDetailsReservation(reservationId));
-    }
-
     //모델 예약 조회
     @Operation(summary = "모델 예약 조회", description = "예약 정보를 조회하는 API입니다.")
     @GetMapping("/{modelId}/model")
@@ -68,10 +61,11 @@ public class ReservationController {
         return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_GET, reservationService.getModelReservation(modelId));
     }
 
-    //모델 예약 상세 조회
-    @Operation(summary = "모델 예약 상세 조회", description = "Model ver. 예약 정보를 상세조회하는 API입니다.")
-    @GetMapping("/{reservationId}/model/details")
-    public ApiResponse getModelReservationDetails(@PathVariable(name = "reservationId") Long reservationId){
-        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_DETAILS_GET, reservationService.getModelDetailsReservation(reservationId));
+    // 예약 상세 조회
+    @Operation(summary = "예약 상세 조회", description = "예약 정보를 상세 조회하는 API입니다.")
+    @GetMapping("/{reservationId}/details")
+    public ApiResponse getReservationDetails(@PathVariable(name = "reservationId") Long reservationId){
+        return ApiResponse.SuccessResponse(SuccessStatus.RESERVATION_DETAILS_GET, reservationService.getReservationDetails(reservationId));
     }
+
 }
