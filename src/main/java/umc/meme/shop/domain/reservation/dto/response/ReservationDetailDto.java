@@ -20,6 +20,7 @@ public class ReservationDetailDto {
     private Long reservationId;
     private Long portfolioId;
     //아티스트 정보
+    private Long artistId;
     private String artistNickName;
     private String artistProfileImg;
     private String artistEmail;
@@ -43,6 +44,7 @@ public class ReservationDetailDto {
         return ReservationDetailDto.builder()
                 .reservationId(reservation.getReservationId())
                 .portfolioId(portfolio.getPortfolioId())
+                .artistId(artist.getUserId())
                 .artistNickName(artist.getNickname())
                 .artistProfileImg(artist.getProfileImg())
                 .artistEmail(artist.getEmail())
