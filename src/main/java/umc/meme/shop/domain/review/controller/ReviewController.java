@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import umc.meme.shop.domain.review.dto.request.PatchReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
 import umc.meme.shop.domain.review.service.ReviewService;
@@ -49,6 +50,12 @@ public class ReviewController {
     @GetMapping("/me/{modelId}")
     public ApiResponse getMyReview(@PathVariable(name = "modelId") Long modelId){
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_GET, reviewService.getMyReview(modelId));
+    }
+
+    @Operation(summary = "리뷰 수정", description = "모델이 작성한 리뷰를 수정하는 API입니다.")
+    @PatchMapping()
+    public ApiResponse patchReview(@RequestBody PatchReviewDto patchReviewDto){
+        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_PATCH, reviewService.patchReview(patchReviewDto));
     }
 
     @Operation(summary = "리뷰 삭제", description = "모델이 작성한 리뷰를 삭제하는 API입니다.")

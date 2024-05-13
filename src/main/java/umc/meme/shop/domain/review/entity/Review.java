@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
+import umc.meme.shop.domain.review.dto.request.PatchReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.user.User;
 
@@ -40,6 +41,15 @@ public class Review extends BaseEntity {
 
     @Column(nullable = true, length = 200)
     private String comment;
+
+    public void updateReview(PatchReviewDto patchReviewDto){
+        if(patchReviewDto.getStar() > 0)
+            this.star = patchReviewDto.getStar();
+        if(patchReviewDto.getComment() != null)
+            this.comment = patchReviewDto.getComment();
+    }
+
+    public void updateReviewImgList(List<ReviewImg> reviewImgList){this.reviewImgList = reviewImgList;}
 
     public static Review from(Model model, Portfolio portfolio, ReviewDto dto){
         return Review.builder()
