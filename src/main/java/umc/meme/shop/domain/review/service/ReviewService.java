@@ -12,7 +12,7 @@ import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
-import umc.meme.shop.domain.review.dto.request.PatchReviewDto;
+import umc.meme.shop.domain.review.dto.request.UpdateReviewDto;
 import umc.meme.shop.domain.review.dto.response.*;
 import umc.meme.shop.domain.review.repository.ReviewImgRepository;
 import umc.meme.shop.global.enums.Status;
@@ -40,7 +40,7 @@ public class ReviewService {
 
     //리뷰 작성
     @Transactional
-    public void createReview(ReviewDto reviewDto) {
+    public Long createReview(ReviewDto reviewDto) {
         Model model = modelRepository.findById(reviewDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         Reservation reservation = reservationRepository.findByReservationIdAndModelId(reviewDto.getReservationId(), reviewDto.getModelId())
@@ -72,6 +72,7 @@ public class ReviewService {
 
         reviewRepository.save(review);
         reservation.updateIsReview(true);
+        return review.getReviewId();
     }
 
     //리뷰 상세 조회
@@ -124,17 +125,21 @@ public class ReviewService {
 
     //리뷰 수정
     @Transactional
-    public ReviewDetailsDto patchReview(PatchReviewDto patchReviewDto){
-        Model model = modelRepository.findById(patchReviewDto.getModelId())
+    public ReviewDetailsDto updateReview(UpdateReviewDto updateReviewDto){
+        Model model = modelRepository.findById(updateReviewDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
-        Review review = reviewRepository.findById(patchReviewDto.getReviewId())
+        Review review = reviewRepository.findById(updateReviewDto.getReviewId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_REVIEW));
 
         if (!review.getModel().equals(model))
             throw new GlobalException(ErrorStatus.INVALID_MODEL_FOR_REVIEW);
 
-        updateReviewImgList(review, patchReviewDto.getReviewImgSrcList());
-        review.updateReview(patchReviewDto);
+        // 리뷰 이미지 수정
+        if (!updateReviewDto.getReviewImgSrcList().isEmpty())
+            updateReviewImgList(review, updateReviewDto.getReviewImgSrcList());
+
+        // 리뷰 수정
+        review.updateReview(updateReviewDto);
         return ReviewDetailsDto.from(review);
     }
 
