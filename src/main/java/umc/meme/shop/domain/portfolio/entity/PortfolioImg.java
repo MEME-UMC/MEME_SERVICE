@@ -1,15 +1,13 @@
 package umc.meme.shop.domain.portfolio.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import umc.meme.shop.domain.common.BaseEntity;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Getter @Setter
 public class PortfolioImg extends BaseEntity {
     @Id
@@ -23,8 +21,10 @@ public class PortfolioImg extends BaseEntity {
     @Column(nullable = false)
     private String src;
 
-    public PortfolioImg(String src) {
-        this.src = src;
+    public static PortfolioImg from(String src){
+        return PortfolioImg.builder()
+                .src(src)
+                .build();
     }
 
     public void updateSrc(String src) {
