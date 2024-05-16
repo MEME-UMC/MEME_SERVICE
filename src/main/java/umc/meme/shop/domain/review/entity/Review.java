@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.common.BaseEntity;
 import umc.meme.shop.domain.model.entity.Model;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
-import umc.meme.shop.domain.review.dto.request.PatchReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
+import umc.meme.shop.domain.review.dto.request.UpdateReviewDto;
 import umc.meme.shop.domain.user.User;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class Review extends BaseEntity {
     @Column(nullable = true, length = 200)
     private String comment;
 
-    public void updateReview(PatchReviewDto patchReviewDto){
+    public void updateReview(UpdateReviewDto patchReviewDto){
         if(patchReviewDto.getStar() > 0)
             this.star = patchReviewDto.getStar();
         if(patchReviewDto.getComment() != null)

@@ -97,6 +97,8 @@ public class Portfolio extends BaseEntity {
         this.averageStars = String.format("%.2f", stars/count);
     }
 
+    public void updatePortfolioImgList(List<PortfolioImg> portfolioImgList){this.portfolioImgList = portfolioImgList;}
+
     public static Portfolio from(Artist artist, CreatePortfolioDto dto){
         return Portfolio.builder()
                 .artist(artist)

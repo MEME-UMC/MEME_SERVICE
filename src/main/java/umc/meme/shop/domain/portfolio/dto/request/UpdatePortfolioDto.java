@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import umc.meme.shop.domain.portfolio.dto.response.PortfolioImgDto;
 import umc.meme.shop.global.enums.Category;
 
 import java.util.List;
@@ -22,6 +21,6 @@ public class UpdatePortfolioDto {
     private int price;
     private String info;
     private Boolean isBlock;
-    private List<PortfolioImgDto> portfolioImgList; // List 형태로 변경
+    private List<String> portfolioImgSrcList;
 }
 

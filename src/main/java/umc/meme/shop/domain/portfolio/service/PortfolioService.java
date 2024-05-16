@@ -38,21 +38,26 @@ public class PortfolioService {
 
     //포트폴리오 생성
     @Transactional
-    public Long createPortfolio(CreatePortfolioDto dto) {
-        Artist artist = artistRepository.findById(dto.getArtistId())
+    public Long createPortfolio(CreatePortfolioDto portfolioDto) {
+        Artist artist = artistRepository.findById(portfolioDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
         //포트폴리오 이름이 이미 존재할 시
-        if(portfolioRepository.existsByMakeupName(dto.getMakeupName()))
+        if (portfolioRepository.existsByMakeupName(portfolioDto.getMakeupName()))
             throw new GlobalException(ErrorStatus.ALREADY_EXIST_PORTFOLIO);
 
-        List<PortfolioImg> portfolioImgList = dto.getPortfolioImgSrc().stream()
-                .map(PortfolioImg::new)
+        // 포트폴리오 이미지 리스트 생성
+        List<PortfolioImg> portfolioImgList = portfolioDto.getPortfolioImgSrc().stream()
+                .map(PortfolioImg::from)
                 .toList();
 
-        Portfolio portfolio = Portfolio.from(artist, dto);
+        // 포트폴리오 entity 생성
+        Portfolio portfolio = Portfolio.from(artist, portfolioDto);
+
+        // 포트폴리오 이미지, 포트폴리오 연관관계 설정
         portfolioImgList.forEach(portfolio::addPortfolioImg);
 
+        // 포트폴리오 연관관계 설정
         artist.updatePortfolioList(portfolio);
         portfolioRepository.save(portfolio);
         return portfolio.getPortfolioId();
@@ -82,12 +87,12 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
-        if(portfolio.isBlock())
+        if (portfolio.isBlock())
             throw new GlobalException(ErrorStatus.BLOCKED_PORTFOLIO);
 
         boolean isFavorite = false;
         Optional<FavoritePortfolio> favoritePortfolio = favoritePortfolioRepository.findByModelAndPortfolio(model, portfolio);
-        if(favoritePortfolio.isPresent())
+        if (favoritePortfolio.isPresent())
             isFavorite = true;
 
         return PortfolioDetailDto.from(portfolio, isFavorite);
@@ -95,59 +100,66 @@ public class PortfolioService {
 
     // 포트폴리오 수정/삭제
     @Transactional
-    public void updatePortfolio(UpdatePortfolioDto dto) {
-        Artist artist = artistRepository.findById(dto.getArtistId())
+    public void updatePortfolio(UpdatePortfolioDto updatePortfolioDto) {
+        Artist artist = artistRepository.findById(updatePortfolioDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        Portfolio portfolio = portfolioRepository.findById(dto.getPortfolioId())
+        Portfolio portfolio = portfolioRepository.findById(updatePortfolioDto.getPortfolioId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO));
 
-        if(portfolio.isBlock() && dto.getIsBlock())
+        if (portfolio.isBlock() && updatePortfolioDto.getIsBlock())
             throw new GlobalException(ErrorStatus.BLOCKED_PORTFOLIO);
 
-        if (!portfolio.getArtist().equals(artist)) {
+        if (!portfolio.getArtist().equals(artist))
             throw new GlobalException(ErrorStatus.NOT_AUTHORIZED_PORTFOLIO);
-        }
 
-        if(!dto.getPortfolioImgList().isEmpty())
-            updatePortfolioImg(portfolio, dto.getPortfolioImgList()); // 수정
+        // 포트폴리오 이미지 수정
+        if (!updatePortfolioDto.getPortfolioImgSrcList().isEmpty())
+            updatePortfolioImgList(portfolio, updatePortfolioDto.getPortfolioImgSrcList());
 
-        portfolio.updatePortfolio(dto);
+        // 포트폴리오 수정
+        portfolio.updatePortfolio(updatePortfolioDto);
     }
 
-    private void updatePortfolioImg(Portfolio portfolio, List<PortfolioImgDto> portfolioImgDtoList) {
-        List<PortfolioImg> updatedPortfolioImgs = new ArrayList<>();
+    @Transactional
+    public void updatePortfolioImgList(Portfolio portfolio, List<String> portfolioImgDtoList) {
+        List<PortfolioImg> updatedPortfolioImgList = new ArrayList<>();
 
-        for (PortfolioImgDto portfolioImgDto : portfolioImgDtoList) {
-            PortfolioImg portfolioImg = portfolioImgRepository.findById(portfolioImgDto.getPortfolioImgId())
-                    .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO_IMG));
-
-            if (!portfolio.getPortfolioImgList().contains(portfolioImg)) {
+        for (String portfolioImgSrc : portfolioImgDtoList) {
+            if (portfolioImgSrc == null)
                 throw new GlobalException(ErrorStatus.NOT_EXIST_PORTFOLIO_IMG);
-            }
 
-            if (portfolioImgDto.isDelete()) {
-                // 이미지 삭제
-                portfolio.getPortfolioImgList().remove(portfolioImg);
-                portfolioImgRepository.delete(portfolioImg);
-            } else if (portfolioImgDto.getPortfolioImgSrc() != null) {
-                // 이미지 수정 (src 업데이트)
-                portfolioImg.updateSrc(portfolioImgDto.getPortfolioImgSrc());
-                portfolioImgRepository.save(portfolioImg);
-
-                // 업데이트된 이미지 정보를 리스트에 추가
-                updatedPortfolioImgs.add(portfolioImg);
+            Optional<PortfolioImg> portfolioImg = portfolioImgRepository.findBySrcAndPortfolio(portfolioImgSrc, portfolio);
+            if (portfolioImg.isEmpty()) {
+                // 새로운 이미지 추가
+                PortfolioImg newPortfolioImg = PortfolioImg.from(portfolioImgSrc);
+                newPortfolioImg.setPortfolio(portfolio);
+                portfolioImgRepository.save(newPortfolioImg);
+                updatedPortfolioImgList.add(newPortfolioImg);
+            } else {
+                // 기존 이미지 보존
+                updatedPortfolioImgList.add(portfolioImg.get());
             }
         }
 
-        // 업데이트된 이미지 리스트를 포트폴리오의 이미지 리스트에 반영
-        portfolio.getPortfolioImgList().removeAll(updatedPortfolioImgs);
-        portfolio.getPortfolioImgList().addAll(updatedPortfolioImgs);
+        // 기존 리뷰 이미지 리스트와 새로운 리뷰 이미지 리스트 비교
+        List<PortfolioImg> existedPortfolioImgList = portfolio.getPortfolioImgList();
+        for (PortfolioImg portfolioImg : existedPortfolioImgList) {
+            if (!updatedPortfolioImgList.contains(portfolioImg)) {
+                // 이미지 삭제
+                portfolioImgRepository.delete(portfolioImg);
+            }
+        }
+
+        // 포트폴리오 이미지 리스트 - 포트폴리오 연관관계 설정
+        portfolio.updatePortfolioImgList(updatedPortfolioImgList);
     }
 
-    /**recommend**/
+    /**
+     * recommend
+     **/
     //리뷰 많은 순 포트폴리오 추천
-    public List<SimplePortfolioDto> recommendReview(){
+    public List<SimplePortfolioDto> recommendReview() {
         Pageable pageable = setPageRequest(0, "review");
         Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
 
@@ -157,7 +169,7 @@ public class PortfolioService {
     }
 
     //최신 등록 순 포트폴리오 추천
-    public List<SimplePortfolioDto> recommendRecent(){
+    public List<SimplePortfolioDto> recommendRecent() {
         Pageable pageable = setPageRequest(0, "recent");
         Page<Portfolio> portfolioList = portfolioRepository.findAllNotBlocked(pageable);
 
@@ -166,7 +178,7 @@ public class PortfolioService {
                 .toList();
     }
 
-    private Pageable setPageRequest(int page, String sortBy){
+    private Pageable setPageRequest(int page, String sortBy) {
 
         Sort sort = switch (sortBy) {
             case "desc" -> Sort.by("price").descending();
@@ -181,7 +193,7 @@ public class PortfolioService {
         return PageRequest.of(page, 30, finalSort);
     }
 
-    private Page<Portfolio> getPage(int page, List<Portfolio> list){
+    private Page<Portfolio> getPage(int page, List<Portfolio> list) {
         Pageable pageable = PageRequest.of(page, 30);
 
         int start = (int) pageable.getOffset();

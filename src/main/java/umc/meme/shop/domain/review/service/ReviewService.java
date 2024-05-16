@@ -12,7 +12,7 @@ import umc.meme.shop.domain.model.repository.ModelRepository;
 import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.portfolio.repository.PortfolioRepository;
 import umc.meme.shop.domain.reservation.entity.Reservation;
-import umc.meme.shop.domain.review.dto.request.PatchReviewDto;
+import umc.meme.shop.domain.review.dto.request.UpdateReviewDto;
 import umc.meme.shop.domain.review.dto.response.*;
 import umc.meme.shop.domain.review.repository.ReviewImgRepository;
 import umc.meme.shop.global.enums.Status;
@@ -27,6 +27,7 @@ import umc.meme.shop.global.exception.GlobalException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class ReviewService {
 
     //리뷰 작성
     @Transactional
-    public void createReview(ReviewDto reviewDto) {
+    public Long createReview(ReviewDto reviewDto) {
         Model model = modelRepository.findById(reviewDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
         Reservation reservation = reservationRepository.findByReservationIdAndModelId(reviewDto.getReservationId(), reviewDto.getModelId())
@@ -53,21 +54,25 @@ public class ReviewService {
         if (reservation.getStatus() != Status.COMPLETE)
             throw new GlobalException(ErrorStatus.INVALID_REVIEW_REQUEST);
 
-        Portfolio portfolio = reservation.getPortfolio();
-
+        // 리뷰 이미지 리스트 생성
         List<ReviewImg> reviewImgList = reviewDto.getReviewImgSrc().stream()
                 .map(ReviewImg::from)
                 .toList();
 
+        // 리뷰 entity 생성
+        Portfolio portfolio = reservation.getPortfolio();
         Review review = Review.from(model, portfolio, reviewDto);
 
+        // 리뷰 이미지, 리뷰 연관관계 설정
         reviewImgList.forEach(review::addReviewImg);
 
+        // 리뷰 연관관게 설정
         portfolio.updateReviewList(review);
         model.updateReviewList(review);
 
         reviewRepository.save(review);
         reservation.updateIsReview(true);
+        return review.getReviewId();
     }
 
     //리뷰 상세 조회
@@ -120,46 +125,56 @@ public class ReviewService {
 
     //리뷰 수정
     @Transactional
-    public ReviewDetailsDto patchReview(PatchReviewDto patchReviewDto){
-        Model model = modelRepository.findById(patchReviewDto.getModelId())
+    public ReviewDetailsDto updateReview(UpdateReviewDto updateReviewDto){
+        Model model = modelRepository.findById(updateReviewDto.getModelId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_MODEL));
-        Review review = reviewRepository.findById(patchReviewDto.getReviewId())
+        Review review = reviewRepository.findById(updateReviewDto.getReviewId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_REVIEW));
 
         if (!review.getModel().equals(model))
             throw new GlobalException(ErrorStatus.INVALID_MODEL_FOR_REVIEW);
 
-        updateReviewList(review, patchReviewDto.getReviewImgList());
-        review.updateReview(patchReviewDto);
+        // 리뷰 이미지 수정
+        if (!updateReviewDto.getReviewImgSrcList().isEmpty())
+            updateReviewImgList(review, updateReviewDto.getReviewImgSrcList());
+
+        // 리뷰 수정
+        review.updateReview(updateReviewDto);
         return ReviewDetailsDto.from(review);
     }
 
-    private void updateReviewList(Review review, List<ReviewImgDto> reviewImgDtoList){
-        List<ReviewImg> updatedReviewImgs = new ArrayList<>();
+    @Transactional
+    public void updateReviewImgList(Review review, List<String> reviewImgSrcList){
+        List<ReviewImg> updatedReviewImgList = new ArrayList<>();
 
-        for(ReviewImgDto reviewImgDto : reviewImgDtoList){
-            ReviewImg reviewImg = reviewImgRepository.findById(reviewImgDto.getReviewImgId())
-                    .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_REVIEW_IMG));
-
-            if (!review.getReviewImgList().contains(reviewImg))
+        for(String reviewImgSrc : reviewImgSrcList) {
+            if (reviewImgSrc == null)
                 throw new GlobalException(ErrorStatus.NOT_EXIST_REVIEW_IMG);
 
-            if(reviewImgDto.isDelete()){
-                review.getReviewImgList().remove(reviewImg);
-                reviewImgRepository.delete(reviewImg);
+            Optional<ReviewImg> reviewImg = reviewImgRepository.findBySrcAndReview(reviewImgSrc, review);
+            if (reviewImg.isEmpty()) {
+                // 새로운 이미지 추가
+                ReviewImg newReviewImg = ReviewImg.from(reviewImgSrc);
+                newReviewImg.setReview(review);
+                reviewImgRepository.save(newReviewImg);
+                updatedReviewImgList.add(newReviewImg);
+            } else {
+                // 기존 이미지 보존
+                updatedReviewImgList.add(reviewImg.get());
             }
-            else if(reviewImgDto.getReviewImgSrc() != null){
-                // update src
-                reviewImg.updateSrc(reviewImgDto.getReviewImgSrc());
-                reviewImgRepository.save(reviewImg);
-
-                updatedReviewImgs.add(reviewImg);
-            }
-// TODO: delete 로직 수정
         }
 
-        review.getReviewImgList().removeAll(updatedReviewImgs);
-        review.getReviewImgList().addAll(updatedReviewImgs);
+        // 기존 리뷰 이미지 리스트와 새로운 리뷰 이미지 리스트 비교
+        List<ReviewImg> existedReviewImgList = review.getReviewImgList();
+        for (ReviewImg reviewImg : existedReviewImgList){
+            if (!updatedReviewImgList.contains(reviewImg)){
+                // 이미지 삭제
+                reviewImgRepository.delete(reviewImg);
+            }
+        }
+
+        // 리뷰 이미지 리스트 - 리뷰 연관관계 설정
+        review.updateReviewImgList(updatedReviewImgList);
     }
 
     //리뷰 삭제

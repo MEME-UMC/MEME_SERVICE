@@ -2,13 +2,10 @@ package umc.meme.shop.domain.review.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-import umc.meme.shop.domain.review.dto.request.PatchReviewDto;
 import umc.meme.shop.domain.review.dto.request.ReviewDto;
 import umc.meme.shop.domain.review.dto.request.DeleteReviewDto;
+import umc.meme.shop.domain.review.dto.request.UpdateReviewDto;
 import umc.meme.shop.domain.review.service.ReviewService;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
@@ -36,8 +33,7 @@ public class ReviewController {
     @Operation(summary = "리뷰 작성", description = "리뷰를 작성하는 API입니다.")
     @PostMapping()
     public ApiResponse createReview(@RequestBody ReviewDto reviewDto){
-        reviewService.createReview(reviewDto);
-        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE);
+        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_CREATE, reviewService.createReview(reviewDto));
     }
 
     @Operation(summary = "리뷰 세부 조회", description = "리뷰를 세부 조회하는 API입니다.")
@@ -54,13 +50,13 @@ public class ReviewController {
 
     @Operation(summary = "리뷰 수정", description = "모델이 작성한 리뷰를 수정하는 API입니다.")
     @PatchMapping()
-    public ApiResponse patchReview(@RequestBody PatchReviewDto patchReviewDto){
-        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_PATCH, reviewService.patchReview(patchReviewDto));
+    public ApiResponse updateReview(@RequestBody UpdateReviewDto updateReviewDto){
+        return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_PATCH, reviewService.updateReview(updateReviewDto));
     }
 
     @Operation(summary = "리뷰 삭제", description = "모델이 작성한 리뷰를 삭제하는 API입니다.")
     @DeleteMapping()
-    public ApiResponse updateReview(@RequestBody DeleteReviewDto reviewDto){
+    public ApiResponse deleteReview(@RequestBody DeleteReviewDto reviewDto){
         reviewService.deleteReview(reviewDto);
         return ApiResponse.SuccessResponse(SuccessStatus.REVIEW_DELETE);
     }
