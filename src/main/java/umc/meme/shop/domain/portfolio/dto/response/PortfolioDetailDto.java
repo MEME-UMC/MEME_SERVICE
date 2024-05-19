@@ -35,6 +35,8 @@ public class PortfolioDetailDto {
 
     private String info;
 
+    private Long durationTime; //메이크업 소요시간
+
     private MakeupLocation makeupLocation; //샵 재직 여부
 
     private String shopLocation; //샵 위치

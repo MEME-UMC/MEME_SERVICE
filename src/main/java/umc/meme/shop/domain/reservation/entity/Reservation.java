@@ -41,6 +41,9 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "available_time_id")
     private AvailableTime availableTime;
 
+    @Column(nullable = false)
+    private Long durationTime;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
@@ -69,7 +72,8 @@ public class Reservation extends BaseEntity {
                 .model(model)
                 .portfolio(portfolio)
                 .availableTime(availableTime)
-                .status(Status.EXPECTED)
+                .durationTime(portfolio.getDurationTime())
+                .status(Status.PENDING)
                 .location(location)
                 .build();
     }

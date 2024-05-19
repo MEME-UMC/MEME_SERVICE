@@ -20,6 +20,7 @@ public class UpdatePortfolioDto {
     private String makeupName;
     private int price;
     private String info;
+    private Long durationTime;
     private Boolean isBlock;
     private List<String> portfolioImgSrcList;
 }

@@ -44,6 +44,9 @@ public class Portfolio extends BaseEntity {
     @Column(nullable = false)
     private String info;
 
+    @Column(nullable = false)
+    private Long durationTime;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
     private List<PortfolioImg> portfolioImgList;
 
