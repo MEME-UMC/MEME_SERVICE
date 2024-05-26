@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import umc.meme.shop.domain.reservation.dto.request.AlterReservationDto;
 import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
+import umc.meme.shop.domain.reservation.dto.request.ReservationTimeRequestDto;
 import umc.meme.shop.domain.reservation.service.ReservationService;
 import umc.meme.shop.global.SuccessStatus;
 import umc.meme.shop.global.response.ApiResponse;
@@ -35,9 +36,9 @@ public class ReservationController {
     }
 
     @Operation(summary = "예약가능 시간 조회", description = "예약가능 시간 조회 기능을 수행하는 API입니다.")
-    @GetMapping("/{artistId}/time")
-    public ApiResponse getArtistTime(@PathVariable(name = "artistId") Long artistId){
-        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_TIME_GET, reservationService.getArtistTime(artistId));
+    @GetMapping("/time")
+    public ApiResponse getArtistTime(@RequestBody ReservationTimeRequestDto reservationTimeRequestDto){
+        return ApiResponse.SuccessResponse(SuccessStatus.ARTIST_TIME_GET, reservationService.getArtistTime(reservationTimeRequestDto));
     }
 
 
