@@ -10,7 +10,7 @@ import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Builder
 @Getter
@@ -24,7 +24,7 @@ public class AvailableTime {
     private Long availableTimeId;
 
     @Column(nullable = false)
-    private Date date; //날짜
+    private LocalDate date; //날짜
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

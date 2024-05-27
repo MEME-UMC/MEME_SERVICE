@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +18,7 @@ public class ReviewAvailableListDto {
     private String artistNickName;
     private String makeupName;
     private String portfolioImg;
-    private Date reservationDate;
+    private LocalDate reservationDate;
     private String shopLocation; //샵 위치
 
     public static ReviewAvailableListDto from(Reservation reservation){

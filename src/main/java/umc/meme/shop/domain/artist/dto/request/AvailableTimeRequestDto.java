@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -23,11 +24,11 @@ public class AvailableTimeRequestDto {
     @NoArgsConstructor
     @AllArgsConstructor
         public static class AvailableTimeDto {
-            private Date date; //날짜
+            private LocalDate date; //날짜
             private DayOfWeek dayOfWeek; //요일
             private Times times;
 
-            public static AvailableTimeDto from(Date date, DayOfWeek dayOfWeek, Times times){
+            public static AvailableTimeDto from(LocalDate date, DayOfWeek dayOfWeek, Times times){
                 return AvailableTimeDto.builder()
                         .date(date)
                         .dayOfWeek(dayOfWeek)

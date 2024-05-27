@@ -14,8 +14,7 @@ import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 import umc.meme.shop.global.exception.GlobalException;
 
-import java.util.Date;
-import java.util.Map;
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -29,7 +28,7 @@ public class ReservationResponseDto {
     private String makeupName;
     private int price;
 
-    private Date reservationDate;
+    private LocalDate reservationDate;
     private DayOfWeek dayOfWeek;
     private Times times;
     private String shopLocation; //샵 위치

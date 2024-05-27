@@ -17,13 +17,13 @@ import umc.meme.shop.domain.reservation.dto.request.ReservationRequestDto;
 import umc.meme.shop.domain.reservation.dto.request.ReservationTimeRequestDto;
 import umc.meme.shop.domain.reservation.dto.response.*;
 import umc.meme.shop.domain.reservation.entity.Reservation;
-import umc.meme.shop.domain.user.User;
 import umc.meme.shop.global.enums.Status;
 import umc.meme.shop.domain.reservation.repository.ReservationRepository;
 import umc.meme.shop.global.ErrorStatus;
 import umc.meme.shop.global.exception.GlobalException;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +49,10 @@ public class ReservationService {
         Artist artist = artistRepository.findById(requestDto.getArtistId())
                 .orElseThrow(() -> new GlobalException(ErrorStatus.NOT_EXIST_ARTIST));
 
-        Date date = requestDto.getDate();
+        // parse date format
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date_str = requestDto.getDate();
+        LocalDate date = LocalDate.parse(date_str, dateFormatter);
 
         List<AvailableTime> availableTimeList = artist.getAvailableTimeList();
         availableTimeList.removeIf(AvailableTime::isReservated);

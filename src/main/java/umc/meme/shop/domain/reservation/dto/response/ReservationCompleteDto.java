@@ -10,9 +10,7 @@ import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 
-import java.sql.Time;
-import java.util.Date;
-import java.util.Map;
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -23,7 +21,7 @@ public class ReservationCompleteDto {
     private String makeupName;
     private String artistNickName;
     private String location; //장소
-    private Date reservationDate; //날짜
+    private LocalDate reservationDate; //날짜
     private DayOfWeek dayOfWeek; //요일
     private Times times; //시간
 
