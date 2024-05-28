@@ -10,7 +10,7 @@ import umc.meme.shop.domain.portfolio.entity.Portfolio;
 import umc.meme.shop.domain.reservation.entity.Reservation;
 import umc.meme.shop.global.enums.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -27,7 +27,7 @@ public class ReservationDetailDto {
     //예약 정보
     private String portfolioName;
     private Category category;
-    private Date reservationDate;
+    private LocalDate reservationDate;
     private Times reservationTime;
     private String location;
     private int price;

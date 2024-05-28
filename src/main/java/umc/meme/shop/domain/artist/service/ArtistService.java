@@ -19,7 +19,8 @@ import umc.meme.shop.global.enums.DayOfWeek;
 import umc.meme.shop.global.enums.Times;
 import umc.meme.shop.global.exception.GlobalException;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,7 +94,11 @@ public class ArtistService {
         artist.tempMethod();
 
         artistRepository.save(artist);
-        AvailableTimeRequestDto.AvailableTimeDto timeDto = AvailableTimeRequestDto.AvailableTimeDto.from(new Date(), DayOfWeek.MON, Times._15_00);
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse("2024-05-27", dateFormatter);
+
+        AvailableTimeRequestDto.AvailableTimeDto timeDto = AvailableTimeRequestDto.AvailableTimeDto.from(date, DayOfWeek.MON, Times._15_00);
         AvailableTime availableTime = AvailableTime.from(timeDto);
         availableTime.updateArtist(artist);
         availableTimeRepository.save(availableTime);

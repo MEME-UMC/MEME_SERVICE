@@ -3,10 +3,6 @@ package umc.meme.shop.domain.reservation.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import umc.meme.shop.global.enums.DayOfWeek;
-import umc.meme.shop.global.enums.Times;
-
-import java.util.Date;
 
 @Data
 public class ReservationRequestDto {
